@@ -1,0 +1,49 @@
+---
+import type { Page } from 'astro';
+import BlogLayout from '../../../layouts/BlogLayout.astro';
+import SectionTitle from '../../../components/global/SectionTitle.astro';
+import Pagination from '../../../components/global/Pagination.astro';
+import { getCollection, type CollectionEntry } from 'astro:content';
+import { withBase } from '../../../utils/paths';
+
+export async function getStaticPaths({ paginate }) {
+  const allPosts = (await getCollection('blog')).sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+  return paginate(allPosts, { pageSize: 6 }).filter((p) => Number(p.params.page) > 1);
+}
+
+const { page } = Astro.props as { page: Page<CollectionEntry<'blog'>> };
+const posts = page.data;
+const currentPage = page.currentPage;
+const lastPage = page.lastPage;
+const prevUrl = currentPage === 2 ? withBase('/blog/') : page.url.prev;
+const nextUrl = page.url.next;
+const kindLabel: Record<string, string> = { article: 'Artículo', 'case-study': 'Caso de estudio' };
+---
+
+<BlogLayout title={`Blog — Página ${currentPage}`} description="Artículos sobre tecnología, datos y desarrollo">
+  <section class="py-24 md:pt-32 max-w-7xl mx-auto px-6 md:px-8">
+    <SectionTitle title="Blog" description="Artículos sobre tecnología, datos y desarrollo." level="h1" />
+
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-12">
+      {posts.map((post) => (
+        <a href={withBase(`/blog/${post.slug}`)} class="group h-full flex flex-col p-8 rounded-2xl bg-white/[0.02] border border-white/5 hover:border-amber-400/30 transition">
+          <div class="flex flex-wrap items-center gap-2 text-white/30 text-sm">
+            <time>{post.data.date.toLocaleDateString('es-ES', { year: 'numeric', month: 'long', day: 'numeric' })}</time>
+            {post.data.kind && <span class="rounded-full border border-amber-400/15 bg-amber-400/10 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-amber-300">{kindLabel[post.data.kind] ?? post.data.kind}</span>}
+          </div>
+          <h3 class="text-lg font-semibold text-white group-hover:text-amber-400 transition-colors mt-3 mb-3">{post.data.title}</h3>
+          <p class="text-white/50 text-sm leading-relaxed line-clamp-3">{post.data.description}</p>
+          {post.data.tags && (
+            <div class="flex flex-wrap gap-2 mt-auto pt-4">
+              {post.data.tags.map((tag) => (
+                <span class="text-xs text-white/30 bg-white/5 px-3 py-1 rounded-full">{tag}</span>
+              ))}
+            </div>
+          )}
+        </a>
+      ))}
+    </div>
+
+    <Pagination {prevUrl} {nextUrl} currentPage={currentPage} lastPage={lastPage} />
+  </section>
+</BlogLayout>

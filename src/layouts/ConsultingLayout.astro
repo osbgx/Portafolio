@@ -1,0 +1,12 @@
+---
+import BaseLayout from './BaseLayout.astro';
+const { title, description } = Astro.props;
+---
+
+<BaseLayout title={title} description={description} theme="consulting">
+  <link rel="preload" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&display=optional" as="style" onload="this.onload=null;this.rel='stylesheet'">
+  <noscript><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&display=optional" rel="stylesheet"></noscript>
+  <div class="font-ibm-plex-sans">
+    <slot />
+  </div>
+</BaseLayout>

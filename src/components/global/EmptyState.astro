@@ -1,0 +1,19 @@
+---
+import { Icon } from 'astro-icon/components';
+
+export interface Props {
+  title: string;
+  description: string;
+  icon?: string;
+}
+
+const { title, description, icon = 'heroicons:document-text' } = Astro.props;
+---
+
+<div class="mt-12 text-center py-20">
+  <div class="max-w-sm mx-auto">
+    <Icon name={icon} size={64} class="mx-auto text-white/10 mb-6" />
+    <p class="text-white/50 text-lg">{title}</p>
+    <p class="text-white/50 text-sm mt-2">{description}</p>
+  </div>
+</div>

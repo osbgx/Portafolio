@@ -1,0 +1,67 @@
+---
+import RpgIcon from './RpgIcon.astro';
+import { withBase } from '../../utils/paths';
+
+interface RoomHotspot {
+  id: string;
+  x: number;
+  y: number;
+  radius: number;
+  targetSection: string;
+  ariaLabel: string;
+}
+
+interface Props {
+  roomHotspots: RoomHotspot[];
+}
+
+const { roomHotspots } = Astro.props;
+---
+
+<div class="room-panorama" role="group" aria-label="Pixel Room interactivo con imagen ampliable y objetos explorables" tabindex="0" aria-describedby="room-zoom-help">
+  <div class="room-zoom-controls" aria-label="Controles de zoom del cuarto">
+    <button class="room-zoom-btn font-pixel" type="button" data-room-zoom="out" aria-label="Alejar imagen">−</button>
+    <span class="room-zoom-level font-pixel" data-room-zoom-level>100%</span>
+    <button class="room-zoom-btn font-pixel" type="button" data-room-zoom="in" aria-label="Acercar imagen">+</button>
+    <button class="room-zoom-reset font-pixel" type="button" data-room-zoom="reset">RESET</button>
+  </div>
+  <div class="room-zoom-hint font-pixel" aria-hidden="true">ALT+WHEEL · DBL CLICK · DRAG</div>
+  <p class="sr-only" id="room-zoom-help">Usá los botones de zoom o las teclas más, menos y cero cuando la imagen tenga foco.</p>
+  <div class="room-panorama-viewport" data-room-viewport>
+    <img
+      src={withBase('/pixel/room.png')}
+      alt="Ilustración panorámica del cuarto personal en pixel art, con escritorio, lámpara cálida, gatos durmiendo y objetos nostálgicos"
+      class="room-panorama-img"
+      draggable="false"
+      loading="lazy"
+      decoding="async"
+      width="1672"
+      height="941"
+      onerror="this.closest('.room-panorama').classList.add('room-panorama--error'); this.style.display='none'"
+    />
+    {roomHotspots.map((hotspot) => (
+      <div
+        class="room-hotspot"
+        data-room-item={hotspot.id}
+        data-target-section={hotspot.targetSection}
+        style={`--hotspot-x:${hotspot.x}%;--hotspot-y:${hotspot.y}%;--hotspot-radius:${hotspot.radius}%;`}
+        aria-label={hotspot.ariaLabel}
+        tabindex="0"
+        role="button"
+      >
+        <span class="room-hotspot-sparkles" aria-hidden="true">
+          <i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
+        </span>
+      </div>
+    ))}
+    <div class="room-panorama-fallback" aria-hidden="true">
+      <span class="room-fallback-icon"><RpgIcon icon="ra-site" /></span>
+      <span class="room-fallback-text font-pixel">ROOM_IMAGE_NOT_FOUND</span>
+    </div>
+  </div>
+</div>
+<div class="room-inspector" aria-live="polite">
+  <span class="room-inspector-label font-pixel">INSPECTOR</span>
+  <strong id="room-inspector-title">Nada seleccionado</strong>
+  <p id="room-inspector-text">Tocá un objeto del cuarto para abrir una escena y desbloquear una mini pista.</p>
+</div>

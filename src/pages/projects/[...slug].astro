@@ -1,0 +1,118 @@
+---
+import { Icon } from 'astro-icon/components';
+import PostLayout from '../../layouts/PostLayout.astro';
+import { getCollection } from 'astro:content';
+import ImageCarousel from '../../components/global/ImageCarousel.astro';
+import { withBase } from '../../utils/paths';
+
+export async function getStaticPaths() {
+  const projects = await getCollection('projects');
+  return projects.map((p) => ({ params: { slug: p.slug }, props: { slug: p.slug } }));
+}
+
+const { slug } = Astro.props;
+const allProjects = await getCollection('projects');
+const allBlogPosts = await getCollection('blog');
+const project = allProjects.find((p) => p.slug === slug);
+const { Content } = project ? await project.render() : { Content: undefined };
+const { title, description, category, tags, images, type, hidden, client } = project?.data ?? {};
+const relatedCaseStudies = allBlogPosts
+  .filter((post) => post.data.kind === 'case-study' && post.data.relatedProject === slug)
+  .sort((a, b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime());
+const sorted = allProjects
+  .filter((p) => !p.data.hidden)
+  .sort((a, b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime());
+const currentIdx = sorted.findIndex((p) => p.slug === slug);
+const prev = currentIdx > 0 ? sorted[currentIdx - 1] : null;
+const next = currentIdx >= 0 && currentIdx < sorted.length - 1 ? sorted[currentIdx + 1] : null;
+const typeLabel: Record<string, string> = { empleado: "Laboral", freelance: "Freelance", hobby: "Hobby" };
+const typeColor: Record<string, string> = { empleado: "text-amber-400 bg-amber-400/10 border-amber-400/20", freelance: "text-emerald-400 bg-emerald-400/10 border-emerald-400/20", hobby: "text-blue-400 bg-blue-400/10 border-blue-400/20" };
+const typeIcon: Record<string, string> = { empleado: "heroicons:briefcase", freelance: "heroicons:star", hobby: "heroicons:sparkles" };
+
+const ldCreativeWork = JSON.stringify({
+  '@context': 'https://schema.org',
+  '@type': 'CreativeWork',
+  name: title,
+  description: description || title,
+  author: { '@type': 'Person', name: 'Osmar Bogarín' },
+  ...(tags?.length ? { keywords: tags.join(', ') } : {}),
+});
+---
+
+<PostLayout title={title ?? slug} description={description ?? title ?? slug}>
+  <script type="application/ld+json" set:html={ldCreativeWork}></script>
+  {!hidden && images && images.length > 0 && (
+    <div class="mb-10">
+      <ImageCarousel images={images} id={slug} />
+      <p class="mt-3 text-[11px] leading-relaxed text-white/30">
+        Las imágenes pueden ser capturas reales o representaciones conceptuales del proyecto. En algunos casos se utilizan versiones ilustrativas para proteger información confidencial, datos internos y métricas reales del cliente.
+      </p>
+    </div>
+  )}
+  <div class="flex items-center gap-3 mb-4">
+    {type && (
+      <span class={`inline-flex items-center gap-1 text-[10px] font-semibold tracking-wider uppercase px-2 py-0.5 rounded-full border ${typeColor[type] || 'text-white/40 bg-white/5 border-white/10'}`}>
+        <Icon name={typeIcon[type]} size={14} />
+        {typeLabel[type] || type}
+      </span>
+    )}
+    <span class="text-xs font-semibold tracking-widest text-amber-400 uppercase">{category}</span>
+  </div>
+  {client && (
+    <p class="text-sm text-white/40 mb-4">{client}</p>
+  )}
+  <h1 class="text-4xl font-bold text-white mb-6">{title}</h1>
+  {tags && tags.length > 0 && (
+    <div class="flex flex-wrap gap-2 mb-8">
+      {tags.map((tag) => (
+        <span class="text-xs text-amber-400 bg-amber-400/10 px-3 py-1 rounded-full">{tag}</span>
+      ))}
+    </div>
+  )}
+  {relatedCaseStudies.length > 0 && (
+    <div class="mb-10 space-y-3">
+      {relatedCaseStudies.map((caseStudy) => (
+        <a href={withBase(`/blog/${caseStudy.slug}`)} class="group flex items-start justify-between gap-4 rounded-2xl border border-amber-400/15 bg-amber-400/[0.04] p-4 transition hover:border-amber-400/30 hover:bg-amber-400/[0.07]" data-umami-event="project_case_study_click" data-umami-event-project={slug} data-umami-event-case-study={caseStudy.slug}>
+          <div>
+            <p class="text-[11px] font-semibold uppercase tracking-wider text-amber-300/80">Case study disponible</p>
+            <h2 class="mt-1 text-base font-semibold text-white group-hover:text-amber-300 transition-colors">{caseStudy.data.title}</h2>
+            <p class="mt-1 text-sm text-white/45 line-clamp-2">{caseStudy.data.description}</p>
+          </div>
+          <span class="mt-1 shrink-0 text-sm text-amber-300/70 group-hover:translate-x-1 transition-transform">→</span>
+        </a>
+      ))}
+    </div>
+  )}
+  {Content && (
+    <div class="prose prose-invert max-w-none">
+      <Content />
+    </div>
+  )}
+
+  {(prev || next) && (
+    <nav class="flex items-center justify-between gap-4 mt-16 pt-8 border-t border-white/5">
+      <div>
+        {prev && (
+          <a href={withBase(`/projects/${prev.slug}`)} class="group flex items-center gap-3 text-white/50 hover:text-white transition-colors" data-umami-event="project_prev_click" data-umami-event-project={slug} data-umami-event-target={prev.slug}>
+            <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
+            <div class="text-left">
+              <p class="text-[11px] text-white/30 uppercase tracking-wider">Anterior</p>
+              <p class="text-sm font-medium group-hover:text-amber-300 transition-colors line-clamp-1">{prev.data.title}</p>
+            </div>
+          </a>
+        )}
+      </div>
+      <div>
+        {next && (
+          <a href={withBase(`/projects/${next.slug}`)} class="group flex items-center gap-3 text-white/50 hover:text-white transition-colors text-right" data-umami-event="project_next_click" data-umami-event-project={slug} data-umami-event-target={next.slug}>
+            <div class="text-right">
+              <p class="text-[11px] text-white/30 uppercase tracking-wider">Siguiente</p>
+              <p class="text-sm font-medium group-hover:text-amber-300 transition-colors line-clamp-1">{next.data.title}</p>
+            </div>
+            <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+          </a>
+        )}
+      </div>
+    </nav>
+  )}
+</PostLayout>

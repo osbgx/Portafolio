@@ -1,0 +1,40 @@
+---
+import TechIcon from './TechIcon.astro';
+const { name, icon, level, accent = 'hylian', square = false } = Astro.props;
+const levelLabel =
+  level === 0 ? 'Aprendiendo' :
+  level <= 30 ? 'Básico' :
+  level <= 60 ? 'Intermedio' :
+  level <= 80 ? 'Avanzado' :
+  'Experto';
+---
+
+<div class={`group/item relative flex flex-col items-center justify-center gap-2 p-4 ${square ? 'rounded-sm' : 'rounded-2xl'} bg-white/[0.02] border border-white/5 hover:bg-white/[0.04] transition duration-300 w-[110px] h-[118px] flex-shrink-0 stack-item`} data-accent={accent}>
+  <div class="absolute top-full mt-2 left-1/2 -translate-x-1/2 px-2.5 py-1 rounded-md text-[10px] font-semibold tracking-wide whitespace-nowrap opacity-0 group-hover/item:opacity-100 transition-opacity duration-200 pointer-events-none"
+    class:list={{
+      'bg-purple text-white': accent === 'purple',
+      'bg-hylian text-carbon': accent === 'hylian',
+      'bg-amber-500 text-white': accent === 'amber',
+    }}>
+    {levelLabel}
+  </div>
+  <div class={`w-12 h-12 ${square ? 'rounded-sm' : 'rounded-xl'} bg-white/[0.03] border border-white/5 flex items-center justify-center group-hover/item:scale-110 transition-transform duration-300`}>
+    <TechIcon name={name} icon={icon} size={28} />
+  </div>
+  <span class="text-sm text-white/60 group-hover/item:text-white/90 transition-colors text-center leading-tight">{name}</span>
+</div>
+
+<style>
+  .stack-item[data-accent="purple"]:hover {
+    border-color: rgba(125, 60, 238, 0.3);
+    box-shadow: 0 0 24px -4px rgba(125, 60, 238, 0.35);
+  }
+  .stack-item[data-accent="hylian"]:hover {
+    border-color: rgba(63, 175, 108, 0.3);
+    box-shadow: 0 0 24px -4px rgba(63, 175, 108, 0.35);
+  }
+  .stack-item[data-accent="amber"]:hover {
+    border-color: rgba(251, 191, 36, 0.3);
+    box-shadow: 0 0 24px -4px rgba(251, 191, 36, 0.35);
+  }
+</style>

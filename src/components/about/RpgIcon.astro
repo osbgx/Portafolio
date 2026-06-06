@@ -1,0 +1,10 @@
+---
+interface Props {
+  icon: string;
+  className?: string;
+}
+
+const { icon, className = '' } = Astro.props;
+---
+
+<i class:list={['ra', icon, className]} aria-hidden="true"></i>

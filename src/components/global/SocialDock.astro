@@ -1,0 +1,138 @@
+---
+import { Icon } from 'astro-icon/components';
+import { socialLinks } from '../../data/social';
+import { withBase } from '../../utils/paths';
+
+interface Props {
+  dockColor: string;
+  variant: 'mobile' | 'desktop';
+}
+
+const { dockColor, variant } = Astro.props;
+
+const isMobile = variant === 'mobile';
+const tuckedLabels = new Set(['Instagram', 'X']);
+const primaryLinks = socialLinks.filter((link) => !tuckedLabels.has(link.label));
+const tuckedLinks = socialLinks
+  .filter((link) => tuckedLabels.has(link.label))
+  .sort((a, b) => (a.label === 'X' ? -1 : b.label === 'X' ? 1 : 0));
+const wrapClass = isMobile
+  ? 'md:hidden fixed bottom-0 left-0 right-0 z-50 flex items-center justify-center gap-6 py-3 px-6 bg-white/[0.01] border-t border-white/[0.03] backdrop-blur-sm social-dock social-dock--mobile'
+  : 'hidden md:flex fixed right-4 top-1/2 -translate-y-1/2 z-50 flex-col gap-3 py-3 px-2.5 rounded-2xl bg-white/[0.01] border border-white/[0.03] backdrop-blur-sm social-dock';
+const linkClass = isMobile
+  ? 'w-9 h-9 flex items-center justify-center rounded-xl text-white/50 hover:bg-white/5 transition'
+  : 'w-8 h-8 flex items-center justify-center rounded-lg text-white/50 hover:bg-white/5 transition';
+const cvEs = withBase('/cv/es-osmar-bogarin-cv.pdf');
+const cvEn = withBase('/cv/en-osmar-bogarin-cv.pdf');
+---
+
+<nav class={wrapClass} style={`--dock-color: ${dockColor}`} aria-label="Redes sociales">
+  {primaryLinks.map((link) => (
+    <a href={link.href} target="_blank" rel="noopener noreferrer" class={linkClass} aria-label={link.label} data-umami-event={`social_dock_${variant}_${link.label.toLowerCase()}`}>
+      <Icon name={link.icon} class="w-4 h-4" />
+    </a>
+  ))}
+  <div class="social-dock-more">
+    <button type="button" class={`${linkClass} social-dock-more__trigger`} aria-label="Mostrar CV, X e Instagram" data-umami-event={`social_dock_${variant}_more_open`}>
+      <Icon name="heroicons:ellipsis-horizontal" class="w-4 h-4" />
+    </button>
+    <div class="social-dock-more__links" aria-label="Redes adicionales">
+      <a href={cvEs} target="_blank" rel="noopener noreferrer" class={linkClass} aria-label="Ver o descargar CV" data-cv-link data-cv-es={cvEs} data-cv-en={cvEn} data-umami-event={`social_dock_${variant}_cv`} data-umami-event-language="es">
+        <Icon name="heroicons:document-text" class="w-4 h-4" />
+      </a>
+      {tuckedLinks.map((link) => (
+        <a href={link.href} target="_blank" rel="noopener noreferrer" class={linkClass} aria-label={link.label} data-umami-event={`social_dock_${variant}_${link.label.toLowerCase()}`}>
+          <Icon name={link.icon} class="w-4 h-4" />
+        </a>
+      ))}
+    </div>
+  </div>
+</nav>
+
+<script>
+  function setLocalizedCvLinks() {
+    const language = (navigator.language || navigator.languages?.[0] || 'es').toLowerCase();
+    const isEnglish = language.startsWith('en');
+
+    document.querySelectorAll('[data-cv-link]').forEach((link) => {
+      if (!(link instanceof HTMLAnchorElement)) return;
+
+      const nextHref = isEnglish ? link.dataset.cvEn : link.dataset.cvEs;
+      if (!nextHref) return;
+
+      link.href = nextHref;
+      link.dataset.umamiEventLanguage = isEnglish ? 'en' : 'es';
+      link.setAttribute('aria-label', isEnglish ? 'View or download CV' : 'Ver o descargar CV');
+    });
+  }
+
+  document.addEventListener('astro:page-load', setLocalizedCvLinks);
+  setLocalizedCvLinks();
+</script>
+
+<style>
+  .social-dock-more {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0;
+    transition: gap 180ms ease;
+  }
+
+  .social-dock-more__trigger:hover,
+  .social-dock-more__trigger:focus-visible {
+    color: var(--dock-color);
+  }
+
+  .social-dock-more__links {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.75rem;
+    max-height: 0;
+    opacity: 0;
+    overflow: hidden;
+    pointer-events: none;
+    transform: translateY(-0.25rem);
+    transition: max-height 220ms ease, opacity 160ms ease, transform 180ms ease;
+  }
+
+  .social-dock-more:hover,
+  .social-dock-more:focus-within {
+    gap: 0.75rem;
+  }
+
+  .social-dock-more:hover .social-dock-more__links,
+  .social-dock-more:focus-within .social-dock-more__links {
+    max-height: 8rem;
+    opacity: 1;
+    pointer-events: auto;
+    transform: translateY(0);
+  }
+
+  .social-dock-more__links a {
+    flex: 0 0 auto;
+  }
+
+  .social-dock--mobile {
+    align-items: flex-end;
+  }
+
+  .social-dock--mobile .social-dock-more__links {
+    flex-direction: row;
+    max-width: 0;
+    max-height: none;
+    transform: translateX(-0.25rem);
+    transition: max-width 220ms ease, opacity 160ms ease, transform 180ms ease;
+  }
+
+  .social-dock--mobile .social-dock-more:hover .social-dock-more__links,
+  .social-dock--mobile .social-dock-more:focus-within .social-dock-more__links {
+    max-width: 10rem;
+    transform: translateX(0);
+  }
+
+  .social-dock--mobile .social-dock-more {
+    flex-direction: row;
+  }
+</style>

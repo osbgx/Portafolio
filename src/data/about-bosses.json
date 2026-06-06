@@ -1,0 +1,114 @@
+[
+  {
+    "name": "The Merge Conflict Chimera",
+    "rank": "S++",
+    "domain": "Version Control",
+    "desc": "Un compañero mezcló branches, commits y posiblemente universos paralelos. Resolver ese merge fue como pelear contra una criatura hecha de partes que no deberían coexistir.",
+    "reward": "+2 GIT SANITY · MERGE BLADE",
+    "status": "DEFEATED"
+  },
+  {
+    "name": "The CSS Mimic",
+    "rank": "B",
+    "domain": "Frontend",
+    "desc": "Un botón que tenía bordes curvos… hasta que lo tocabas. Entonces se volvía cuadrado, rectangular o algo que ni CSS debería permitir. Un enemigo que cambia de forma sin previo aviso.",
+    "reward": "+1 DEX · STYLESHEET DAGGER",
+    "status": "DEFEATED"
+  },
+  {
+    "name": "The Race Condition Djinn",
+    "rank": "A",
+    "domain": "Backend / Logic",
+    "desc": "Un espíritu travieso que solo aparece cuando no estás mirando. Corre el código una vez y funciona; corrélo otra vez y explota. Un djinn impredecible.",
+    "reward": "+1 FOCUS · ASYNC LAMP",
+    "status": "DEFEATED"
+  },
+  {
+    "name": "The Safari Gremlin",
+    "rank": "B",
+    "domain": "Frontend",
+    "desc": "Un bug que solo aparecía en Safari de iPhone. En ningún otro navegador. En ningún otro dispositivo. Un gremlin exclusivo de Apple, como si viviera ahí.",
+    "reward": "+1 PATIENCE · RESPONSIVE TALISMAN",
+    "status": "DEFEATED"
+  },
+  {
+    "name": "The Requirement Sphinx",
+    "rank": "A",
+    "domain": "Data / Reporting",
+    "desc": "Te pedían un reporte… pero no sabían cuál. Cada solicitud era un acertijo nuevo. Responder mal significaba volver al inicio del laberinto.",
+    "reward": "+2 INSIGHT · CLARITY SCROLL",
+    "status": "DEFEATED"
+  },
+  {
+    "name": "The Debugging Minotaur",
+    "rank": "S",
+    "domain": "Full Stack",
+    "desc": "Un laberinto de logs interminables. Cada giro parecía una pista, pero solo era otro pasillo oscuro. Al final, encontré la salida… y el bug.",
+    "reward": "+3 PERSEVERANCE · STACKTRACE AXE",
+    "status": "DEFEATED"
+  },
+  {
+    "name": "The Tutorial Hydra",
+    "rank": "B",
+    "domain": "Learning",
+    "desc": "Ves un tutorial y terminás con veinte pestañas abiertas, tres frameworks nuevos y cero progreso real. Cada cabeza cortada abre otra playlist.",
+    "reward": "+1 XP · TAB MANAGEMENT RING",
+    "status": "DEFEATED"
+  },
+  {
+    "name": "The Sprite Overlord",
+    "rank": "A",
+    "domain": "Pixel Art",
+    "desc": "Un sprite de 16x16 que tomó tres horas, dos cafés y una crisis existencial. Pequeño, pero poderoso. Como todos los minibosses que parecen fáciles.",
+    "reward": "+1 ARTISANSHIP · PIXEL HAMMER",
+    "status": "DEFEATED"
+  },
+  {
+    "name": "The Palette Witch",
+    "rank": "A",
+    "domain": "Design",
+    "desc": "Elegir colores que no se vean horribles. La bruja cambiaba la paleta cada vez que yo creía haber terminado.",
+    "reward": "+1 AESTHETIC SENSE · COLOR CHARM",
+    "status": "DEFEATED"
+  },
+  {
+    "name": "The Animation Slime",
+    "rank": "B",
+    "domain": "Pixel Art",
+    "desc": "Intentar que un personaje camine sin parecer borracho. El slime se movía mejor que mi animación inicial.",
+    "reward": "+1 MOTION · FRAMEWALKER BOOTS",
+    "status": "DEFEATED"
+  },
+  {
+    "name": "The Social Battery Vampire",
+    "rank": "S",
+    "domain": "Life",
+    "desc": "Eventos sociales que drenan el maná más rápido que cualquier boss técnico. Difícil de enfrentar, pero derrotable con descansos estratégicos y un buen “modo avión”.",
+    "reward": "+3 QUIET MODE · INTROVERT AURA",
+    "status": "DEFEATED (POR AHORA)"
+  },
+  {
+    "name": "The Sleep Schedule Basilisk",
+    "rank": "S+",
+    "domain": "Life",
+    "desc": "Intentar dormir temprano y fallar durante un mes entero. Mirarlo a los ojos te petrifica hasta las 4 AM.",
+    "reward": "+1 RESILIENCE · NIGHT OWL CAPE",
+    "status": "STILL FIGHTING"
+  },
+  {
+    "name": "The Procrastination Mimic",
+    "rank": "A",
+    "domain": "Productivity",
+    "desc": "Una tarea simple que se convierte en un monstruo solo por existir. Parece un cofre inofensivo… hasta que lo abrís.",
+    "reward": "+1 WILLPOWER · FOCUS TOKEN",
+    "status": "DEFEATED (DESPUÉS DE VARIOS INTENTOS)"
+  },
+  {
+    "name": "The Motivation Phoenix",
+    "rank": "A",
+    "domain": "Life",
+    "desc": "Muere, revive, muere, revive… pero siempre vuelve cuando más lo necesito. Un boss que también es aliado.",
+    "reward": "+2 DRIVE · REBIRTH FEATHER",
+    "status": "ALLIED"
+  }
+]

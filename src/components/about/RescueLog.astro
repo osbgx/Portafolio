@@ -1,0 +1,149 @@
+---
+import { withBase } from '../../utils/paths';
+import RpgIcon from './RpgIcon.astro';
+
+interface GuildStat {
+  value: string;
+  label: string;
+  note: string;
+}
+
+interface RescueDexEntry {
+  type: string;
+  icon: string;
+  encounterRate: string;
+  status: string;
+  notes: string;
+}
+
+interface FieldNote {
+  id: string;
+  number: string;
+  title: string;
+  text: readonly string[];
+}
+
+interface ShinyMoment {
+  title: string;
+  text: string;
+}
+
+interface Props {
+  intro: readonly string[];
+  guildStats: readonly GuildStat[];
+  rescueDexEntries: readonly RescueDexEntry[];
+  fieldNotes: readonly FieldNote[];
+  careRoute: readonly string[];
+  shinyMoment: ShinyMoment;
+  hardPart: readonly string[];
+  supportCopy: readonly string[];
+}
+
+const {
+  intro,
+  guildStats,
+  rescueDexEntries,
+  fieldNotes,
+  careRoute,
+  shinyMoment,
+  hardPart,
+  supportCopy,
+} = Astro.props;
+---
+
+<div class="rescue-guild-shell" data-rescue-guild>
+  <header class="rescue-guild-header accordion-item">
+    <div class="rescue-title-block">
+      <span class="rescue-kicker font-pixel">RESCUE LOG</span>
+      <h2>La guild crecio demasiado</h2>
+      <div class="rescue-intro">
+        {intro.map(paragraph => <p>{paragraph}</p>)}
+      </div>
+    </div>
+    <aside class="rescue-guild-alert" aria-label="Guild status warning">
+      <span class="font-pixel">GUILD STATUS</span>
+      <strong>The guild size exceeded recommended limits.</strong>
+    </aside>
+  </header>
+
+  <section class="rescue-status-grid" aria-label="Guild Status">
+    {guildStats.map((stat, index) => (
+      <article class="rescue-status-card accordion-item" style={`--step:${index}`}>
+        <strong>{stat.value}</strong>
+        <span class="font-pixel">{stat.label}</span>
+        <p>{stat.note}</p>
+      </article>
+    ))}
+  </section>
+
+  <section class="rescue-dex-panel accordion-item" aria-labelledby="rescue-dex-title">
+    <div class="rescue-panel-heading">
+      <span class="font-pixel">RESCUE DEX</span>
+      <p id="rescue-dex-title">Encounter data loaded. No capture jokes, just care routes.</p>
+    </div>
+    <div class="rescue-dex-grid">
+      {rescueDexEntries.map(entry => (
+        <button class="rescue-dex-entry" type="button" data-rescue-dex={entry.type}>
+          <span class="rescue-dex-icon" aria-hidden="true"><RpgIcon icon={entry.icon} /></span>
+          <span class="rescue-dex-copy">
+            <strong>{entry.type}</strong>
+            <small>Encounter rate: {entry.encounterRate}</small>
+            <em>Status: {entry.status}</em>
+            <p>{entry.notes}</p>
+          </span>
+        </button>
+      ))}
+    </div>
+  </section>
+
+  <section class="rescue-field-notes accordion-item" aria-labelledby="rescue-field-notes-title">
+    <div class="rescue-panel-heading">
+      <span class="font-pixel">FIELD NOTES</span>
+      <p id="rescue-field-notes-title">Tres registros. Uno abierto a la vez, porque hasta el caos necesita tabs.</p>
+    </div>
+    <div class="rescue-note-stack" data-rescue-notes>
+      {fieldNotes.map((note, index) => (
+        <article class:list={["rescue-field-note", index === 0 && 'is-open']} data-rescue-note={note.id}>
+          <button class="rescue-note-trigger" type="button" aria-expanded={index === 0 ? 'true' : 'false'} aria-controls={`rescue-note-body-${note.id}`} data-rescue-note-trigger={note.id}>
+            <span class="sr-only">Abrir nota de campo:</span>
+            <span class="font-pixel">FIELD NOTE {note.number}</span>
+            <strong>{note.title}</strong>
+            <small aria-hidden="true">{index === 0 ? 'OPEN' : 'READ'}</small>
+          </button>
+          <div class="rescue-note-body" id={`rescue-note-body-${note.id}`} hidden={index !== 0}>
+            {note.text.map(paragraph => <p>{paragraph}</p>)}
+          </div>
+        </article>
+      ))}
+    </div>
+  </section>
+
+  <div class="rescue-soft-grid">
+    <section class="rescue-shiny-card accordion-item">
+      <span class="font-pixel">{shinyMoment.title}</span>
+      <p>{shinyMoment.text}</p>
+    </section>
+
+    <section class="rescue-care-route accordion-item" aria-label="Care Route">
+      <div class="rescue-panel-heading">
+        <span class="font-pixel">CARE ROUTE</span>
+        <p>Simple en texto. Bastante menos simple en la vida real.</p>
+      </div>
+      <ol>
+        {careRoute.map(step => <li>{step}</li>)}
+      </ol>
+    </section>
+  </div>
+
+  <section class="rescue-hard-part accordion-item">
+    {hardPart.map((paragraph, index) => <p class:list={[index === 0 && 'is-lead']}>{paragraph}</p>)}
+  </section>
+
+  <section class="rescue-support-card accordion-item" data-rescue-support>
+    <div>
+      <span class="font-pixel">SUPPORT THE GUILD</span>
+      {supportCopy.map(paragraph => <p>{paragraph}</p>)}
+    </div>
+    <a class="rescue-support-btn" href={withBase('/contact/')}>Contactar / ayudar</a>
+  </section>
+</div>

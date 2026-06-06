@@ -1,0 +1,56 @@
+---
+import { Icon } from 'astro-icon/components';
+import { footerThemes } from '../../data/themes';
+import { socialLinks } from '../../data/social';
+import { footerNav } from '../../data/navigation';
+import { withBase } from '../../utils/paths';
+
+interface Props {
+  theme?: string;
+}
+
+const { theme = 'default' } = Astro.props;
+const currentYear = new Date().getFullYear();
+
+const t = footerThemes[theme] || footerThemes.default;
+---
+
+<footer class="border-t border-white/5 bg-carbon/50">
+  <div class="max-w-7xl mx-auto px-6 md:px-8 py-12">
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+      <div>
+        <span class={`${t.logo} ${t.font} inline-flex items-center justify-center overflow-hidden font-bold text-lg`} style="width:2.25rem;height:2.25rem;">
+          {theme === 'about' ? '🐱' : '>_'}
+        </span>
+        <p class="text-white/50 text-sm mt-2 leading-relaxed max-w-xs">
+          Data Engineer, Consultant & Multidisciplinary Developer. Construyendo soluciones con personalidad.
+        </p>
+      </div>
+      <div>
+        <h4 class="text-white/60 text-xs font-semibold uppercase tracking-widest mb-4">Navegación</h4>
+        <nav aria-label="Navegación del pie de página" class="grid grid-cols-2 gap-x-6 gap-y-2">
+          {footerNav.map((link) => (
+            <a href={withBase(link.href)} class={`text-white/50 ${t.hover} ${t.font} text-sm transition-colors`} data-umami-event={`footer_nav_${link.label.toLowerCase().replaceAll(' ', '_')}`}>{link.label}</a>
+          ))}
+        </nav>
+      </div>
+      <div>
+        <h4 class="text-white/60 text-xs font-semibold uppercase tracking-widest mb-4">Conectar</h4>
+        <div class="flex items-center gap-3 mb-4">
+          {socialLinks.map((link) => (
+            <a href={link.href} target="_blank" rel="noopener noreferrer" class={`w-9 h-9 flex items-center justify-center rounded-xl bg-white/[0.02] border border-white/5 ${t.hover} hover:bg-white/5 transition text-white/50`} aria-label={link.label} data-umami-event={`footer_social_${link.label.toLowerCase()}`}>
+              <Icon name={link.icon} class="w-4 h-4" />
+            </a>
+          ))}
+        </div>
+        <a href={withBase('/contact')} class={`inline-flex items-center gap-1.5 text-white/50 ${t.hover} ${t.font} text-sm transition-colors group`} data-umami-event="footer_contact_cta">
+          Contáctame
+          <svg class="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" aria-hidden="true" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
+        </a>
+      </div>
+    </div>
+    <div class={`border-t ${t.border} mt-8 pt-8 text-center`}>
+      <p class="text-white/50 text-xs">&copy; {currentYear} Osmar Bogarín. Todos los derechos reservados.</p>
+    </div>
+  </div>
+</footer>

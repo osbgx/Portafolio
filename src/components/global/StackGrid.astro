@@ -1,0 +1,129 @@
+---
+import type { TechCategory } from '../../data/tech-icons';
+import StackItem from './StackItem.astro';
+
+interface Props {
+  items: Array<{ name: string; icon: string; category: string; level: number }>;
+  category: TechCategory;
+  accent?: 'purple' | 'hylian' | 'amber';
+  index?: number;
+  square?: boolean;
+}
+
+const { items, category, accent = 'hylian', index = 0, square = false } = Astro.props;
+const catItems = items.filter((i) => i.category === category);
+if (catItems.length === 0) return;
+const headingClass = accent === 'purple' ? 'text-purple-light/60' : accent === 'amber' ? 'text-amber-400/60' : 'text-hylian/60';
+---
+
+<div class="stack-row" style={`--delay: ${index * 0.15}s`}>
+  <h3 class={`text-sm font-semibold ${headingClass} tracking-widest uppercase mb-4`}>{category}</h3>
+  <div class="flex items-center gap-3">
+    <button data-stack-scroll-left class="stack-arrow shrink-0 hidden md:flex" aria-label="Anterior">
+      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
+    </button>
+
+    <div class="flex-1 overflow-x-auto scrollbar-hide" data-stack-scroll tabindex="0" role="region" aria-label={`Tecnologías: ${category}`}>
+      <div class="flex gap-3 w-max px-5 py-9">
+        {catItems.map((item) => (
+          <StackItem name={item.name} icon={item.icon} level={item.level} accent={accent} square={square} />
+        ))}
+      </div>
+    </div>
+
+    <button data-stack-scroll-right class="stack-arrow shrink-0 hidden md:flex" aria-label="Siguiente">
+      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+    </button>
+  </div>
+</div>
+
+<style>
+  .stack-row {
+    opacity: 0;
+    animation: stackFadeIn 0.5s ease-out var(--delay, 0s) forwards;
+  }
+
+  @keyframes stackFadeIn {
+    from { opacity: 0; transform: translateY(16px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  .scrollbar-hide::-webkit-scrollbar { display: none; }
+
+  .stack-arrow {
+    width: 2rem;
+    height: 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: rgba(255,255,255,0.25);
+    border-radius: 9999px;
+    border: 1px solid rgba(255,255,255,0.08);
+    background: rgba(255,255,255,0.03);
+    transition: color 0.2s, border-color 0.2s, background 0.2s, opacity 0.2s, visibility 0.2s;
+  }
+  .stack-arrow:hover {
+    color: rgba(255,255,255,0.6);
+    border-color: rgba(255,255,255,0.15);
+    background: rgba(255,255,255,0.06);
+  }
+  .stack-arrow.arrow-disabled {
+    visibility: hidden;
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .stack-row { animation: none; opacity: 1; }
+  }
+</style>
+
+<script>
+  document.addEventListener('astro:page-load', () => {
+    document.querySelectorAll('[data-stack-scroll]').forEach((container) => {
+    if (container.dataset.stackGuard) return;
+    container.dataset.stackGuard = '1';
+    const prev = container.parentElement.querySelector('[data-stack-scroll-left]');
+    const next = container.parentElement.querySelector('[data-stack-scroll-right]');
+    if (!prev || !next) return;
+
+    function updateArrows() {
+      const hasOverflow = container.scrollWidth > container.clientWidth + 2;
+      if (!hasOverflow) {
+        prev.classList.add('arrow-disabled');
+        next.classList.add('arrow-disabled');
+        return;
+      }
+      prev.classList.remove('arrow-disabled');
+      next.classList.remove('arrow-disabled');
+      if (container.scrollLeft <= 2) prev.classList.add('arrow-disabled');
+      else prev.classList.remove('arrow-disabled');
+      const atEnd = container.scrollLeft + container.clientWidth >= container.scrollWidth - 2;
+      if (atEnd) next.classList.add('arrow-disabled');
+      else next.classList.remove('arrow-disabled');
+    }
+
+    prev.addEventListener('click', () => {
+      container.scrollBy({ left: -300 });
+      requestAnimationFrame(updateArrows);
+    });
+    next.addEventListener('click', () => {
+      container.scrollBy({ left: 300 });
+      requestAnimationFrame(updateArrows);
+    });
+
+    container.addEventListener('scroll', updateArrows);
+    new ResizeObserver(updateArrows).observe(container);
+    updateArrows();
+
+    container.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowRight') { container.scrollBy({ left: 150 }); e.preventDefault(); }
+      if (e.key === 'ArrowLeft') { container.scrollBy({ left: -150 }); e.preventDefault(); }
+    });
+  });
+  });
+</script>

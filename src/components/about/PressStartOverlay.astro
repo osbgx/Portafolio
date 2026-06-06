@@ -1,0 +1,36 @@
+---
+import { withBase } from '../../utils/paths';
+---
+
+<div class="press-start-overlay" id="press-start-overlay" role="dialog" aria-labelledby="press-start-title" aria-describedby="press-start-copy" aria-modal="true">
+  <div class="boot-bar press-start-loader" aria-hidden="true">
+    <span class="boot-bar-text font-pixel">LOADING PERSONAL FILE...</span>
+    <div class="boot-bar-track">
+      <div class="boot-bar-fill"></div>
+    </div>
+  </div>
+  <div class="press-start-card">
+    <span class="press-start-kicker font-pixel">SAVE FILE FOUND</span>
+    <h2 id="press-start-title">PLAYER PROFILE LOADED</h2>
+    <p id="press-start-copy">Elegí cómo entrar: speedrun (lectura rápida) para humanos con agenda, o explorar el perfil en modo aventura.</p>
+    <div class="press-start-actions">
+      <button class="route-btn" type="button" data-start-action="explore" data-start-primary>ENTER ROOM</button>
+      <button class="route-btn" type="button" data-start-action="fast">FAST READ</button>
+    </div>
+    <div class="press-start-fast" id="press-start-fast" hidden>
+      <div class="fast-read-brief" aria-label="Lectura rapida">
+        <span class="fast-read-label font-pixel">FAST READ · HUMAN MODE</span>
+        <ul>
+          <li><strong>Who:</strong> Osmar, builder of useful digital things.</li>
+          <li><strong>How I work:</strong> solve real problems without adding unnecessary complexity.</li>
+          <li><strong>What this page is:</strong> a personal room map with memories, side quests, bosses, dev lore, and rescue logs.</li>
+          <li><strong>Best route:</strong> contact me directly, or enter the room if you want the full story.</li>
+        </ul>
+      </div>
+      <div class="press-start-actions press-start-actions-secondary">
+        <a class="route-btn" href={withBase('/contact')}>CONTACTO</a>
+        <button class="route-btn" type="button" data-start-action="fast-room">EXPLORE ROOM</button>
+      </div>
+    </div>
+  </div>
+</div>

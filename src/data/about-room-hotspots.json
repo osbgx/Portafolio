@@ -1,0 +1,59 @@
+[
+  {
+    "id": "cat",
+    "x": 8,
+    "y": 66,
+    "radius": 2,
+    "targetSection": "rescue",
+    "ariaLabel": "Sleeping cat, click to trigger rescue reaction"
+  },
+  {
+    "id": "crt",
+    "x": 60,
+    "y": 40,
+    "radius": 2,
+    "targetSection": "memory",
+    "ariaLabel": "CRT monitor, click to trigger memory reaction"
+  },
+  {
+    "id": "laptop",
+    "x": 13,
+    "y": 50,
+    "radius": 2,
+    "targetSection": "quests",
+    "ariaLabel": "Laptop, click to trigger quest reaction"
+  },
+
+  {
+    "id": "coffee",
+    "x": 57,
+    "y": 57,
+    "radius": 2,
+    "targetSection": "room",
+    "ariaLabel": "Coffee cup, click to trigger a random thought reaction"
+  },
+  {
+    "id": "boss",
+    "x": 9,
+    "y": 6,
+    "radius": 2,
+    "targetSection": "bosses",
+    "ariaLabel": "Darth Vader, click to trigger a calm reaction"
+  },
+  {
+    "id": "work",
+    "x": 40,
+    "y": 40,
+    "radius": 2,
+    "targetSection": "projects",
+    "ariaLabel": "Work area, click to go to projects"
+  },
+  {
+    "id": "miku",
+    "x": 85,
+    "y": 63,
+    "radius": 2,
+    "targetSection": "miku",
+    "ariaLabel": "Miku, click to open a video"
+  }
+]

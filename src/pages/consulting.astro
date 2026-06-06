@@ -1,0 +1,409 @@
+---
+import ConsultingLayout from '../layouts/ConsultingLayout.astro';
+import SectionTitle from '../components/global/SectionTitle.astro';
+import ConsultingCard from '../components/consulting/ConsultingCard.astro';
+import FAQSection from '../components/consulting/FAQSection.astro';
+import InlineCTA from '../components/consulting/InlineCTA.astro';
+import ProjectCard from '../components/global/ProjectCard.astro';
+import { Icon } from 'astro-icon/components';
+import { getCollection } from 'astro:content';
+import { approachSteps, automationItems, implSystems, results } from '../data/consulting';
+import '../styles/consulting.css';
+import CardGlow from '../components/global/CardGlow.astro';
+import { withBase } from '../utils/paths';
+
+type ProjectData = {
+  title: string;
+  description: string;
+  category: string;
+  date: Date;
+  tags?: string[];
+  pages?: Array<'data' | 'consultoria' | 'web' | 'movil'>;
+  featuredIn?: Array<'index' | 'data' | 'consultoria' | 'web' | 'movil'>;
+  featured?: boolean;
+  hidden?: boolean;
+  client?: string;
+  type?: 'empleado' | 'freelance' | 'hobby';
+  images?: Array<{ label: string; color: string; src?: string }>;
+  id: string;
+};
+
+const allProjects = (await getCollection('projects')).map((p: { data: ProjectData; slug: string }) => ({ ...p.data, id: p.slug }));
+const consultingProjects = allProjects
+  .filter((p: ProjectData) => !p.hidden)
+  .filter((p: ProjectData) => (p.pages ?? []).includes('consultoria'))
+  .sort((a: ProjectData, b: ProjectData) => new Date(b.date).getTime() - new Date(a.date).getTime());
+const mainConsultingProject = consultingProjects[0];
+const secondaryConsultingProjects = allProjects
+  .filter((p: ProjectData) => !p.hidden)
+  .filter((p: ProjectData) => (p.featuredIn ?? []).includes('consultoria'))
+  .filter((p: ProjectData) => p.id !== mainConsultingProject?.id)
+  .sort((a: ProjectData, b: ProjectData) => new Date(b.date).getTime() - new Date(a.date).getTime());
+---
+
+<ConsultingLayout title="Consultoría" description="Asesoramiento estratégico para transformar tu negocio con tecnología">
+  <section class="hero-consulting relative min-h-[90vh] bg-carbon pt-28 md:pt-32 pb-24 md:pb-28 overflow-hidden">
+    <div class="absolute inset-0 hex-pattern pointer-events-none" style={`--hex-pattern-url: url('${withBase('/hex-pattern.svg')}')`}></div>
+    <div class="absolute inset-0 bg-gradient-to-br from-hero/[0.03] via-carbon to-hero/[0.02] pointer-events-none"></div>
+    <div class="blur-circle blur-circle-1 absolute top-40 -right-20 w-96 h-96 bg-hero/[0.04] rounded-full blur-[120px] pointer-events-none"></div>
+    <div class="blur-circle blur-circle-2 absolute -bottom-20 -left-20 w-80 h-80 bg-hero/[0.02] rounded-full blur-[100px] pointer-events-none"></div>
+    <div class="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-hero/20 to-transparent"></div>
+
+    <div class="scroll-indicator" aria-hidden="true">
+      <span class="scroll-text">SCROLL</span>
+      <Icon name="heroicons:chevron-double-down" size={12} class="text-hero/50" />
+    </div>
+
+    <div class="relative z-10 max-w-6xl mx-auto px-6 md:px-8 w-full">
+      <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-8 lg:gap-12">
+        <div class="max-w-xl min-w-0">
+          <h1 class="text-4xl md:text-4xl lg:text-[2.6rem] xl:text-5xl font-bold text-white tracking-tight [&>span]:mb-1.5">
+            <span class="block">Sistemas que <span class="text-hero">funcionan</span></span>
+            <span class="block">Equipos que <span class="text-hero">avanzan</span></span>
+            <span class="block">Negocios que <span class="text-hero">crecen</span></span>
+          </h1>
+          <p class="text-xl md:text-lg text-white/50 mt-6 max-w-xl leading-relaxed">
+            Diagnóstico, integración y optimización de sistemas. Soluciones reales para problemas reales de infraestructura y procesos.
+          </p>
+          <div class="flex flex-wrap gap-4 mt-10 md:mt-10">
+            <a href="#servicios" class="inline-flex items-center gap-2 bg-hero text-white font-semibold px-8 py-4 md:px-7 md:py-3 rounded-xl text-base md:text-sm hover:bg-hero/90 transition hover:shadow-lg hover:shadow-hero/20" data-umami-event="consulting_hero_services_cta">
+              Ver servicios
+              <Icon name="heroicons:chevron-down" size={18} class="text-white" />
+            </a>
+            <a href="#resultados" class="inline-flex items-center gap-2 border border-white/15 text-white/60 px-8 py-4 md:px-7 md:py-3 rounded-xl text-base md:text-sm hover:border-hero/40 hover:text-hero transition" data-umami-event="consulting_hero_results_cta">
+              Ver resultados
+            </a>
+          </div>
+        </div>
+        <div class="hidden lg:flex items-center justify-center self-end">
+          <div class="relative">
+            <div class="glow-ring glow-ring-1"></div>
+            <div class="glow-ring glow-ring-2"></div>
+            <div class="glow-ring glow-ring-3"></div>
+            <div class="icon-cluster">
+              <div class="icon-wrapper icon-wrapper-1">
+                <div class="glow-halo"></div>
+                <Icon name="heroicons:light-bulb" size={36} class="text-hero" />
+              </div>
+              <div class="icon-wrapper icon-wrapper-2">
+                <div class="glow-halo"></div>
+                <Icon name="heroicons:puzzle-piece" size={36} class="text-hero" />
+              </div>
+              <div class="icon-wrapper icon-wrapper-3">
+                <div class="glow-halo"></div>
+                <Icon name="heroicons:check-circle" size={36} class="text-hero" />
+              </div>
+            </div>
+            <div class="icon-labels">
+              <span class="text-xs text-white/50">Optimizo</span>
+              <span class="text-xs text-white/50">Integro</span>
+              <span class="text-xs text-white/50">Resuelvo</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="servicios" class="py-24 md:py-32 bg-obsidian relative overflow-hidden">
+    <div class="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-hero/20 to-transparent"></div>
+    <div class="absolute top-0 left-0 right-0 h-32 bg-gradient-to-b from-hero/[0.02] to-transparent pointer-events-none"></div>
+    <div class="container-section">
+      <SectionTitle title="Qué Ofrezco" description="Cuatro áreas donde puedo sumar valor directo a tu operación." />
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 mt-16">
+        <div class="card-entry" style="animation-delay:0s">
+          <ConsultingCard
+            title="Integración de Sistemas"
+            description="ERP, CRM, APIs y automatizaciones empresariales. Convierto plataformas aisladas en un ecosistema unificado y sincronizado."
+            icon="heroicons:arrows-right-left"
+          />
+        </div>
+        <div class="card-entry" style="animation-delay:0.15s">
+          <ConsultingCard
+            title="Optimización de Procesos"
+            description="Mapeo de flujos, detección de cuellos de botella y rediseño inteligente. Menos pasos perdidos, más resultados concretos."
+            icon="heroicons:wrench-screwdriver"
+          />
+        </div>
+        <div class="card-entry" style="animation-delay:0.3s">
+          <ConsultingCard
+            title="Documentación Técnica"
+            description="Arquitectura de software, diagramas de infraestructura y manuales operativos. Tu equipo deja de depender de conocimientos aislados."
+            icon="heroicons:document-text"
+          />
+        </div>
+        <div class="card-entry" style="animation-delay:0.45s">
+          <ConsultingCard
+            title="Soporte Técnico Avanzado"
+            description="Diagnóstico remoto, recuperación ante fallos y mejoras progresivas. Tu operación corre estable sin que tengas que apagar incendios."
+            icon="heroicons:cog-6-tooth"
+          />
+        </div>
+      </div>
+      <InlineCTA />
+    </div>
+  </section>
+
+  <section class="py-24 md:py-32 bg-carbon relative overflow-hidden">
+    <div class="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-hero/20 to-transparent"></div>
+    <div class="absolute top-0 left-0 right-0 h-32 bg-gradient-to-b from-hero/[0.02] to-transparent pointer-events-none"></div>
+    <div class="container-section">
+      <SectionTitle title="Mi Enfoque Consultivo" description="Mi proceso en tres etapas para pasar del problema a la solución." />
+
+      <div class="hidden md:flex items-center justify-center gap-0 mt-16 mb-2">
+        <div class="flex-1 h-px bg-gradient-to-r from-transparent via-hero/20 to-transparent"></div>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
+        {approachSteps.map((item, i) => (
+          <div class="group relative p-8 rounded-2xl bg-white/[0.02] border border-white/5 hover:border-hero/30 transition duration-500 overflow-hidden approach-entry" style={`animation-delay:${i * 0.2}s`}>
+            <CardGlow />
+            <div class="absolute bottom-0 left-6 right-6 h-0.5 bg-hero/40 scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left"></div>
+
+            <div class="flex items-center gap-4 mb-6">
+              <span class="flex items-center justify-center w-10 h-10 rounded-lg bg-hero/10 border border-hero/20 text-sm font-bold text-hero/60 group-hover:bg-hero/20 group-hover:text-hero transition duration-300">{item.step}</span>
+              <div class="flex-1 h-px bg-white/5"></div>
+            </div>
+            <div class="w-14 h-14 rounded-xl bg-gradient-to-br from-hero/15 to-hero/5 border border-hero/20 flex items-center justify-center mb-5 group-hover:from-hero/25 group-hover:to-hero/10 group-hover:border-hero/30 group-hover:scale-110 transition duration-300">
+              <Icon name={item.icon} size={28} class="text-hero" />
+            </div>
+            <h3 class="text-lg font-semibold text-white group-hover:text-hero transition-colors mb-3">{item.title}</h3>
+            <p class="text-white/50 text-sm leading-relaxed">{item.desc}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section id="proyectos" class="py-24 md:py-32 bg-obsidian relative overflow-hidden">
+    <div class="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-hero/20 to-transparent"></div>
+    <div class="absolute top-0 left-0 right-0 h-32 bg-gradient-to-b from-hero/[0.02] to-transparent pointer-events-none"></div>
+    <div class="container-section">
+      <SectionTitle title="Proyectos de Consultoría" description="Casos donde conecté sistemas, procesos y equipos para resolver problemas reales." />
+      {mainConsultingProject && (
+        <div class="mt-16 space-y-6">
+          <a href={withBase(`/projects/${mainConsultingProject.id}`)} class="featured-card group block p-8 rounded-2xl bg-white/[0.02] border border-white/5 hover:border-hero/20 transition relative overflow-hidden" data-umami-event="consulting_latest_project_click" data-umami-event-project={mainConsultingProject.id}>
+            <div class="absolute inset-0 bg-gradient-to-br from-hero/[0.03] to-transparent opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none"></div>
+            <div class="relative z-10 flex flex-col md:flex-row gap-8 items-start">
+              <div class="w-full md:w-1/2 aspect-video rounded-xl bg-white/[0.03] border border-white/5 flex items-center justify-center overflow-hidden">
+                {mainConsultingProject.images?.[0] ? (
+                  mainConsultingProject.images[0].src ? (
+                    <img src={withBase(mainConsultingProject.images[0].src)} alt={mainConsultingProject.images[0].label} class="h-full w-full object-cover" />
+                  ) : (
+                    <div class="text-center">
+                      <div class="w-14 h-14 mx-auto rounded-xl flex items-center justify-center" style={`background: ${mainConsultingProject.images[0].color}15; border: 1px solid ${mainConsultingProject.images[0].color}20`}>
+                        <Icon name="heroicons:photo" class="w-7 h-7" style={`color: ${mainConsultingProject.images[0].color}`} />
+                      </div>
+                      <p class="text-xs text-white/50 mt-2 font-medium">{mainConsultingProject.images[0].label}</p>
+                    </div>
+                  )
+                ) : (
+                  <Icon name="heroicons:photo" class="w-10 h-10 text-white/10" />
+                )}
+              </div>
+              <div class="w-full md:w-1/2">
+                <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-hero/10 border border-hero/20 text-xs text-hero mb-4">
+                  <span class="w-1.5 h-1.5 rounded-full bg-hero"></span>
+                  Proyecto destacado
+                </div>
+                <span class="text-xs font-semibold tracking-widest text-hero uppercase">{mainConsultingProject.category}</span>
+                {mainConsultingProject.client && <p class="text-xs text-white/40 mt-1">{mainConsultingProject.client}</p>}
+                <h3 class="text-2xl font-bold text-white group-hover:text-hero transition-colors mt-2 mb-3">{mainConsultingProject.title}</h3>
+                <p class="text-desc">{mainConsultingProject.description}</p>
+                <div class="flex flex-wrap gap-2 mt-5">
+                  {(mainConsultingProject.tags ?? []).slice(0, 4).map((tag: string) => (
+                    <span class="text-[11px] text-white/50 bg-white/5 border border-white/5 px-2.5 py-1 rounded-full whitespace-nowrap">{tag}</span>
+                  ))}
+                  {(mainConsultingProject.tags ?? []).length > 4 && (
+                    <span class="text-[11px] text-white/50 px-2.5 py-1">+{(mainConsultingProject.tags ?? []).length - 4}</span>
+                  )}
+                </div>
+                <div class="flex items-center gap-2 mt-6 text-sm text-hero group-hover:gap-3 transition-all">
+                  <span>Ver proyecto</span>
+                  <Icon name="heroicons:arrow-right" class="w-4 h-4" />
+                </div>
+              </div>
+            </div>
+          </a>
+          {secondaryConsultingProjects.length > 0 && (
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {secondaryConsultingProjects.map((p: ProjectData) => (
+                <ProjectCard project={p} accent="amber" />
+              ))}
+            </div>
+          )}
+          {consultingProjects.length > 1 + secondaryConsultingProjects.length && (
+            <div class="text-center mt-10">
+              <a href={withBase('/projects')} class="inline-flex items-center gap-2 border border-white/15 text-white/60 px-7 py-3 rounded-xl text-sm hover:border-hero/40 hover:text-hero transition" data-umami-event="consulting_view_more_projects">
+                Ver más proyectos
+                <Icon name="heroicons:arrow-right" size={16} />
+              </a>
+            </div>
+          )}
+        </div>
+      )}
+    </div>
+  </section>
+
+  <section class="py-24 md:py-32 bg-obsidian relative overflow-hidden">
+    <div class="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-hero/20 to-transparent"></div>
+    <div class="absolute top-0 left-0 right-0 h-32 bg-gradient-to-b from-hero/[0.02] to-transparent pointer-events-none"></div>
+    <div class="container-section">
+      <SectionTitle title="Automatización de Procesos" description="Mi filosofía: más automatización siempre que el costo-beneficio sea favorable." />
+      <div class="grid grid-cols-1 lg:grid-cols-5 gap-8 mt-16">
+        <div class="lg:col-span-2 approach-entry" style="animation-delay:0s">
+          <div class="group relative p-8 rounded-2xl bg-gradient-to-br from-hero/[0.04] to-transparent border border-hero/10 hover:border-hero/30 transition duration-500 overflow-hidden h-full">
+            <CardGlow />
+            <Icon name="heroicons:light-bulb" size={28} class="text-hero mb-5" />
+            <h3 class="text-lg font-semibold text-white mb-4">No reinventar la rueda</h3>
+            <p class="text-sm text-white/50 leading-relaxed">Si ya existe una solución que resuelve el problema, la adopto. Open source primero, personalización cuando el negocio lo exige. Menos código propio, más eficiencia comprobada.</p>
+            <div class="mt-6 flex items-center gap-2 text-xs text-hero/60">
+              <Icon name="heroicons:check-circle" size={14} class="text-hero/60" />
+              <span>Open source por defecto</span>
+            </div>
+            <div class="flex items-center gap-2 text-xs text-hero/60 mt-2">
+              <Icon name="heroicons:check-circle" size={14} class="text-hero/60" />
+              <span>Personalización solo donde suma</span>
+            </div>
+          </div>
+        </div>
+        <div class="lg:col-span-3 grid grid-cols-1 sm:grid-cols-2 gap-5">
+          {automationItems.map((item, i) => (
+            <div class="group relative p-6 rounded-2xl bg-white/[0.02] border border-white/5 hover:border-hero/30 transition duration-500 overflow-hidden ind-entry" style={`animation-delay:${0.2 + i * 0.1}s`}>
+              <CardGlow />
+              <div class="absolute bottom-0 left-4 right-4 h-0.5 bg-hero/40 scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left"></div>
+              <div class="relative w-12 h-12 rounded-xl bg-gradient-to-br from-hero/15 to-hero/5 border border-hero/20 flex items-center justify-center mb-4 group-hover:from-hero/25 group-hover:to-hero/10 group-hover:border-hero/30 group-hover:scale-110 transition duration-300">
+                <Icon name={item.icon} size={22} class="text-hero" />
+              </div>
+              <h4 class="relative text-sm font-semibold text-white group-hover:text-hero transition-colors mb-2">{item.title}</h4>
+              <p class="relative text-xs text-white/50 leading-relaxed">{item.desc}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="py-24 md:py-32 bg-carbon relative overflow-hidden">
+    <div class="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-hero/20 to-transparent"></div>
+    <div class="absolute top-0 left-0 right-0 h-32 bg-gradient-to-b from-hero/[0.02] to-transparent pointer-events-none"></div>
+    <div class="container-section">
+      <SectionTitle title="Implementación de Sistemas" description="Selecciono, adapto e implemento tecnologías que escalan con tu negocio." />
+      <div class="grid grid-cols-1 lg:grid-cols-5 gap-8 mt-16">
+        <div class="lg:col-span-3 grid grid-cols-1 sm:grid-cols-2 gap-5">
+          {implSystems.map((item, i) => (
+            <div class="group relative p-6 rounded-2xl bg-white/[0.02] border border-white/5 hover:border-hero/30 transition duration-500 overflow-hidden ind-entry" style={`animation-delay:${i * 0.1}s`}>
+              <CardGlow />
+              <div class="absolute bottom-0 left-4 right-4 h-0.5 bg-hero/40 scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left"></div>
+              <div class="relative w-12 h-12 rounded-xl bg-gradient-to-br from-hero/15 to-hero/5 border border-hero/20 flex items-center justify-center mb-4 group-hover:from-hero/25 group-hover:to-hero/10 group-hover:border-hero/30 group-hover:scale-110 transition duration-300">
+                <Icon name={item.icon} size={22} class="text-hero" />
+              </div>
+              <h4 class="relative text-sm font-semibold text-white group-hover:text-hero transition-colors mb-2">{item.title}</h4>
+              <p class="relative text-xs text-white/50 leading-relaxed">{item.desc}</p>
+            </div>
+          ))}
+        </div>
+        <div class="lg:col-span-2 approach-entry" style="animation-delay:0.2s">
+          <div class="group relative p-8 rounded-2xl bg-gradient-to-br from-hero/[0.04] to-transparent border border-hero/10 hover:border-hero/30 transition duration-500 overflow-hidden h-full">
+            <CardGlow />
+            <Icon name="heroicons:wrench-screwdriver" size={28} class="text-hero mb-5" />
+            <h3 class="text-lg font-semibold text-white mb-4">Open source como base</h3>
+            <p class="text-sm text-white/50 leading-relaxed">No construyo desde cero si hay una herramienta sólida que ya resuelve el problema. Evalúo, adapto y despliego. El valor está en la integración inteligente, no en el código nuevo.</p>
+            <div class="mt-6 flex items-center gap-2 text-xs text-hero/60">
+              <Icon name="heroicons:check-circle" size={14} class="text-hero/60" />
+              <span>Soluciones con trayectoria comprobada</span>
+            </div>
+            <div class="flex items-center gap-2 text-xs text-hero/60 mt-2">
+              <Icon name="heroicons:check-circle" size={14} class="text-hero/60" />
+              <span>Customización sin deuda técnica</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="resultados" class="py-24 md:py-32 bg-obsidian relative overflow-hidden">
+    <div class="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-hero/20 to-transparent"></div>
+    <div class="absolute top-0 left-0 right-0 h-32 bg-gradient-to-b from-hero/[0.02] to-transparent pointer-events-none"></div>
+    <div class="container-section">
+      <SectionTitle title="Resultados" description="Datos que respaldan cada consultoría." />
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8 mt-16">
+        {results.map((m, i) => (
+          <div class="group relative p-8 md:p-10 rounded-2xl bg-white/[0.02] border border-white/5 hover:border-hero/30 transition duration-500 text-center overflow-hidden stat-entry" style={`animation-delay:${i * 0.2}s`}>
+            <CardGlow />
+            <div class="absolute bottom-0 left-6 right-6 h-0.5 bg-hero/40 scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left"></div>
+            <div class="relative w-14 h-14 rounded-xl bg-gradient-to-br from-hero/15 to-hero/5 border border-hero/20 flex items-center justify-center mx-auto mb-6 group-hover:from-hero/25 group-hover:to-hero/10 group-hover:border-hero/30 group-hover:scale-110 transition duration-300">
+              <Icon name={m.icon} size={28} class="text-hero" />
+            </div>
+            <p class="relative text-5xl md:text-6xl font-bold text-hero mb-2 stat-value">{m.value}</p>
+            <p class="relative text-white/50 text-sm leading-relaxed max-w-[240px] mx-auto">{m.label}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="py-24 md:py-32 bg-carbon relative overflow-hidden">
+    <div class="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-hero/20 to-transparent"></div>
+    <div class="container-section">
+      <SectionTitle title="Industrias" description="Experiencia comprobada en múltiples sectores." />
+      <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-4 md:gap-5 mt-16">
+        {[
+          { name: 'Retail', icon: 'heroicons:shopping-bag' },
+          { name: 'Logística', icon: 'heroicons:truck' },
+          { name: 'Salud', icon: 'heroicons:heart' },
+          { name: 'Educación', icon: 'heroicons:academic-cap' },
+          { name: 'Servicios Profesionales', icon: 'heroicons:briefcase' },
+          { name: 'Maquinaria Pesada', icon: 'heroicons:cog' },
+          { name: 'Videojuegos', icon: 'heroicons:play' },
+          { name: 'Agro', icon: 'heroicons:sun' },
+          { name: 'Banca & Fintech', icon: 'heroicons:currency-dollar' },
+        ].map((ind, i) => (
+          <div class="group relative p-6 rounded-2xl bg-white/[0.02] border border-white/5 hover:border-hero/30 transition duration-500 text-center overflow-hidden ind-entry" style={`animation-delay:${i * 0.075}s`}>
+            <CardGlow />
+            <div class="absolute bottom-0 left-6 right-6 h-0.5 bg-hero/40 scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left"></div>
+            <div class="relative w-12 h-12 rounded-xl bg-gradient-to-br from-hero/15 to-hero/5 border border-hero/20 flex items-center justify-center mx-auto mb-4 group-hover:from-hero/25 group-hover:to-hero/10 group-hover:border-hero/30 group-hover:scale-110 transition duration-300">
+              <Icon name={ind.icon} size={22} class="text-hero" />
+            </div>
+            <span class="relative text-sm font-semibold text-white/80 group-hover:text-hero transition-colors">{ind.name}</span>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="py-24 md:py-32 bg-carbon">
+    <div class="max-w-7xl mx-auto px-6 md:px-8">
+      <SectionTitle title="Preguntas Frecuentes" description="Resolvé tus dudas antes de contactar." />
+      <FAQSection />
+    </div>
+  </section>
+
+  <section class="relative py-28 md:py-36 bg-obsidian border-t border-white/5 overflow-hidden">
+    <div class="absolute inset-0 overflow-hidden pointer-events-none" aria-hidden="true">
+      <div class="absolute -top-40 left-1/2 -translate-x-1/2 w-[600px] h-[600px] rounded-full bg-hero/5 blur-3xl"></div>
+    </div>
+    <div class="relative z-10 max-w-3xl mx-auto px-6 md:px-8 text-center">
+      <div class="cta-entry cta-delay-1">
+        <span class="text-xs uppercase tracking-widest text-hero/50 font-semibold mb-5 block">¿Listo para el siguiente paso?</span>
+      </div>
+      <div class="cta-entry cta-delay-2">
+        <h2 class="text-4xl md:text-5xl font-bold text-white mb-6 leading-[1.1]">¿Necesitás una <span class="text-hero">consultoría</span>?</h2>
+      </div>
+      <div class="cta-entry cta-delay-3">
+        <p class="text-lg text-white/50 max-w-xl mx-auto leading-relaxed mb-10">
+          Si necesitás integrar sistemas, optimizar procesos o resolver problemas técnicos complejos, puedo ayudarte a construir soluciones claras y eficientes.
+        </p>
+      </div>
+      <div class="cta-entry cta-delay-4">
+        <a href={withBase('/contact')} class="group inline-flex items-center gap-2 bg-hero text-white font-semibold px-8 py-4 rounded-xl hover:bg-hero/90 transition hover:shadow-xl hover:shadow-hero/20 hover:scale-105 active:scale-100" aria-label="Contactar para consultoría" data-umami-event="consulting_final_contact_cta">
+          Contactarme
+          <Icon name="heroicons:arrow-right" size={16} class="text-white group-hover:translate-x-1 transition-transform" />
+        </a>
+      </div>
+    </div>
+  </section>
+</ConsultingLayout>
+
+

@@ -1,0 +1,196 @@
+---
+interface Boss {
+  name: string;
+  rank: string;
+  domain: string;
+  desc: string;
+  reward: string;
+  status: string;
+}
+
+interface BossView extends Boss {
+  index: number;
+  category: string;
+  state: 'defeated' | 'latent' | 'active' | 'allied';
+  currentHp: number;
+  maxHp: number;
+  signal: string;
+}
+
+interface Props {
+  bosses: Boss[];
+}
+
+const { bosses } = Astro.props;
+
+const categoryForDomain = (domain: string) => {
+  if (['Version Control', 'Backend / Logic', 'Data / Reporting', 'Full Stack', 'Learning'].includes(domain)) return 'Technical';
+  if (['Frontend', 'Pixel Art', 'Design'].includes(domain)) return 'Creative';
+  if (domain === 'Life') return 'Life';
+  if (domain === 'Productivity') return 'Productivity';
+  return 'Technical';
+};
+
+const stateForStatus = (status: string): BossView['state'] => {
+  if (status === 'STILL FIGHTING') return 'active';
+  if (status === 'ALLIED') return 'allied';
+  if (status.includes('POR AHORA') || status.includes('INTENTOS')) return 'latent';
+  return 'defeated';
+};
+
+const signalForState: Record<BossView['state'], string> = {
+  defeated: 'VICTORY ARCHIVED',
+  latent: 'LATENT THREAT STORED',
+  active: 'ACTIVE THREAT DETECTED',
+  allied: 'UNEXPECTED ALLY',
+};
+
+const rankTierClass = (rank: string) => {
+  if (rank.startsWith('S')) return 'rank-s';
+  if (rank.startsWith('A')) return 'rank-a';
+  if (rank.startsWith('B')) return 'rank-b';
+  return '';
+};
+
+const hpMaxForRank: Record<string, number> = {
+  'S++': 9999,
+  'S+': 8799,
+  'S': 7199,
+  'A': 5599,
+  'B': 3199,
+};
+
+const hpPercentForState: Record<BossView['state'], [number, number]> = {
+  defeated: [0, 0],
+  latent: [0.12, 0.22],
+  active: [0.55, 0.82],
+  allied: [0.15, 0.28],
+};
+
+const randomBetween = (min: number, max: number) => Math.floor(Math.random() * (max - min + 1)) + min;
+
+const bossViews: BossView[] = bosses.map((boss, index) => {
+  const state = stateForStatus(boss.status);
+  const maxHp = hpMaxForRank[boss.rank] || 3199;
+  const [pctMin, pctMax] = hpPercentForState[state];
+  const currentHp = state === 'defeated' ? 0 : Math.round(maxHp * randomBetween(Math.round(pctMin * 100), Math.round(pctMax * 100)) / 100);
+  return {
+    ...boss,
+    index,
+    category: categoryForDomain(boss.domain),
+    state,
+    currentHp,
+    maxHp,
+    signal: signalForState[state],
+  };
+});
+
+const activeBoss = bossViews[0];
+const filters = ['All', 'Technical', 'Creative', 'Life', 'Productivity'];
+const defeatedCount = bossViews.filter(boss => boss.state === 'defeated' || boss.state === 'latent').length;
+const stillFightingCount = bossViews.filter(boss => boss.state === 'active').length;
+const alliedCount = bossViews.filter(boss => boss.state === 'allied').length;
+---
+
+<div class="container-section py-8">
+  <div class="boss-bestiary-shell" data-boss-bestiary>
+    <header class="boss-bestiary-header accordion-item">
+      <div>
+        <span class="boss-kicker font-pixel">BOSS LOG</span>
+        <p class="section-lore boss-lore">
+          Algunos bosses fueron técnicos, otros personales, otros simplemente bugs con demasiada vida. Los registro acá porque sobrevivir también cuenta como progreso — y porque ciertas batallas merecen quedar guardadas como si fueran un pixel art en la pared.
+        </p>
+      </div>
+      <div class="boss-summary" aria-label="Boss Log summary">
+        <strong>{bossViews.length}</strong>
+        <span>encounters archived</span>
+        <small>{defeatedCount} defeated · {stillFightingCount} still fighting · {alliedCount} allied</small>
+      </div>
+    </header>
+
+    <div class:list={["boss-bestiary-grid", `is-${activeBoss.state}`]} data-boss-state={activeBoss.state}>
+      <section class="boss-arena" id="boss-encounter-stage" aria-live="polite" data-boss-arena>
+        <div class="boss-arena-screen">
+          <div class="boss-arena-topline">
+            <span class="boss-warning font-pixel" id="boss-encounter-signal">{activeBoss.signal}</span>
+            <span class="boss-category-tag font-pixel" id="boss-encounter-category">{activeBoss.category}</span>
+          </div>
+          <div class="boss-title-row">
+            <span class:list={["boss-rank-xl", rankTierClass(activeBoss.rank)]} id="boss-encounter-rank">{activeBoss.rank}</span>
+            <div>
+              <span class="boss-label font-pixel">WARNING · BOSS ENCOUNTER</span>
+              <h3 id="boss-encounter-name">{activeBoss.name}</h3>
+            </div>
+          </div>
+
+          <div class="boss-arena-meta">
+            <span id="boss-encounter-domain">DOMAIN: {activeBoss.domain}</span>
+            <span id="boss-encounter-status">STATUS: {activeBoss.status}</span>
+          </div>
+
+          <div class="boss-hp-readout">
+            <span class="font-pixel" id="boss-encounter-hp-label">HP {activeBoss.currentHp} / {activeBoss.maxHp}</span>
+            <div class="boss-hp" aria-hidden="true"><span id="boss-encounter-hp" style={`width:${activeBoss.maxHp > 0 ? (activeBoss.currentHp / activeBoss.maxHp) * 100 : 0}%`}></span></div>
+          </div>
+
+          <p id="boss-encounter-desc">{activeBoss.desc}</p>
+
+          <div class="boss-reward-box">
+            <span class="font-pixel">REWARD</span>
+            <strong id="boss-encounter-reward">{activeBoss.reward}</strong>
+          </div>
+
+          <div class="boss-arena-controls" aria-label="Boss encounter controls">
+            <button class="boss-control" type="button" data-boss-control="prev">Previous Boss</button>
+            <button class="boss-control boss-control-random" type="button" data-boss-control="random">Random Encounter</button>
+            <button class="boss-control" type="button" data-boss-control="next">Next Boss</button>
+          </div>
+        </div>
+      </section>
+
+      <aside class="boss-roster-panel" aria-label="Boss Roster">
+        <div class="boss-roster-header">
+          <div>
+            <span class="boss-kicker font-pixel">BOSS ROSTER</span>
+            <p>Seleccioná un encounter. El detalle vive en la arena.</p>
+          </div>
+          <span class="font-pixel" id="boss-roster-count">{bossViews.length}/{bossViews.length}</span>
+        </div>
+        <div class="boss-filter-bar" aria-label="Boss filters">
+          {filters.map((filter, index) => (
+            <button class:list={["boss-filter", index === 0 && 'is-active']} type="button" data-boss-filter={filter} aria-pressed={index === 0 ? 'true' : 'false'}>{filter}</button>
+          ))}
+        </div>
+        <div class="boss-roster" role="listbox" aria-label="Archived boss encounters">
+          {bossViews.map((boss, i) => (
+            <button
+              class:list={["boss-entry", `is-${boss.state}`, i === 0 && 'is-selected']}
+              type="button"
+              role="option"
+              aria-selected={i === 0 ? 'true' : 'false'}
+              style={`transition-delay:${i * 28}ms`}
+              data-boss-index={String(i)}
+              data-boss-name={boss.name}
+              data-boss-domain={boss.domain}
+              data-boss-desc={boss.desc}
+              data-boss-reward={boss.reward}
+              data-boss-status={boss.status}
+              data-boss-rank={boss.rank}
+              data-boss-category={boss.category}
+              data-boss-state={boss.state}
+              data-boss-current-hp={String(boss.currentHp)}
+              data-boss-max-hp={String(boss.maxHp)}
+              data-boss-signal={boss.signal}
+            >
+              <span class:list={["boss-rank", rankTierClass(boss.rank)]}>{boss.rank}</span>
+              <span class="boss-roster-copy">
+                <strong>{boss.name}</strong>
+                <small>{boss.domain} · {boss.status}</small>
+              </span>
+            </button>
+          ))}
+        </div>
+      </aside>
+    </div>
+  </div>
+</div>

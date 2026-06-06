@@ -1,0 +1,95 @@
+---
+import type { QuestMeta } from '../../data/about-types';
+
+interface Props {
+  questMeta: QuestMeta[];
+  questArcs: string[];
+}
+
+const { questMeta, questArcs } = Astro.props;
+---
+
+<div class="quest-board" data-quest-board>
+  <header class="quest-board-header accordion-item">
+    <span class="quest-board-kicker font-pixel">QUEST BOARD UPDATED</span>
+    <div>
+      <h2>SIDE QUEST LOG</h2>
+      <p>Misiones secundarias que no cambiaron el mundo, pero sí me subieron stats donde importaba.</p>
+      <p>Pequeñas aventuras técnicas, frikis y personales que solo un nerd completaría sin recompensa.</p>
+    </div>
+    <div class="quest-board-meta">
+      <span class="font-pixel">{questMeta.length} optional quests found</span>
+      <span class="font-pixel" data-quest-progress>Inspected 1 / {questMeta.length}</span>
+    </div>
+  </header>
+
+  <div class="quest-arc-filters accordion-item" aria-label="Quest arc filters">
+    {questArcs.map((arc, i) => (
+      <button class={`quest-arc-filter ${i === 0 ? 'is-active' : ''}`} type="button" data-quest-arc={arc}>{arc}</button>
+    ))}
+  </div>
+
+  <div class="quest-board-grid accordion-item">
+    <div class="quest-list" aria-label="Quest list">
+      {questMeta.map((q, i) => (
+        <button
+          class={`quest-row ${i === 0 ? 'is-active is-inspected' : ''}`}
+          type="button"
+          data-quest-row={i}
+          data-quest-arc-name={q.arc}
+          data-quest-id={q.id}
+          aria-pressed={i === 0 ? 'true' : 'false'}
+        >
+          <span class="quest-row-number">{q.number}</span>
+          <span class="quest-row-main">
+            <strong>{q.quest}</strong>
+            <small>{q.sub}</small>
+          </span>
+          <span class="quest-row-meta">
+            <em>{q.type}</em>
+            <small>{q.status}</small>
+          </span>
+        </button>
+      ))}
+    </div>
+
+    <div class="quest-detail-panel" aria-live="polite">
+      {questMeta.map((q, i) => (
+        <article class={`quest-detail ${i === 0 ? 'is-active' : ''}`} data-quest-detail={i} data-quest-id={q.id}>
+          <div class="quest-detail-topline">
+            <span class="quest-accepted font-pixel">{q.relatedSection ? 'COMPANION QUEST DETECTED' : 'QUEST ACCEPTED'}</span>
+            <span class="quest-detail-count font-pixel">{q.number}/{questMeta.length}</span>
+          </div>
+          <h3>{q.quest}</h3>
+          <p class="quest-detail-subtitle">{q.sub}</p>
+          <div class="quest-detail-tags">
+            <span>{q.arc}</span>
+            <span>{q.type}</span>
+            <span>{q.status}</span>
+          </div>
+          <div class="quest-detail-text">
+            {q.text.split('\n\n').map((p) => <p>{p}</p>)}
+          </div>
+          <div class="quest-reward-grid">
+            <div>
+              <span class="font-pixel">Reward</span>
+              <strong>{q.reward}</strong>
+            </div>
+            <div>
+              <span class="font-pixel">Stat gain</span>
+              <strong>{q.statGain}</strong>
+            </div>
+          </div>
+          {q.relatedSection && (
+            <button class="quest-related-cta" type="button" data-open-related={q.relatedSection}>Continue in Rescue Log</button>
+          )}
+        </article>
+      ))}
+      <footer class="quest-board-controls">
+        <button class="quest-control" type="button" data-quest-prev>Previous</button>
+        <span class="quest-final-reward font-pixel" data-quest-final-reward hidden>Passive Trait Unlocked: Overclocked Curiosity</span>
+        <button class="quest-control" type="button" data-quest-next>Next Quest</button>
+      </footer>
+    </div>
+  </div>
+</div>

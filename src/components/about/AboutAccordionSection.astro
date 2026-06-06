@@ -1,0 +1,29 @@
+---
+import RpgIcon from './RpgIcon.astro';
+
+interface Props {
+  id: string;
+  accent: string;
+  icon: string;
+  number: string;
+  title: string;
+  badge: string;
+  className?: string;
+}
+
+const { id, accent, icon, number, title, badge, className = '' } = Astro.props;
+const panelId = `${id}-panel`;
+---
+
+<section id={id} class:list={['accordion-section', className]} data-accent={accent}>
+  <button class="accordion-trigger" type="button" aria-expanded="false" aria-controls={panelId}>
+    <span class="sec-icon"><RpgIcon icon={icon} /></span>
+    <span class="sec-num">{number}</span>
+    <span class="sec-title">{title}</span>
+    <span class="sec-badge">{badge}</span>
+    <span class="sec-indicator">▶</span>
+  </button>
+  <div id={panelId} class="accordion-panel">
+    <slot />
+  </div>
+</section>

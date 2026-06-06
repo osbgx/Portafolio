@@ -1,0 +1,108 @@
+export const bubbleMessages: Record<string, string> = {
+  memory: 'Checkpoints desbloqueados. El viaje empieza en un CRT.',
+  'memory-crt': 'Antes de los dashboards, hubo un CRT sospechosamente ruidoso.',
+  'memory-jaguarete': 'BUG ARCHIVED: Tail Hitbox Incident. Ese sí dejó lore.',
+  'memory-work': 'Origin Arc complete. La curiosidad ya tiene build profesional.',
+  'memory-complete': 'Passive Trait unlocked: curiosity-driven builder.',
+  'dev-lore': 'Lore cargado. Referencias, cicatrices y aprendizajes.',
+  quests: 'Side quests encontradas. La experiencia sube aunque no haya jefe final.',
+  'quest-board': 'Estas no salvaron el mundo, pero dejaron stats permanentes.',
+  'quest-companion': 'Companion quest detectada. Esto continúa en Rescue Log.',
+  'quest-complete': 'Quest complete. Recompensa simbólica adquirida.',
+  'quest-achievement': 'Completionist tendencies detected. Era inevitable.',
+  'quest-archive-complete': 'Side quest archive complete. Curiosidad overclockeada.',
+  bosses: 'Bestiario abierto. Algunos bosses siguen vivos.',
+  'boss-technical': 'Technical encounter loaded.',
+  'boss-life': 'Personal boss detected. Proceed with quiet mode.',
+  'boss-active': 'Active threat. Do not poke without coffee.',
+  'boss-allied': 'Plot twist: this one joined the party.',
+  rescue: 'Soft heart mode activated.',
+  'rescue-dex': 'Encounter data loaded.',
+  'rescue-failed-tame': 'Warning: cat hitbox unpredictable.',
+  'rescue-support': 'The guild appreciates any supplies.',
+  room: 'La room se ilumina. Hotspots detectados.',
+  hero: 'Curiosidad desbloqueada. Bienvenido al save file.',
+  'hero-expanded': 'Ahora sabés un poco más. La side quest sigue abierta.',
+  fast: 'Fast read activado. Ruta segura para humanos con poco tiempo.',
+  explore: 'Explore mode activo. Tocá objetos, abrí logs y buscá secretos.',
+  'rescue-open': 'Soft heart mode activated.',
+  'boss-open': 'No todos eran bugs. Algunos tenían barra de vida.',
+  'lore-drop': 'LORE DROP acquired. Completionist mode detected.',
+  'quiet-hours': 'Quiet Hours activado. La página hizo silencio.',
+  'bugged-cat': 'Gato Bugueado desbloqueado. No se puede desequipar.',
+  retro: 'Retro mode unlocked. Ahora sí parece una mala decisión estética correcta.',
+  why: 'Existential query detected. No hay respuesta final, pero hay cafecito y seguimos.',
+  marcopolo: '¡Marco Polo! Todos los objetos del cuarto han sido revelados.',
+  'room-complete': 'Room mapped. Ya conocés los objetos principales del cuarto.',
+  'map-complete': 'Full map discovered. Completionist mode officially confirmed.',
+  'save-point': 'Save point reached. New quest available.',
+};
+
+export const roomCopy: Record<string, { title: string; text: string }> = {
+  crt: { title: 'CRT inspeccionado', text: 'Memory Log desbloqueado. El viaje empieza en una pantalla vieja y muchas horas de curiosidad.' },
+  cat: { title: 'Cat companion', text: 'Rescue Log abierto. El tono baja, la luz cambia y la guild se vuelve más suave.' },
+  coffee: { title: 'Coffee note', text: 'El avatar guarda pensamientos sueltos para decirlos cuando nadie lo interrumpe.' },
+  laptop: { title: 'Laptop encendida', text: 'Side Quest Log actualizado. Proyectos, ideas y código que no esperaba encontrar.' },
+  boss: { title: 'Darth Vader detectado', text: 'Boss Log ampliado. No todos los villanos se quedan del otro lado.' },
+  work: { title: 'Work zone escaneada', text: 'Proyectos desbloqueados. El workspace redirige al portfolio de proyectos.' },
+  miku: { title: 'Miku apareció', text: 'Levan Polkka activado. Abriendo YouTube en una nueva pestaña.' },
+};
+
+export const hotspotReactionMap: Record<string, string> = {
+  crt: 'memory',
+  cat: 'rescue',
+  coffee: 'room',
+  laptop: 'quests',
+};
+
+export const hotspotToastMap: Record<string, string> = {
+  crt: 'CRT — Memory Log',
+  cat: 'Cat — Rescue Log',
+  coffee: 'Coffee — Thoughts',
+  laptop: 'Laptop — Quest Log',
+  boss: 'Vader — Boss Log',
+  work: 'Work Zone — Projects',
+  miku: 'Miku — Levan Polkka',
+};
+
+export const achievements: Record<string, [string, string]> = {
+  firstHotspot: ['Room object discovered', 'El cuarto respondió por primera vez.'],
+  firstSection: ['Section unlocked', 'Abriste el primer log del save file.'],
+  rescue: ['Soft tone unlocked', 'Rescue Log cambió la energía de la página.'],
+  firstCodex: ['Codex inspected', 'Una entrada de lore fue registrada.'],
+  loreDrop: ['Lore drop acquired', 'El archivo soltó una recompensa rara.'],
+  quiet: ['Quiet Hours activated', 'La habitación bajó el volumen.'],
+  cat: ['Gato Bugueado', 'No se puede desequipar.'],
+  retro: ['Retro Mode unlocked', 'Scanlines, mood y decisiones cuestionables.'],
+  why: ['Existential query detected', 'Apareció una pregunta debajo de la alfombra digital.'],
+  marcopolo: ['Marco Polo', 'Todos los hotspots revelados permanentemente.'],
+  roomComplete: ['Room mapped', 'Inspeccionaste todos los objetos principales.'],
+  mapComplete: ['Full map discovered', 'Todas las secciones principales fueron abiertas.'],
+  bossStarted: ['Boss Encounter Started', 'La arena cargó el primer encounter.'],
+  bossPattern: ['Achievement Unlocked: Pattern Recognition', 'Cinco bosses inspeccionados. Sobrevivir también es reconocer patrones.'],
+  bossComplete: ['Bestiary Complete', 'Todos los encounters quedaron archivados.'],
+  bossAlly: ['Unexpected Ally Registered', 'The Motivation Phoenix joined the party.'],
+  rescueGuild: ['Guild Status Loaded', 'La guild crecio demasiado. Otra vez.'],
+  rescueNote: ['Field Note Recovered', 'Un registro de campo fue abierto.'],
+  rescueCritical: ['Critical Hit Received', 'Cat hitbox unpredictable.'],
+  rescueSupport: ['Care Route Updated', 'La guild agradece cualquier supply.'],
+  avatarPet: ['Companion interaction', 'El avatar recibio headpats.'],
+};
+
+export const sectionNames: Record<string, string> = {
+  memory: 'MEMORY LOG',
+  'dev-lore': 'DEV LORE',
+  quests: 'SIDE QUEST LOG',
+  bosses: 'BOSS LOG',
+  rescue: 'RESCUE LOG',
+  room: 'PIXEL ROOM',
+};
+
+export const tourSteps: [string, string][] = [
+  ['memory', 'Tour 01/06: Memory Log. El origen del save file.'],
+  ['quests', 'Tour 02/06: Side quests. Stats raros, recompensas reales.'],
+  ['rescue', 'Tour 03/06: Rescue Log. Soft mode activado.'],
+  ['bosses', 'Tour 04/06: Boss Log. No todos los bugs eran técnicos.'],
+  ['dev-lore', 'Tour 05/06: Dev Lore. El archivo de referencias y cicatrices.'],
+  ['room', 'Tour 06/06: Pixel Room. Zoom, drag y objetos escondidos.'],
+];

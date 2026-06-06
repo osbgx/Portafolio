@@ -1,0 +1,101 @@
+---
+import type { MemoryLog } from '../../data/about-types';
+
+interface Props {
+  memoryLogs: MemoryLog[];
+}
+
+const { memoryLogs } = Astro.props;
+---
+
+<div class="memory-console" data-memory-console>
+  <header class="memory-console-header">
+    <span class="memory-console-kicker font-pixel">MEMORY LOG INITIALIZED</span>
+    <div>
+      <h2>Inicio de partida</h2>
+      <p>Antes de los datos, hubo un niño frente a un CRT.</p>
+    </div>
+    <p class="memory-console-status font-pixel">4 checkpoints recovered. Select a memory fragment.</p>
+  </header>
+
+  <div class="memory-gallery-shell">
+    <nav class="memory-console-nav" aria-label="Recovered memories">
+      {memoryLogs.map((cp, i) => (
+        <button
+          class={`memory-node ${i === 0 ? 'is-active is-recovered' : ''}`}
+          type="button"
+          data-memory-node={i}
+          data-memory-id={cp.id}
+          aria-pressed={i === 0 ? 'true' : 'false'}
+        >
+          <span class="memory-polaroid-frame">
+            <img src={cp.image} alt={`${cp.title} memory still`} loading="lazy" decoding="async" />
+          </span>
+          <span class="memory-node-copy">
+            <small>MEMORY #{String(i + 1).padStart(2, '0')}</small>
+            <strong>{cp.nav}</strong>
+            <em>Recovered</em>
+          </span>
+        </button>
+      ))}
+    </nav>
+
+    <div class="memory-console-screen" aria-live="polite">
+      {memoryLogs.map((cp, i) => (
+        <article class={`memory-entry ${i === 0 ? 'is-active' : ''}`} data-memory-entry={i} data-memory-id={cp.id}>
+          <div class="memory-screen-topline">
+            <span class="memory-tag">{cp.tag}</span>
+            <span class="memory-counter font-pixel">{String(i + 1).padStart(2, '0')}/04</span>
+          </div>
+          <h3>{cp.title}</h3>
+          <p class="memory-entry-subtitle">{cp.subtitle}</p>
+          <p class="memory-entry-summary">{cp.summary}</p>
+          <div class="memory-entry-text">
+            {cp.text.split('\n\n').map((paragraph) => <p>{paragraph}</p>)}
+          </div>
+
+          {'fragments' in cp && cp.fragments && (
+            <div class="memory-fragments" data-memory-fragments>
+              <p class="memory-fragments-label font-pixel">Recovered fragments</p>
+              <div class="memory-fragment-tabs" role="tablist" aria-label="Checkpoint 01 fragments">
+                {cp.fragments.map((fragment, fragmentIndex) => (
+                  <button
+                    class={`memory-fragment-tab ${fragmentIndex === 0 ? 'is-active' : ''}`}
+                    type="button"
+                    role="tab"
+                    data-memory-fragment={fragment.id}
+                    aria-selected={fragmentIndex === 0 ? 'true' : 'false'}
+                  >
+                    {fragment.title}
+                  </button>
+                ))}
+              </div>
+              <div class="memory-fragment-panels">
+                {cp.fragments.map((fragment, fragmentIndex) => (
+                  <section class={`memory-fragment-panel ${fragmentIndex === 0 ? 'is-active' : ''}`} data-memory-fragment-panel={fragment.id} role="tabpanel">
+                    <span class="memory-fragment-label font-pixel">{fragment.label}</span>
+                    <p>{fragment.text}</p>
+                  </section>
+                ))}
+              </div>
+            </div>
+          )}
+
+          <div class="memory-reward">
+            <span class="font-pixel">{i === 3 ? 'ORIGIN ARC COMPLETE' : 'Memory Fragment Recovered'}</span>
+            <strong>{cp.reward}</strong>
+          </div>
+          <figure class="memory-viewer-image">
+            <img src={cp.image} alt={`${cp.title} recovered memory`} loading="lazy" decoding="async" />
+          </figure>
+        </article>
+      ))}
+
+      <footer class="memory-console-controls">
+        <button class="memory-control" type="button" data-memory-prev>Previous</button>
+        <span class="memory-console-reward font-pixel" data-memory-final-reward hidden>Passive Trait Unlocked: Curiosity-driven builder</span>
+        <button class="memory-control" type="button" data-memory-next>Next Memory</button>
+      </footer>
+    </div>
+  </div>
+</div>

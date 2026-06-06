@@ -1,0 +1,24 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { withBase } from '../utils/paths';
+---
+
+<BaseLayout title="Página no encontrada" description="La página que buscas no existe.">
+  <section class="min-h-[60vh] flex items-center justify-center px-6">
+    <div class="text-center max-w-lg">
+      <div class="text-8xl font-bold text-white/10 select-none mb-6">404</div>
+      <h1 class="text-3xl font-bold text-white mb-4">Página no encontrada</h1>
+      <p class="text-white/50 text-lg leading-relaxed mb-8">
+        La página que buscas no existe, fue movida o el enlace está roto.
+      </p>
+      <div class="flex flex-wrap items-center justify-center gap-4">
+        <a href={withBase('/')} class="inline-flex items-center gap-2 bg-amber-500 text-carbon font-semibold px-6 py-3 rounded-xl hover:bg-amber-500/90 transition">
+          Volver al inicio
+        </a>
+        <a href={withBase('/projects')} class="inline-flex items-center gap-2 text-white/50 hover:text-white transition">
+          Ver proyectos
+        </a>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

@@ -1,0 +1,88 @@
+---
+import { Icon } from 'astro-icon/components';
+import { faqs } from '../../data/consulting';
+const faqId = `faq-${Math.random().toString(36).slice(2, 9)}`;
+---
+
+<div class="mt-16 max-w-3xl mx-auto">
+  <div class="divide-y divide-white/5 rounded-2xl border border-white/5 bg-white/[0.01]" id={faqId}>
+    {faqs.map((faq, i) => (
+      <div class="faq-item relative overflow-hidden" data-faq={faqId} style={`animation-delay:${i * 0.1}s`}>
+        <button
+          class="faq-trigger w-full flex items-center justify-between text-left gap-4 group relative z-10 px-6 md:px-8 py-5"
+          aria-expanded="false"
+          aria-controls={`faq-answer-${i}`}
+          id={`faq-trigger-${i}`}
+        >
+          <span class="text-base font-medium text-white/70 group-hover:text-white transition-colors pr-4">{faq.q}</span>
+          <span class="faq-icon-wrapper w-8 h-8 rounded-lg bg-white/[0.02] border border-white/5 flex items-center justify-center shrink-0 group-hover:border-hero/30 group-hover:bg-hero/10 transition duration-300">
+            <Icon name="heroicons:plus" size={14} class="text-white/50 group-hover:text-hero transition duration-300 faq-icon" />
+          </span>
+        </button>
+        <div id={`faq-answer-${i}`} class="faq-answer max-h-0 overflow-hidden transition duration-300 ease-in-out" role="region" aria-labelledby={`faq-trigger-${i}`}>
+          <div class="px-6 md:px-8 pb-6 pt-0">
+            <div class="h-px bg-gradient-to-r from-hero/30 via-hero/10 to-transparent mb-4"></div>
+            <div class="flex gap-4">
+              <div class="w-0.5 shrink-0 rounded-full bg-gradient-to-b from-hero/40 to-hero/5"></div>
+              <p class="text-sm text-white/50 leading-relaxed">{faq.a}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    ))}
+  </div>
+</div>
+
+<style>
+  .faq-item {
+    opacity: 0;
+    transform: translateY(12px);
+    animation: cardFadeIn 0.5s ease-out forwards;
+  }
+
+  .faq-item:first-child {
+    border-radius: 1rem 1rem 0 0;
+  }
+
+  .faq-item:last-child {
+    border-radius: 0 0 1rem 1rem;
+  }
+
+  .faq-item:only-child {
+    border-radius: 1rem;
+  }
+
+  .faq-item.open .faq-icon {
+    transform: rotate(45deg);
+  }
+
+</style>
+
+<script define:vars={{ faqId }}>
+  document.addEventListener('astro:page-load', () => {
+  document.querySelectorAll(`[data-faq="${faqId}"]`).forEach((item) => {
+    const btn = item.querySelector('.faq-trigger');
+    const answer = item.querySelector('.faq-answer');
+    const answerInner = answer?.querySelector('div');
+
+    if (!btn || !answer || !answerInner) return;
+
+    if (btn.dataset.faqListener) return;
+    btn.dataset.faqListener = '1';
+
+    btn.addEventListener('click', () => {
+      const isOpen = btn.getAttribute('aria-expanded') === 'true';
+
+      if (isOpen) {
+        btn.setAttribute('aria-expanded', 'false');
+        item.classList.remove('open');
+        answer.style.maxHeight = '0';
+      } else {
+        btn.setAttribute('aria-expanded', 'true');
+        item.classList.add('open');
+        answer.style.maxHeight = answerInner.scrollHeight + 48 + 'px';
+      }
+    });
+  });
+  });
+</script>

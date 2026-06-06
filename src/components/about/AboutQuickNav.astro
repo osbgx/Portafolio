@@ -1,0 +1,62 @@
+---
+import RpgIcon from './RpgIcon.astro';
+
+interface Props {
+  roomCount: number;
+  questCount: number;
+  bossCount: number;
+  rescueCount: number;
+  codexCount: number;
+}
+
+const { roomCount, questCount, bossCount, rescueCount, codexCount } = Astro.props;
+---
+
+<nav class="quick-nav" aria-label="Quick section navigation">
+  <div class="quick-nav-handle" aria-hidden="true">MENU</div>
+  <div class="quick-nav-panel" id="quick-nav-panel">
+    <span class="quick-nav-title font-pixel">ROOM MAP</span>
+    <button class="quick-tour-btn font-pixel" type="button" data-tour-start aria-pressed="false">START TOUR</button>
+    <button class="quick-tour-stop font-pixel" type="button" data-tour-stop hidden>STOP</button>
+    <button class="quick-mode-btn font-pixel" type="button" data-quiet-read aria-pressed="false">QUIET READ</button>
+    <a href="#memory" class="quick-nav-link" data-section="memory" title="Memory Log">
+      <span class="quick-nav-icon"><RpgIcon icon="ra-save" /></span>
+      <span class="quick-nav-label">MEMORY</span>
+    </a>
+    <a href="#quests" class="quick-nav-link" data-section="quests" title="Quest Log">
+      <span class="quick-nav-icon"><RpgIcon icon="ra-scroll-unfurled" /></span>
+      <span class="quick-nav-label">QUESTS</span>
+    </a>
+    <a href="#rescue" class="quick-nav-link" data-section="rescue" title="Rescue Log">
+      <span class="quick-nav-icon"><RpgIcon icon="ra-pawprint" /></span>
+      <span class="quick-nav-label">RESCUE</span>
+    </a>
+    <a href="#bosses" class="quick-nav-link" data-section="bosses" title="Boss Log">
+      <span class="quick-nav-icon"><RpgIcon icon="ra-monster-skull" /></span>
+      <span class="quick-nav-label">BOSSES</span>
+    </a>
+    <a href="#dev-lore" class="quick-nav-link" data-section="dev-lore" title="Dev Lore">
+      <span class="quick-nav-icon"><RpgIcon icon="ra-gears" /></span>
+      <span class="quick-nav-label">LORE</span>
+    </a>
+    <a href="#room" class="quick-nav-link" data-section="room" title="Pixel Room">
+      <span class="quick-nav-icon"><RpgIcon icon="ra-tower" /></span>
+      <span class="quick-nav-label">ROOM</span>
+    </a>
+    <aside class="discovery-tray" id="discovery-tray" aria-live="polite">
+      <button class="discovery-tray-toggle font-pixel" type="button" aria-expanded="true">DISCOVERIES</button>
+      <div class="discovery-tray-panel">
+        <div id="discovery-tray-list" class="discovery-tray-list">
+          <span>Room discovered: 0 / {roomCount}</span>
+          <span>Side quests read: 0 / {questCount}</span>
+          <span>Bosses encountered: 0 / {bossCount}</span>
+          <span>Rescue logs opened: 0 / {rescueCount}</span>
+          <span>Codex inspected: 0 / {codexCount}</span>
+          <span>Secrets found: 0 / ?</span>
+        </div>
+        <button class="discovery-reset font-pixel" id="discovery-reset" type="button">RESET SAVE</button>
+      </div>
+    </aside>
+  </div>
+</nav>
+<button class="mobile-map-toggle font-pixel" type="button" data-mobile-map-toggle aria-controls="quick-nav-panel" aria-expanded="false">MAP</button>

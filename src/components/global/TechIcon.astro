@@ -1,0 +1,13 @@
+---
+import { Icon } from 'astro-icon/components';
+
+interface Props {
+  name: string;
+  icon: string;
+  size?: number;
+}
+
+const { name, icon, size = 24 } = Astro.props;
+---
+
+<Icon name={icon} size={size} class="flex-shrink-0" aria-label={name} />

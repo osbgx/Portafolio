@@ -1,0 +1,13 @@
+---
+import BaseLayout from './BaseLayout.astro';
+const { title, description } = Astro.props;
+---
+
+<BaseLayout title={title} description={description} theme="about">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preload" href="https://fonts.googleapis.com/css2?family=DotGothic16&family=Handjet:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=Press+Start+2P&family=Silkscreen:wght@400;700&family=Tiny5&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/rpg-awesome@0.2.0/css/rpg-awesome.min.css">
+  <noscript><link href="https://fonts.googleapis.com/css2?family=DotGothic16&family=Handjet:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=Press+Start+2P&family=Silkscreen:wght@400;700&family=Tiny5&display=swap" rel="stylesheet"></noscript>
+  <slot />
+</BaseLayout>

@@ -1,0 +1,147 @@
+---
+import RpgIcon from './RpgIcon.astro';
+import type { StatItem, EquipmentItem, StatusEffectItem } from '../../data/about-types';
+
+interface Props {
+  stats: readonly StatItem[];
+  equipment: readonly EquipmentItem[];
+  statusEffects: readonly StatusEffectItem[];
+}
+
+const { stats, equipment, statusEffects } = Astro.props;
+const buffCount = statusEffects.filter(e => e.type === 'BUFF').length;
+const debuffCount = statusEffects.filter(e => e.type === 'DEBUFF').length;
+const otherCount = statusEffects.length - buffCount - debuffCount;
+---
+
+<section class="relative min-h-screen flex items-center overflow-hidden hero-panel" id="hero">
+  <div class="absolute inset-0" style="background:radial-gradient(ellipse at 50% 50%, rgba(200,170,120,0.04) 0%, transparent 60%)"></div>
+  <div class="absolute inset-0" style="background:radial-gradient(ellipse at 70% 20%, rgba(200,170,120,0.05) 0%, transparent 40%)"></div>
+
+  <div class="max-w-4xl mx-auto p-4 md:p-6 w-full relative z-10">
+    <div class="grid grid-cols-1 gap-4 md:gap-6 mb-4 md:mb-6">
+      <div class="pixel-panel profile-title hero-fade" style="animation-delay:0.16s">
+        <p class="hero-kicker mb-3">SAVE FILE #001 · AUTOBIOGRAPHY SLOT</p>
+        <h1 class="font-display text-[clamp(2.5rem,8vw,6rem)] text-[#f0c56a] leading-[1.06] mb-4" style="text-shadow:5px 5px 0 rgba(0,0,0,0.38);letter-spacing:-0.055em">PLAYER PROFILE</h1>
+        <p class="hero-copy max-w-3xl mb-4">
+          Hola, soy Osmar. No tengo un discurso épico preparado ni una versión corporativa de mí mismo para este espacio; para eso ya están las otras secciones de esta web. Este rincón es más personal: una especie de habitación digital donde guardo mis notas, mis rarezas y algunos bugs que todavía no decidí si corregir o dejar como feature.
+        </p>
+
+        <div class="hero-bio-collapse is-collapsed">
+          <div class="hero-bio-content">
+            <p class="hero-copy max-w-3xl mb-4">
+              Paso mis días entre código, juegos, anime y música de la que te deja mirando un zapato en la esquina de la habitación. A veces termino viendo videos absurdos a las 3 AM —como un <a href="https://www.youtube.com/shorts/WR2Wbh6Mmhc" target="_blank" rel="noopener noreferrer">robot peleando contra un cangrejo con Linkin Park de fondo</a>—. No sé si eso dice algo profundo sobre mí, pero definitivamente dice algo.
+            </p>
+
+            <p class="hero-copy max-w-3xl mb-4">
+              Me gustan los lugares tranquilos y las cosas que no piden energía social. Soy introvertido, sí, pero no un ermitaño: no vivo en una cueva (aunque a veces suene tentador). En lo profesional soy de esos jugadores que cumplen su rol en la party sin hacer ruido: escucho, colaboro y mantengo el flujo del equipo. Fuera del trabajo tengo mi propio “guild” de personas con las que comparto juegos, ideas y desastres técnicos que recordamos como si fueran side quests mal diseñadas.
+            </p>
+
+            <p class="hero-copy max-w-3xl mb-4">
+              En general intento mantener las cosas simples: construir, aprender, romper algo sin querer y volver a arreglarlo. Nada épico, pero suficiente para avanzar al siguiente nivel, a veces con un mapa y a veces trazando la ruta mientras camino, como en esos mundos abiertos que se disfrutan más cuando dejás de seguir la misión principal.
+            </p>
+
+            <p class="hero-copy text-amber-200/60 max-w-3xl">
+              Y bueno… esto es apenas el prólogo. Si seguís bajando, vas a encontrar capítulos, side quests, notas sueltas y algún que otro easter egg escondido entre líneas. No hay un camino marcado ni un orden correcto: explorás a tu ritmo, como en cualquier buen juego.
+            </p>
+          </div>
+          <button class="hero-bio-trigger font-pixel" type="button" aria-expanded="false">
+            <span class="hero-bio-trigger-icon">▶</span>
+            <span>LEER MÁS</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="pixel-panel hero-fade mb-4 md:mb-6 hero-dropdown hero-stats-panel is-collapsed" data-hero-stats style="animation-delay:0.2s">
+      <button class="hero-dropdown-trigger flex items-center gap-2 w-full border-b border-[#2a1a0a] pb-2 mb-4 cursor-pointer text-left" type="button" aria-expanded="false">
+        <span class="w-2 h-2 bg-amber-400 shrink-0"></span>
+        <span class="font-pixel text-[8px] text-white/50">STATS</span>
+        <span class="hero-dropdown-icon font-pixel text-[8px] text-white/20 ml-auto">▶</span>
+      </button>
+      <div class="hero-dropdown-content">
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+          {stats.map((s, i) => (
+            <div class="hero-stat-item" style={`animation-delay:${0.25 + i * 0.05}s`}>
+              <div class="flex justify-between items-start mb-0.5">
+                <div class="min-w-0">
+                  <span class="font-pixel text-[8px] md:text-[9px]" style={`color:${s.color}`}>
+                    <RpgIcon icon={s.icon} className="about-ra-inline" /> {s.label}
+                    <span class="text-white/30">— {s.full}</span>
+                  </span>
+                  {s.bonus && <p class="font-pixel text-[6px] md:text-[7px] text-white/25 leading-relaxed mt-0.5">{s.bonus}</p>}
+                </div>
+                <div class="hero-stat-readout shrink-0 ml-2 text-right">
+                  <span class="hero-stat-value font-pixel text-[8px] md:text-[9px] text-white/40 block">{s.val}</span>
+                  <span class="hero-stat-tier font-pixel" style={`--tier-color:${s.color}`}>{s.tier}</span>
+                </div>
+              </div>
+              <div class="pixel-bar-sm hero-stat-bar" aria-hidden="true">
+                <div class="pixel-bar-sm-fill" data-stat-fill style={`--stat-width:${s.w}%;background:${s.color}`}></div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6 mb-4 md:mb-6">
+      <div class="pixel-panel hero-fade md:col-span-2 hero-dropdown is-collapsed" style="animation-delay:0.35s">
+        <button class="hero-dropdown-trigger flex items-center gap-2 w-full border-b border-[#2a1a0a] pb-2 mb-4 cursor-pointer text-left" type="button" aria-expanded="false">
+          <span class="w-2 h-2 bg-emerald-400 shrink-0"></span>
+          <span class="font-pixel text-[8px] text-white/50">EQUIPMENT</span>
+          <span class="hero-dropdown-icon font-pixel text-[8px] text-white/20 ml-auto">▶</span>
+        </button>
+        <div class="hero-dropdown-content">
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+            {equipment.map((e) => (
+              <div class="pixel-item">
+                <RpgIcon icon={e.icon} className="equipment-ra-icon text-base shrink-0" />
+                <div class="flex-1 min-w-0">
+                  <p class={`font-pixel text-[8px] md:text-[9px] ${e.color}`}>{e.name}</p>
+                  <p class="font-pixel text-[6px] md:text-[7px] text-white/25">{e.stats}</p>
+                  <p class="font-pixel text-[5px] md:text-[6px] text-white/15 italic leading-relaxed">— {e.desc}</p>
+                </div>
+                <span class="font-pixel text-[6px] text-amber-500/50 shrink-0">EQUIPADO</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      <div class="pixel-panel hero-fade hero-dropdown is-collapsed" style="animation-delay:0.45s">
+        <button class="hero-dropdown-trigger flex items-center gap-2 w-full border-b border-[#2a1a0a] pb-2 mb-3 cursor-pointer text-left" type="button" aria-expanded="false">
+          <span class="w-2 h-2 bg-pink-400 shrink-0"></span>
+          <span class="font-pixel text-[8px] text-white/50">STATUS EFFECTS</span>
+          <span class="hero-dropdown-icon font-pixel text-[8px] text-white/20 ml-auto">▶</span>
+        </button>
+        <div class="hero-dropdown-content">
+          <div class="flex flex-col gap-2">
+            {statusEffects.map((e) => (
+              <div class="status-card" data-type={e.type}>
+                <div class="status-card-icon"><RpgIcon icon={e.icon} /></div>
+                <div class="flex-1 min-w-0">
+                  <div class="flex items-center gap-1.5 flex-wrap">
+                    <span class={`font-pixel-alt text-[8px] md:text-[9px] ${e.color}`}>{e.label}</span>
+                    <span class="status-type-badge" data-type={e.type}>{e.type}</span>
+                  </div>
+                  <p class="font-pixel-alt text-[7px] md:text-[8px] text-white/35 mt-0.5">{e.stats}</p>
+                  <p class="font-pixel-alt text-[6px] md:text-[7px] text-white/20 italic">— {e.desc}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <nav class="flex flex-nowrap justify-center gap-1 overflow-x-auto pb-1 hero-fade scrollbar-thin" style="animation-delay:0.55s;scrollbar-width:thin" aria-label="Navegación de la página">
+      <a href="#memory" class="nav-link pixel-btn font-pixel text-[5px] md:text-[6px] px-1.5 py-1.5 md:px-2 md:py-2 whitespace-nowrap" data-section="memory">01 MEMORY</a>
+      <a href="#quests" class="nav-link pixel-btn font-pixel text-[5px] md:text-[6px] px-1.5 py-1.5 md:px-2 md:py-2 whitespace-nowrap" data-section="quests">02 QUESTS</a>
+      <a href="#rescue" class="nav-link pixel-btn font-pixel text-[5px] md:text-[6px] px-1.5 py-1.5 md:px-2 md:py-2 whitespace-nowrap" data-section="rescue">03 RESCUE</a>
+      <a href="#bosses" class="nav-link pixel-btn font-pixel text-[5px] md:text-[6px] px-1.5 py-1.5 md:px-2 md:py-2 whitespace-nowrap" data-section="bosses">04 BOSSES</a>
+      <a href="#dev-lore" class="nav-link pixel-btn font-pixel text-[5px] md:text-[6px] px-1.5 py-1.5 md:px-2 md:py-2 whitespace-nowrap" data-section="dev-lore">05 LORE</a>
+      <a href="#room" class="nav-link pixel-btn font-pixel text-[5px] md:text-[6px] px-1.5 py-1.5 md:px-2 md:py-2 whitespace-nowrap" data-section="room">06 ROOM</a>
+    </nav>
+  </div>
+</section>

@@ -1,0 +1,16 @@
+node_modules/
+dist/
+.astro/
+.env
+.env.local
+.env.*.local
+*.log
+.DS_Store
+.vite/
+
+# Local AI/editor tooling and proposal scratchpads
+.agents/
+.opencode/
+openspec/
+SKILL.md
+skills-lock.json

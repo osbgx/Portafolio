@@ -1,0 +1,503 @@
+---
+import WebLayout from '../layouts/WebLayout.astro';
+import ProjectCard from '../components/global/ProjectCard.astro';
+import { Icon } from 'astro-icon/components';
+import { getCollection, type CollectionEntry } from 'astro:content';
+import { withBase } from '../utils/paths';
+import { iconColors, specialties, workflow, toolkitGroups } from '../data/web';
+import '../styles/web.css';
+
+const allProjects = (await getCollection('projects')).map((p: CollectionEntry<'projects'>) => ({ ...p.data, id: p.slug }));
+const webProjects = allProjects.filter((p: { pages?: string[] }) => (p.pages ?? []).includes('web'));
+const sortedWebProjects = [...webProjects].sort((a: { date: Date }, b: { date: Date }) => new Date(b.date).getTime() - new Date(a.date).getTime());
+const latestWebProject = sortedWebProjects[0];
+const secondaryWebProjects = allProjects
+  .filter((p: { featuredIn?: string[] }) => (p.featuredIn ?? []).includes('web'))
+  .filter((p: { id: string }) => p.id !== latestWebProject?.id)
+  .sort((a: { date: Date }, b: { date: Date }) => new Date(b.date).getTime() - new Date(a.date).getTime());
+
+const codeSnippet = `<span class="text-white/20">1 </span><span class="text-purple-light">import</span><span class="text-white/50"> </span><span class="text-hylian/80">Motion</span><span class="text-white/50"> </span><span class="text-purple-light">from</span><span class="text-white/50"> </span><span class="text-amber-300/70">'framer-motion'</span><span class="text-white/20">;</span>
+<span class="text-white/20">2 </span><span class="text-purple-light">import</span><span class="text-white/50"> </span><span class="text-hylian/80">{ Hero }</span><span class="text-white/50"> </span><span class="text-purple-light">from</span><span class="text-white/50"> </span><span class="text-amber-300/70">'@/components'</span><span class="text-white/20">;</span>
+<span class="text-white/20">3 </span>
+<span class="text-white/20">4 </span><span class="text-purple-light">const</span><span class="text-white/50"> </span><span class="text-hylian/80">features</span><span class="text-white/50"> = [</span>
+<span class="text-white/20">5 </span><span class="text-white/50">  { </span><span class="text-purple-light">title</span><span class="text-white/50">: </span><span class="text-amber-300/70">'Rápido'</span><span class="text-white/50">, </span><span class="text-purple-light">icon</span><span class="text-white/50">: </span><span class="text-amber-300/70">'⚡'</span><span class="text-white/50"> },</span>
+<span class="text-white/20">6 </span><span class="text-white/50">  { </span><span class="text-purple-light">title</span><span class="text-white/50">: </span><span class="text-amber-300/70">'Responsive'</span><span class="text-white/50">, </span><span class="text-purple-light">icon</span><span class="text-white/50">: </span><span class="text-amber-300/70">'📱'</span><span class="text-white/50"> },</span>
+<span class="text-white/20">7 </span><span class="text-white/50">  { </span><span class="text-purple-light">title</span><span class="text-white/50">: </span><span class="text-amber-300/70">'Moderno'</span><span class="text-white/50">, </span><span class="text-purple-light">icon</span><span class="text-white/50">: </span><span class="text-amber-300/70">'✨'</span><span class="text-white/50"> },</span>
+<span class="text-white/20">8 </span><span class="text-white/50">];</span>
+<span class="text-white/20">9 </span>
+<span class="text-white/20">10 </span><span class="text-purple-light">export</span><span class="text-white/50"> </span><span class="text-purple-light">default</span><span class="text-white/50"> </span><span class="text-hylian/80">function</span><span class="text-white/50"> </span><span class="text-hylian">Page</span><span class="text-white/50">() {</span>
+<span class="text-white/20">11 </span><span class="text-white/50">  </span><span class="text-purple-light">return</span><span class="text-white/50"> </span><span class="text-hylian/80">{'<'}Hero</span><span class="text-white/50"> </span><span class="text-purple-light">data</span><span class="text-white/50">=</span><span class="text-hylian/80">{'{'}features{'}'}</span><span class="text-hylian/80"> {'/'}{'>'}</span><span class="text-white/20">;</span>
+<span class="text-white/20">12 </span><span class="text-white/50">}</span>`;
+---
+
+<WebLayout title="Desarrollo Web" description="Interfaces modernas, rápidas y con personalidad">
+  <section class="min-h-[90vh] relative overflow-hidden flex items-center bg-web-bg">
+    <div class="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-hylian/20 to-transparent"></div>
+
+    <div class="container-section pt-16 pb-24 w-full">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+        <div class="space-y-8">
+          <div class="inline-flex items-center gap-0 rounded-full bg-gradient-to-r from-hylian/10 to-pink-500/10 border border-hylian/20 text-sm">
+            <span class="inline-flex items-center gap-1.5 px-3 py-1.5 text-hylian">
+              <Icon name="heroicons:code-bracket" size={14} />
+              Frontend
+            </span>
+            <span class="w-px h-4 bg-hylian/20"></span>
+            <span class="inline-flex items-center gap-1.5 px-3 py-1.5 text-pink-400">
+              <Icon name="heroicons:paint-brush" size={14} />
+              UX
+            </span>
+          </div>
+          <h1 class="text-5xl md:text-6xl lg:text-7xl font-bold leading-[1.05] tracking-tight">
+            <span class="text-white">Creo</span>
+            <span class="bg-gradient-to-r from-hylian via-cyan-400 to-pink-400 bg-clip-text text-transparent"> experiencias web</span>
+            <span class="text-white"> únicas</span>
+          </h1>
+          <p class="text-lg md:text-xl text-white/50 max-w-xl leading-relaxed">
+            Funcionan, se ven bien y se sienten vivas. Todo lo que necesitás para tener presencia web con personalidad.
+          </p>
+          <div class="flex flex-wrap gap-4">
+            <a href="#proyectos" class="group inline-flex items-center gap-2 bg-gradient-to-r from-hylian to-cyan-500 text-carbon font-semibold px-7 py-3 rounded-xl hover:shadow-lg hover:shadow-hylian/20 hover:scale-[1.02] active:scale-[0.98] transition" data-umami-event="web_hero_projects_cta">
+              <span>Ver proyectos</span>
+              <Icon name="heroicons:arrow-right" size={16} class="group-hover:translate-x-1 transition-transform" />
+            </a>
+            <a href="#especialidades" class="inline-flex items-center gap-2 border border-white/15 text-white/50 px-7 py-3 rounded-xl hover:border-hylian/40 hover:text-hylian transition" data-umami-event="web_hero_specialties_cta">
+              <Icon name="heroicons:sparkles" size={16} />
+              Especialidades
+            </a>
+          </div>
+        </div>
+
+        <div class="hidden lg:flex flex-col gap-4">
+          <div class="editor-window w-full">
+            <div class="editor-titlebar">
+              <div class="flex items-center gap-1.5">
+                <span class="editor-dot bg-red-400/80"></span>
+                <span class="editor-dot bg-yellow-400/80"></span>
+                <span class="editor-dot bg-green-400/80"></span>
+              </div>
+              <span class="text-xs text-white/30 font-mono">Page.astro</span>
+              <div class="flex items-center gap-2">
+                <span class="text-[10px] text-white/20 font-mono">UTF-8</span>
+                <span class="text-[10px] text-white/20 font-mono">TypeScript</span>
+              </div>
+            </div>
+            <div class="flex">
+              <div class="editor-sidebar">
+                <div class="flex flex-col items-center gap-3 pt-4 pb-4">
+                  <Icon name="heroicons:folder" size={16} class="text-hylian/60" />
+                  <Icon name="heroicons:code-bracket" size={16} class="text-white/30" />
+                  <Icon name="heroicons:magnifying-glass" size={16} class="text-white/20" />
+                  <Icon name="heroicons:command-line" size={16} class="text-white/20" />
+                  <div class="w-4 h-px bg-white/5 my-1"></div>
+                  <Icon name="heroicons:cog-6-tooth" size={16} class="text-white/20" />
+                </div>
+              </div>
+              <div class="editor-content">
+                <pre class="text-xs leading-relaxed font-mono"><Fragment set:html={codeSnippet} /></pre>
+              </div>
+            </div>
+            <div class="editor-statusbar">
+              <span class="flex items-center gap-1"><span class="w-1.5 h-1.5 rounded-full bg-hylian"></span>Ready</span>
+              <span>Ln 12, Col 24</span>
+            </div>
+          </div>
+          <div class="preview-window">
+            <div class="px-4 py-2 border-b border-white/5 flex items-center gap-2">
+              <Icon name="heroicons:lock-closed" size={10} class="text-white/20" />
+              <span class="text-[10px] text-white/20 font-mono flex-1">osbgx.dev</span>
+              <div class="flex items-center gap-2">
+                <span class="w-2 h-2 rounded-full bg-hylian/40"></span>
+                <span class="w-2 h-2 rounded-full bg-cyan-400/40"></span>
+                <span class="w-2 h-2 rounded-full bg-pink-400/40"></span>
+              </div>
+            </div>
+            <div class="p-6 flex items-center justify-center min-h-[120px] bg-gradient-to-br from-hylian/[0.02] via-transparent to-pink-500/[0.02]">
+              <div class="flex items-center gap-6">
+                <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-hylian/20 to-cyan-400/20 border border-hylian/30 flex items-center justify-center">
+                  <Icon name="heroicons:bolt" size={20} class="text-hylian" />
+                </div>
+                <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-cyan-400/20 to-blue-500/20 border border-cyan-400/30 flex items-center justify-center">
+                  <Icon name="heroicons:device-phone-mobile" size={20} class="text-cyan-300" />
+                </div>
+                <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-pink-400/20 to-rose-400/20 border border-pink-400/30 flex items-center justify-center">
+                  <Icon name="heroicons:sparkles" size={20} class="text-pink-300" />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+    <section id="proyectos" class="py-24 md:py-32 bg-web-bg relative overflow-hidden">
+    <div class="absolute inset-0 bg-gradient-to-b from-cyan-500/[0.01] via-transparent to-hylian/[0.01] pointer-events-none"></div>
+    <div class="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-hylian/20 to-transparent"></div>
+    <div class="container-section">
+      <div class="flex flex-col md:flex-row md:items-end md:justify-between gap-6">
+        <div>
+          <h2 class="text-xs text-hylian/60 font-mono tracking-[0.25em] uppercase mb-4">Proyectos</h2>
+          <h3 class="text-3xl md:text-4xl font-bold text-white">
+            Trabajo <span class="bg-gradient-to-r from-hylian to-pink-400 bg-clip-text text-transparent">en acción</span>
+          </h3>
+          <p class="text-white/50 mt-3 max-w-lg">Proyectos web que he construido recientemente.</p>
+        </div>
+        <a href={withBase('/projects')} class="text-sm text-white/50 hover:text-white transition-colors flex items-center gap-1 shrink-0" data-umami-event="web_projects_header_view_all">
+          Ver todos <Icon name="heroicons:arrow-right" size={12} />
+        </a>
+      </div>
+
+      {latestWebProject && (
+        <div class="mt-12 space-y-6">
+          <a href={withBase(`/projects/${latestWebProject.id}`)} class="featured-card group block p-8 rounded-2xl bg-white/[0.02] border border-white/5 hover:border-hylian/20 transition relative overflow-hidden" data-umami-event="web_latest_project_click" data-umami-event-project={latestWebProject.id}>
+            <div class="absolute inset-0 bg-gradient-to-br from-hylian/[0.03] to-transparent opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none"></div>
+            <div class="relative z-10 flex flex-col md:flex-row gap-8 items-start">
+              <div class="w-full md:w-1/2 aspect-video rounded-xl bg-white/[0.03] border border-white/5 flex items-center justify-center overflow-hidden">
+                {latestWebProject.images?.[0] ? (
+                  latestWebProject.images[0].src ? (
+                    <img src={withBase(latestWebProject.images[0].src)} alt={latestWebProject.images[0].label} class="h-full w-full object-cover" />
+                  ) : (
+                    <div class="text-center">
+                      <div class="w-14 h-14 mx-auto rounded-xl flex items-center justify-center" style={`background: ${latestWebProject.images[0].color}15; border: 1px solid ${latestWebProject.images[0].color}20`}>
+                        <Icon name="heroicons:photo" class="w-7 h-7" style={`color: ${latestWebProject.images[0].color}`} />
+                      </div>
+                      <p class="text-xs text-white/50 mt-2 font-medium">{latestWebProject.images[0].label}</p>
+                    </div>
+                  )
+                ) : (
+                  <Icon name="heroicons:command-line" class="w-10 h-10 text-white/10" />
+                )}
+              </div>
+              <div class="w-full md:w-1/2">
+                <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-hylian/10 border border-hylian/20 text-xs text-hylian mb-4">
+                  <span class="w-1.5 h-1.5 rounded-full bg-hylian"></span>
+                  Proyecto destacado
+                </div>
+                <span class="text-xs font-semibold tracking-widest text-cyan-400/60 uppercase">{latestWebProject.category}</span>
+                {latestWebProject.client && <p class="text-xs text-white/40 mt-1">{latestWebProject.client}</p>}
+                <h3 class="text-2xl font-bold text-white group-hover:text-hylian transition-colors mt-2 mb-3">{latestWebProject.title}</h3>
+                <p class="text-white/50 text-sm leading-relaxed">{latestWebProject.description}</p>
+                <div class="flex flex-wrap gap-2 mt-5">
+                  {(latestWebProject.tags ?? []).slice(0, 4).map((tag: string) => (
+                    <span class="text-[11px] text-white/50 bg-white/5 border border-white/5 px-2.5 py-1 rounded-full whitespace-nowrap">{tag}</span>
+                  ))}
+                  {(latestWebProject.tags ?? []).length > 4 && (
+                    <span class="text-[11px] text-white/50 px-2.5 py-1">+{(latestWebProject.tags ?? []).length - 4}</span>
+                  )}
+                </div>
+                <div class="flex items-center gap-2 mt-6 text-sm text-hylian group-hover:gap-3 transition-all">
+                  <span>Ver proyecto</span>
+                  <Icon name="heroicons:arrow-right" class="w-4 h-4" />
+                </div>
+              </div>
+            </div>
+          </a>
+          {secondaryWebProjects.length > 0 && (
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+              {secondaryWebProjects.map((p: any) => <ProjectCard project={p} accent="hylian" />)}
+            </div>
+          )}
+          {sortedWebProjects.length > 1 + secondaryWebProjects.length && (
+            <div class="text-center mt-6">
+              <a href={withBase('/projects')} class="inline-flex items-center gap-2 border border-white/15 text-white/60 px-7 py-3 rounded-xl text-sm hover:border-hylian/40 hover:text-hylian transition" data-umami-event="web_view_more_projects">
+                Ver más proyectos
+                <Icon name="heroicons:arrow-right" size={16} />
+              </a>
+            </div>
+          )}
+        </div>
+      )}
+      {!latestWebProject && (
+        <div class="flex flex-col items-center justify-center mt-16 py-20 border border-white/5 rounded-2xl bg-white/[0.01]">
+          <div class="w-16 h-16 rounded-2xl bg-white/[0.03] border border-white/5 flex items-center justify-center mb-5">
+            <Icon name="heroicons:command-line" size={32} class="text-white/10" />
+          </div>
+          <p class="text-white/30 text-sm">Próximamente proyectos web</p>
+          <p class="text-white/15 text-xs mt-1">Estoy trabajando en algo nuevo ✨</p>
+        </div>
+      )}
+      <div class="flex items-center justify-between mt-12 pt-6 border-t border-hylian/10">
+        <p class="text-sm text-white/30 font-mono">¿Tenés un proyecto web en mente?</p>
+        <a href={withBase('/contact')} class="text-sm text-hylian/70 hover:text-hylian transition-colors inline-flex items-center gap-1.5 group" data-umami-event="web_projects_contact_cta">
+          hablemos
+          <Icon name="heroicons:arrow-right" class="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <section id="especialidades" class="py-24 md:py-32 bg-web-bg relative overflow-hidden">
+    <div class="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-cyan-400/20 to-transparent"></div>
+    <div class="container-section">
+      <div class="max-w-2xl">
+        <p class="text-xs text-cyan-400/60 font-mono tracking-[0.25em] uppercase mb-4">Especialidades</p>
+        <h2 class="text-3xl md:text-4xl font-bold text-white">
+          Lo que <span class="bg-gradient-to-r from-hylian to-cyan-400 bg-clip-text text-transparent">construyo</span>
+        </h2>
+        <p class="text-white/50 mt-3 max-w-lg">Cada proyecto es diferente, pero estas son mis áreas de enfoque.</p>
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-5 mt-12">
+        {specialties.map((s) => (
+          <div class={`specialty-card group p-6 rounded-2xl bg-gradient-to-br ${s.gradient} border border-white/5 hover:border-white/10 transition duration-500`} style={`--card-glow: ${s.glow};`}>
+            <div class="mb-5">
+              <h4 class="text-lg font-semibold text-white transition-colors">{s.title}</h4>
+              <p class="text-sm text-white/50 mt-0.5">{s.desc}</p>
+            </div>
+
+            {s.icons && (
+              <div class="flex items-center gap-2 mb-4">
+                {s.icons.map((icon) => (
+                  <div class="w-8 h-8 rounded-lg bg-white/[0.04] border border-white/5 flex items-center justify-center group-hover:bg-white/[0.08] group-hover:border-white/10 transition duration-300">
+                    <Icon name={icon} size={16} class={`${iconColors[icon] || 'text-white/50'} transition duration-300`} />
+                  </div>
+                ))}
+              </div>
+            )}
+
+            {s.preview === 'hero' && (
+              <div class="rounded-xl bg-white/[0.03] p-4 space-y-2.5 border border-white/5">
+                <div class="flex items-center justify-between">
+                  <div class="flex gap-1">
+                    <span class="w-1.5 h-1.5 rounded-full bg-red-400/50"></span>
+                    <span class="w-1.5 h-1.5 rounded-full bg-yellow-400/50"></span>
+                    <span class="w-1.5 h-1.5 rounded-full bg-green-400/50"></span>
+                  </div>
+                  <div class="flex gap-3">
+                    <span class="text-[7px] text-white/30 font-medium">Inicio</span>
+                    <span class="text-[7px] text-white/20">Servicios</span>
+                    <span class="text-[7px] text-white/20">Contacto</span>
+                  </div>
+                </div>
+                <div class="h-2.5 w-3/4 rounded-sm bg-white/10"></div>
+                <div class="h-2 w-1/2 rounded-sm bg-white/5"></div>
+                <div class="h-4 w-1/3 rounded-md bg-gradient-to-r from-hylian/40 to-cyan-400/40"></div>
+              </div>
+            )}
+
+            {s.preview === 'chart' && (
+              <div class="rounded-xl bg-white/[0.03] p-4 border border-white/5">
+                <div class="flex items-end gap-2 h-20">
+                  <div class="flex-1 bg-gradient-to-t from-cyan-500/30 to-cyan-400/50 rounded-t-sm" style="height: 45%"></div>
+                  <div class="flex-1 bg-gradient-to-t from-hylian/30 to-hylian/50 rounded-t-sm" style="height: 75%"></div>
+                  <div class="flex-1 bg-gradient-to-t from-cyan-500/30 to-cyan-400/50 rounded-t-sm" style="height: 55%"></div>
+                  <div class="flex-1 bg-gradient-to-t from-pink-400/30 to-pink-400/50 rounded-t-sm" style="height: 90%"></div>
+                  <div class="flex-1 bg-gradient-to-t from-hylian/30 to-hylian/50 rounded-t-sm" style="height: 60%"></div>
+                  <div class="flex-1 bg-gradient-to-t from-cyan-500/30 to-cyan-400/50 rounded-t-sm" style="height: 70%"></div>
+                </div>
+                <div class="flex gap-2 mt-1.5">
+                  {['L', 'M', 'M', 'J', 'V', 'S'].map((d) => (
+                    <span class="text-[6px] text-white/20 flex-1 text-center font-mono">{d}</span>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {s.preview === 'nodes' && (
+              <div class="rounded-xl bg-white/[0.03] p-4 border border-white/5">
+                <svg viewBox="0 0 200 60" class="w-full h-14">
+                  <line x1="20" y1="30" x2="70" y2="30" stroke="rgba(251,146,60,0.3)" stroke-width="1.5" stroke-dasharray="3 2"/>
+                  <line x1="70" y1="30" x2="130" y2="30" stroke="rgba(251,146,60,0.3)" stroke-width="1.5" stroke-dasharray="3 2"/>
+                  <line x1="130" y1="30" x2="180" y2="30" stroke="rgba(251,146,60,0.3)" stroke-width="1.5" stroke-dasharray="3 2"/>
+                  <circle cx="20" cy="30" r="6" fill="rgba(251,146,60,0.2)" stroke="rgba(251,146,60,0.5)" stroke-width="1.5"/>
+                  <circle cx="70" cy="30" r="4" fill="rgba(251,146,60,0.3)" stroke="rgba(251,146,60,0.5)" stroke-width="1"/>
+                  <circle cx="130" cy="30" r="4" fill="rgba(251,146,60,0.3)" stroke="rgba(251,146,60,0.5)" stroke-width="1"/>
+                  <circle cx="180" cy="30" r="5" fill="rgba(251,146,60,0.2)" stroke="rgba(251,146,60,0.5)" stroke-width="1.5"/>
+                  <text x="20" y="46" text-anchor="middle" fill="rgba(255,255,255,0.2)" font-size="5" font-family="monospace">API</text>
+                  <text x="70" y="46" text-anchor="middle" fill="rgba(255,255,255,0.15)" font-size="5" font-family="monospace">Auth</text>
+                  <text x="130" y="46" text-anchor="middle" fill="rgba(255,255,255,0.15)" font-size="5" font-family="monospace">DB</text>
+                  <text x="180" y="46" text-anchor="middle" fill="rgba(255,255,255,0.2)" font-size="5" font-family="monospace">UI</text>
+                </svg>
+              </div>
+            )}
+
+            {s.preview === 'layers' && (
+              <div class="rounded-xl bg-white/[0.03] p-4 border border-white/5 relative min-h-[80px]">
+                <div class="w-3/4 h-3 rounded bg-white/10 mb-2"></div>
+                <div class="w-1/2 h-2 rounded bg-white/5 mb-3"></div>
+                <div class="flex items-center justify-center gap-3">
+                  <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-pink-400/20 to-rose-400/20 border border-pink-400/30 flex items-center justify-center">
+                    <Icon name="heroicons:heart" size={14} class="text-pink-300/60" />
+                  </div>
+                  <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-cyan-400/20 to-blue-400/20 border border-cyan-400/30 flex items-center justify-center">
+                    <Icon name="heroicons:chat-bubble-left" size={14} class="text-cyan-300/60" />
+                  </div>
+                  <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-hylian/20 to-emerald-400/20 border border-hylian/30 flex items-center justify-center">
+                    <Icon name="heroicons:share" size={14} class="text-hylian/60" />
+                  </div>
+                </div>
+                <div class="flex gap-2 mt-3">
+                  <div class="h-1.5 flex-1 rounded-full bg-white/5"></div>
+                  <div class="h-1.5 flex-1 rounded-full bg-pink-500/30"></div>
+                  <div class="h-1.5 flex-1 rounded-full bg-white/5"></div>
+                </div>
+              </div>
+            )}
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section id="toolkit" class="py-24 md:py-32 bg-web-bg-alt relative overflow-hidden">
+    <div class="absolute inset-0 bg-gradient-to-b from-pink-500/[0.01] via-transparent to-cyan-500/[0.01] pointer-events-none"></div>
+    <div class="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-pink-400/20 to-transparent"></div>
+    <div class="container-section">
+      <div class="flex flex-col md:flex-row md:items-end md:justify-between gap-6">
+        <div>
+          <p class="text-xs text-pink-400/60 font-mono tracking-[0.25em] uppercase mb-4">Toolkit</p>
+          <h2 class="text-3xl md:text-4xl font-bold text-white">
+            Stack <span class="bg-gradient-to-r from-pink-400 to-cyan-400 bg-clip-text text-transparent">principal</span>
+          </h2>
+          <p class="text-white/50 mt-3 max-w-lg">Tecnologías con las que trabajo día a día.</p>
+        </div>
+      </div>
+      <div class="space-y-8 mt-12">
+        {toolkitGroups.map((group) => (
+          <div>
+            <h4 class="text-xs text-white/50 font-mono tracking-[0.2em] uppercase mb-4">{group.name}</h4>
+            <div class="flex flex-wrap gap-2.5">
+              {group.items.map((t) => (
+                <div class="group relative">
+                  <div class="px-3.5 py-2 rounded-xl bg-white/[0.04] border border-white/10 hover:border-transparent transition duration-300 hover:scale-105 hover:shadow-lg cursor-default flex items-center gap-2 relative overflow-hidden">
+                    <div class={`absolute inset-0 bg-gradient-to-r ${t.color} opacity-0 group-hover:opacity-15 transition-opacity duration-300`}></div>
+                    <div class={`absolute inset-0 bg-gradient-to-r ${t.color} opacity-5 transition-opacity duration-300`}></div>
+                    <Icon name={t.icon} size={16} class={iconColors[t.icon] || 'text-white/50'} />
+                    <span class="text-sm font-medium text-white">{t.name}</span>
+                  </div>
+                  <div class={`absolute -bottom-1 left-3 right-3 h-0.5 rounded-full bg-gradient-to-r ${t.color} scale-x-0 group-hover:scale-x-100 transition-transform duration-300`}></div>
+                </div>
+              ))}
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="py-24 md:py-32 bg-web-bg-alt relative overflow-hidden">
+    <div class="absolute inset-0 pointer-events-none overflow-hidden">
+      <div class="absolute top-1/4 -left-20 w-72 h-72 rounded-full bg-cyan-400/[0.03] blur-[100px] animate-blob-drift"></div>
+      <div class="absolute top-1/3 right-0 w-80 h-80 rounded-full bg-hylian/[0.02] blur-[100px] animate-blob-drift" style="animation-delay: 2s"></div>
+      <div class="absolute -bottom-10 left-1/3 w-96 h-96 rounded-full bg-pink-500/[0.02] blur-[120px] animate-blob-drift" style="animation-delay: 4s"></div>
+    </div>
+    <div class="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-cyan-400/20 to-transparent"></div>
+    <div class="container-section">
+      <div class="max-w-2xl">
+        <h2 class="text-xs text-cyan-400/60 font-mono tracking-[0.25em] uppercase mb-4">Workflow</h2>
+        <h3 class="text-3xl md:text-4xl font-bold text-white">
+          Pipeline de <span class="bg-gradient-to-r from-cyan-400 to-hylian bg-clip-text text-transparent">desarrollo</span>
+        </h3>
+        <p class="text-white/50 mt-3">De la idea a producción, paso a paso.</p>
+      </div>
+
+      <!-- Desktop: fluid overlapping nodes -->
+      <div class="hidden md:grid grid-cols-4 gap-4 mt-16">
+        {workflow.map((w, i) => {
+          const yOffset = ['mt-0', 'mt-10', 'mt-6', 'mt-0'][i];
+          const shapes = [
+            '50%_60%_40%_50%_/_40%_50%_60%_50%',
+            '40%_50%_50%_60%_/_50%_40%_50%_60%',
+            '60%_40%_50%_50%_/_40%_60%_40%_60%',
+            '50%_40%_60%_50%_/_60%_50%_40%_50%',
+          ];
+          const borderColors = [
+            'border-cyan-400/40 hover:border-cyan-400/60',
+            'border-hylian/40 hover:border-hylian/60',
+            'border-emerald-400/40 hover:border-emerald-400/60',
+            'border-pink-400/40 hover:border-pink-400/60',
+          ];
+          const gradients = [
+            'from-cyan-400/20 via-purple-500/10 to-cyan-500/5',
+            'from-hylian/20 via-cyan-400/10 to-purple-500/5',
+            'from-emerald-400/20 via-hylian/10 to-cyan-400/5',
+            'from-pink-400/20 via-rose-400/10 to-purple-500/5',
+          ];
+          const stepGrads = [
+            'from-cyan-400 to-purple-400',
+            'from-hylian to-cyan-400',
+            'from-emerald-400 to-hylian',
+            'from-pink-400 to-rose-300',
+          ];
+          const stepColors = ['text-cyan-300', 'text-hylian', 'text-emerald-300', 'text-pink-300'];
+          const glowColors = [
+            'rgba(6,182,212,0.15)',
+            'rgba(63,175,108,0.15)',
+            'rgba(52,211,153,0.15)',
+            'rgba(244,114,182,0.15)',
+          ];
+          return (
+            <div class={`${yOffset} relative group`} style="z-index: 1;">
+              <!-- Gradient bleed that overlaps toward next card -->
+              {i < workflow.length - 1 && (
+                <div class="hidden md:block absolute -right-6 top-1/3 w-12 h-3/4 bg-gradient-to-r from-transparent transition-opacity duration-500 opacity-60 group-hover:opacity-100 pointer-events-none" style={`background: linear-gradient(90deg, transparent, ${glowColors[i]}); filter: blur(8px);`}></div>
+              )}
+
+              <div class={`relative p-5 bg-gradient-to-br ${gradients[i]} border ${borderColors[i]} transition duration-500 group-hover:scale-[1.04] group-hover:shadow-xl`} style={`border-radius: ${shapes[i]};`}>
+                <div class={`w-10 h-10 rounded-full bg-gradient-to-br ${stepGrads[i]} flex items-center justify-center mb-3 transition duration-500 group-hover:scale-110 group-hover:rotate-[8deg] shadow-lg`}>
+                  <span class="text-sm font-bold text-white">{w.step}</span>
+                </div>
+                <div class="w-9 h-9 rounded-lg bg-white/[0.06] border border-white/5 flex items-center justify-center mb-3 group-hover:scale-110 group-hover:bg-white/[0.1] transition duration-500">
+                  <Icon name={w.icon} size={16} class={stepColors[i]} />
+                </div>
+                <h4 class="text-sm font-semibold text-white">{w.label}</h4>
+                <p class="text-xs text-white/35 mt-1 leading-relaxed">{w.desc}</p>
+              </div>
+            </div>
+          );
+        })}
+      </div>
+
+      <!-- Mobile: stacked -->
+      <div class="md:hidden mt-12 space-y-6">
+        {workflow.map((w, i) => {
+          const shapes = [
+            '50%_60%_40%_50%_/_40%_50%_60%_50%',
+            '40%_50%_50%_60%_/_50%_40%_50%_60%',
+            '60%_40%_50%_50%_/_40%_60%_40%_60%',
+            '50%_40%_60%_50%_/_60%_50%_40%_50%',
+          ];
+          const borderColors = [
+            'border-cyan-400/40',
+            'border-hylian/40',
+            'border-emerald-400/40',
+            'border-pink-400/40',
+          ];
+          const gradients = [
+            'from-cyan-400/20 via-purple-500/10 to-cyan-500/5',
+            'from-hylian/20 via-cyan-400/10 to-purple-500/5',
+            'from-emerald-400/20 via-hylian/10 to-cyan-400/5',
+            'from-pink-400/20 via-rose-400/10 to-purple-500/5',
+          ];
+          return (
+            <div class={`p-4 bg-gradient-to-br ${gradients[i]} border ${borderColors[i]}`} style={`border-radius: ${shapes[i]};`}>
+              <div class="w-8 h-8 rounded-lg bg-white/[0.06] border border-white/5 flex items-center justify-center mb-2">
+                <Icon name={w.icon} size={14} class={['text-cyan-300', 'text-hylian', 'text-emerald-300', 'text-pink-300'][i]} />
+              </div>
+              <h4 class="text-sm font-semibold text-white">{w.label}</h4>
+              <p class="text-xs text-white/35 mt-1 leading-relaxed">{w.desc}</p>
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  </section>
+
+  <section class="py-24 md:py-32 bg-web-bg relative overflow-hidden border-t border-white/5">
+    <div class="relative z-10 max-w-3xl mx-auto px-6 md:px-8 text-center">
+      <h2 class="text-4xl md:text-5xl font-bold mb-6">
+        <span class="text-white">¿Querés una web con </span>
+        <span class="bg-gradient-to-r from-hylian via-cyan-400 to-pink-400 bg-clip-text text-transparent"> personalidad</span>
+        <span class="text-white">?</span>
+      </h2>
+      <p class="text-lg text-white/50 max-w-xl mx-auto leading-relaxed mb-10">
+        Si querés una web rápida, moderna y que realmente funcione, estoy acá para construirla.
+      </p>
+      <a href={withBase('/contact')} class="group inline-flex items-center gap-2 bg-gradient-to-r from-hylian to-cyan-500 text-carbon font-semibold px-8 py-3.5 rounded-xl hover:shadow-xl hover:shadow-hylian/20 hover:scale-[1.02] active:scale-[0.98] transition" data-umami-event="web_final_contact_cta">
+        <span>Contáctame</span>
+        <Icon name="heroicons:arrow-right" size={16} class="group-hover:translate-x-1 transition-transform" />
+      </a>
+    </div>
+  </section>
+</WebLayout>
+

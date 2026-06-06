@@ -1,0 +1,118 @@
+.phone-frame {
+  width: 240px;
+  height: 480px;
+  border-radius: 44px;
+  border: 2px solid rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.02);
+  padding: 8px;
+  box-shadow: 0 20px 80px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255, 255, 255, 0.05) inset;
+  position: relative;
+}
+
+.phone-screen {
+  width: 100%;
+  height: 100%;
+  border-radius: 36px;
+  overflow: hidden;
+  position: relative;
+}
+
+.phone-notch {
+  position: absolute;
+  top: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 80px;
+  height: 20px;
+  background: #08080e;
+  border-radius: 0 0 14px 14px;
+  z-index: 20;
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.06);
+}
+
+.phone-notch::before {
+  content: '';
+  position: absolute;
+  top: 6px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 28px;
+  height: 3px;
+  border-radius: 2px;
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.phone-notch::after {
+  content: '';
+  position: absolute;
+  top: 4px;
+  right: 18px;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 3px 2px, #2a2a3e, #0a0a12);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  box-shadow: inset 0 0.5px 0.5px rgba(255, 255, 255, 0.04);
+}
+
+.hero-dot {
+  position: absolute;
+  border-radius: 50%;
+  background: rgba(168, 85, 247, 0.15);
+  animation: dotPulse var(--dur, 5s) ease-in-out var(--d, 0s) infinite;
+}
+
+.platform-card {
+  box-shadow: 0 0 0 0 transparent;
+  transition: box-shadow 0.5s, border-color 0.5s;
+}
+
+.platform-card:hover {
+  box-shadow: 0 0 40px -8px var(--glow);
+}
+
+.animate-float {
+  animation: float 6s ease-in-out infinite;
+}
+
+.hero-entry {
+  opacity: 0;
+  transform: translateY(20px);
+  animation: cardFadeIn 0.6s ease-out forwards;
+}
+
+.hero-badge { animation-delay: 0s; }
+.hero-headline { animation-delay: 0.1s; }
+.hero-desc { animation-delay: 0.2s; }
+.hero-buttons { animation-delay: 0.3s; }
+.hero-phone { animation-delay: 0.5s; }
+
+.feat-entry {
+  opacity: 0;
+  transform: translateY(12px);
+  animation: cardFadeIn 0.5s ease-out forwards;
+}
+
+.feat-dots { animation-delay: 0.05s; }
+.feat-img { animation-delay: 0.15s; }
+.feat-cat { animation-delay: 0.2s; }
+.feat-title { animation-delay: 0.25s; }
+.feat-desc { animation-delay: 0.3s; }
+.feat-tags { animation-delay: 0.35s; }
+.feat-link { animation-delay: 0.4s; }
+
+.cta-icon,
+.cta-eyebrow,
+.cta-heading,
+.cta-desc,
+.cta-button {
+  opacity: 0;
+  transform: translateY(20px);
+  animation: cardFadeIn 0.6s ease-out forwards;
+}
+
+.cta-icon { animation-delay: 0s; }
+.cta-eyebrow { animation-delay: 0.1s; }
+.cta-heading { animation-delay: 0.2s; }
+.cta-desc { animation-delay: 0.3s; }
+.cta-button { animation-delay: 0.4s; }

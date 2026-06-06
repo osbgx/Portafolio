@@ -1,0 +1,31 @@
+---
+import { Icon } from 'astro-icon/components';
+
+export interface Props {
+  prevUrl?: string;
+  nextUrl?: string;
+  currentPage?: number;
+  lastPage?: number;
+}
+
+const { prevUrl, nextUrl, currentPage, lastPage } = Astro.props;
+const btnClass = 'inline-flex items-center gap-2 bg-white/5 hover:bg-white/10 text-white/70 hover:text-white border border-white/10 px-5 py-2.5 rounded-xl text-sm font-medium transition';
+---
+
+<nav class="flex items-center justify-center gap-6 mt-16">
+  {prevUrl && (
+    <a href={prevUrl} class={btnClass}>
+      <Icon name="heroicons:chevron-left" size={16} />
+      Anterior
+    </a>
+  )}
+  {currentPage && lastPage && (
+    <span class="text-white/30 text-sm">{currentPage} / {lastPage}</span>
+  )}
+  {nextUrl && (
+    <a href={nextUrl} class={btnClass}>
+      Siguiente
+      <Icon name="heroicons:chevron-right" size={16} />
+    </a>
+  )}
+</nav>

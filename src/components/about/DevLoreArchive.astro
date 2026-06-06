@@ -1,0 +1,160 @@
+---
+interface DevLoreEntry {
+  id: string;
+  source: string;
+  quote: string;
+  category: string;
+  description: string;
+  tags: string[];
+  rarity: string;
+}
+
+interface DevLoreGroup {
+  category: string;
+  number: string;
+  label: string;
+  description: string;
+  icon: string;
+  items: DevLoreEntry[];
+}
+
+interface DevLoreCategoryMeta {
+  label: string;
+  description: string;
+  icon: string;
+}
+
+interface Props {
+  devLoreEntries: DevLoreEntry[];
+  devLoreGroups: DevLoreGroup[];
+  featuredDevLoreEntries: DevLoreEntry[];
+  devLoreCategoryMeta: Record<string, DevLoreCategoryMeta>;
+  totalEntries: number;
+  totalCategories: number;
+}
+
+const { devLoreEntries, devLoreGroups, featuredDevLoreEntries, devLoreCategoryMeta, totalEntries, totalCategories } = Astro.props;
+---
+
+<div class="dev-archive" data-dev-archive>
+  <section class="dev-archive-gate accordion-item" data-dev-gate>
+    <span class="dev-archive-kicker font-pixel">POST-GAME CONTENT UNLOCKED</span>
+    <h2>DEV LORE ARCHIVE</h2>
+    <p>Referencias frikis, cicatrices técnicas y pequeñas historias de cómo aprendo, construyo, debuggeo y sobrevivo proyectos.</p>
+    <div class="dev-archive-stats">
+      <span class="font-pixel">{totalEntries} archived entries</span>
+      <span class="font-pixel">{totalCategories} categories</span>
+      <span class="font-pixel">Optional completionist content</span>
+    </div>
+    <div class="dev-archive-actions">
+      <button class="dev-archive-btn" type="button" data-dev-open>Open Archive</button>
+      <button class="dev-archive-btn" type="button" data-dev-random>Random Lore Drop</button>
+      <button class="dev-archive-btn" type="button" data-dev-featured>Featured Entries</button>
+    </div>
+  </section>
+
+  <section class="dev-archive-shell" data-dev-shell hidden>
+    <header class="dev-archive-toolbar">
+      <div>
+        <span class="dev-archive-kicker font-pixel">DEV LORE ARCHIVE</span>
+        <h3>Archive Index</h3>
+      </div>
+      <div class="dev-archive-progress">
+        <span class="font-pixel" data-dev-entry-progress>Explored 0/{totalEntries}</span>
+        <span class="font-pixel" data-dev-category-progress>Categories 0/{totalCategories}</span>
+      </div>
+    </header>
+
+    <div class="dev-archive-browser">
+      <aside class="dev-category-shelf" data-dev-category-shelf aria-label="Archive Index">
+        {devLoreGroups.map((group) => (
+          <button class="dev-category-module" type="button" data-dev-category={group.category}>
+            <span class="dev-category-number font-pixel">{group.number}</span>
+            <strong>{group.label}</strong>
+            <small>{group.items.length} entries</small>
+          </button>
+        ))}
+      </aside>
+
+      <section class="dev-category-view" aria-live="polite">
+        <article class="dev-category-panel" data-dev-category-panel="featured">
+          <button class="dev-mobile-back" type="button" data-dev-back="categories">← Back to categories</button>
+          <div class="dev-category-panel-head">
+            <span class="font-pixel">Featured · {featuredDevLoreEntries.length} entries</span>
+            <h4>Featured Entries</h4>
+            <p>Una ruta curada por referencias que resumen humor, cicatrices técnicas y forma de trabajar.</p>
+          </div>
+          <div class="dev-entry-list" data-dev-entry-list="featured">
+            {featuredDevLoreEntries.map((item) => (
+              <button
+                class="dev-entry-row"
+                type="button"
+                data-dev-entry={item.id}
+                data-dev-category-name="featured"
+                data-dev-search-text={`${item.source} ${item.quote} ${item.tags.join(' ')}`.toLowerCase()}
+              >
+                <span class="dev-entry-source">{item.source}</span>
+                <strong>{item.quote}</strong>
+                <small>{item.rarity} · {item.tags.slice(0, 2).join(' · ')}</small>
+              </button>
+            ))}
+          </div>
+        </article>
+        {devLoreGroups.map((group, groupIndex) => (
+          <article class={`dev-category-panel ${groupIndex === 0 ? 'is-active' : ''}`} data-dev-category-panel={group.category}>
+            <button class="dev-mobile-back" type="button" data-dev-back="categories">← Back to categories</button>
+            <div class="dev-category-panel-head">
+              <span class="font-pixel">{group.number} · {group.items.length} entries</span>
+              <h4>{group.label}</h4>
+              <p>{group.description}</p>
+            </div>
+            <input class="dev-category-search" type="search" placeholder={`Search within ${group.label}`} data-dev-search={group.category} />
+            <div class="dev-entry-list" data-dev-entry-list={group.category}>
+              {group.items.map((item, itemIndex) => (
+                <button
+                  class={`dev-entry-row ${itemIndex > 4 ? 'is-extra' : ''}`}
+                  type="button"
+                  data-dev-entry={item.id}
+                  data-dev-category-name={group.category}
+                  data-dev-search-text={`${item.source} ${item.quote} ${item.tags.join(' ')}`.toLowerCase()}
+                >
+                  <span class="dev-entry-source">{item.source}</span>
+                  <strong>{item.quote}</strong>
+                  <small>{item.rarity} · {item.tags.slice(0, 2).join(' · ')}</small>
+                </button>
+              ))}
+            </div>
+            {group.items.length > 5 && (
+              <button class="dev-show-all" type="button" data-dev-show-all={group.category}>Show all {group.items.length}</button>
+            )}
+          </article>
+        ))}
+      </section>
+
+      <aside class="dev-entry-inspector" data-dev-inspector aria-live="polite">
+        <button class="dev-mobile-back" type="button" data-dev-back="entries">← Back to entries</button>
+        <span class="dev-archive-kicker font-pixel">ENTRY SELECTED</span>
+        {devLoreEntries.map((item, index) => (
+          <article class={`dev-inspector-entry ${index === 0 ? 'is-active' : ''}`} data-dev-inspector-entry={item.id}>
+            <span class="dev-entry-source">{item.source}</span>
+            <h4>{item.quote}</h4>
+            <p>{item.description}</p>
+            <div class="dev-inspector-meta">
+              <span>{devLoreCategoryMeta[item.category]?.label || item.category}</span>
+              <span>{item.rarity}</span>
+            </div>
+            {item.tags.length > 0 && (
+              <div class="dev-lore-tags">
+                {item.tags.map((tag) => <span>{tag}</span>)}
+              </div>
+            )}
+            <div class="dev-inspector-actions">
+              <button class="dev-show-all" type="button" data-dev-random-category={item.category}>Random from this category</button>
+              <button class="dev-show-all" type="button" data-dev-next-entry={item.id}>Next entry</button>
+            </div>
+          </article>
+        ))}
+      </aside>
+    </div>
+  </section>
+</div>

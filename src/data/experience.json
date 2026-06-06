@@ -1,0 +1,73 @@
+[
+  {
+    "period": "abr. 2026 — Presente",
+    "role": "Freelancer en Soluciones Tecnológicas (Data, Automatización y Desarrollo)",
+    "company": "Independiente",
+    "location": "Paraguay · Remoto / Presencial",
+    "desc": "Consultoría técnica integral en datos, automatización, integraciones, desarrollo web y soporte especializado.",
+    "tags": ["SQL", "Python", "ETL", "APIs", "n8n", "Astro", "Power BI", "Infraestructura"],
+    "extraDesc": "Trabajo con empresas y emprendedores para resolver problemas técnicos complejos: pipelines, automatizaciones, integraciones, recuperación de datos, dashboards y desarrollo web. Me especializo en soluciones rápidas, eficientes y orientadas a resultados.",
+    "metrics": [
+      { "value": "4", "label": "Clientes" },
+      { "value": "4", "label": "Proyectos entregados" }
+    ]
+  },
+  {
+    "period": "ago. 2023 — mar. 2026",
+    "role": "Analista de Sistemas de TI Multidisciplinario (énfasis en Datos)",
+    "company": "H. Petersen — Dealer oficial Caterpillar",
+    "location": "Paraguay · Presencial",
+    "desc": "Responsabilidades multidisciplinarias en análisis de sistemas, ingeniería de datos, business intelligence, automatización, soporte de sistemas y desarrollo interno.",
+    "tags": ["SQL", "Python", "Power BI", "ETL", "Data Governance", "Automatización", "Bash", "Infraestructura"],
+    "extraDesc": "Implementación de más de 10 interfaces corporativas Caterpillar. Diseño de pipelines, automatizaciones, dashboards y herramientas internas para áreas como servicios, repuestos, marketing, rental, energía y finanzas. Construí desde cero el sistema completo de reportería financiera de la empresa, reemplazando procesos manuales en Excel por un modelo centralizado, confiable y automatizado para ventas, compras, mayor, diario, tesorería, importaciones, auditoría y otros reportes críticos.",
+    "metrics": [
+      { "value": "+250", "label": "Reportes y dashboards" },
+      { "value": "+100", "label": "Automatizaciones" },
+      { "value": "+5", "label": "Apps internas desarrolladas" },
+      { "value": "+10", "label": "Interfaces Caterpillar implementadas" }
+    ],
+    "achievement": "Creación y estandarización del core financiero de reportería, reemplazando procesos manuales y propensos a errores por un sistema automatizado y trazable que redujo tiempos de generación de informes de días a minutos y elevó la calidad de datos a nivel organizacional."
+  },
+  {
+    "period": "mar. 2023 — jul. 2023",
+    "role": "Coordinador de Tecnología de la Información",
+    "company": "Centro de Asistencia Médica S.A.",
+    "location": "Paraguay · Presencial",
+    "desc": "Gestión de infraestructura, soporte técnico y operación de sistemas clínicos y administrativos.",
+    "tags": ["Infraestructura", "Soporte Técnico", "Sistemas Médicos", "EMR", "Redes"],
+    "extraDesc": "Responsable del soporte técnico general, mantenimiento de computadoras e impresoras, administración de red y sistemas DIRCOM. Inicié la implementación y migración del sistema EMR de la institución hacia Anamnesis, una de las plataformas médicas más utilizadas en Paraguay.",
+    "metrics": [
+      { "value": "+200", "label": "Incidencias resueltas" },
+      { "value": "+30", "label": "Equipos mantenidos" }
+    ],
+    "achievement": "Mejoré la estabilidad operativa mediante optimización de infraestructura, soporte proactivo y el inicio de la transición hacia el EMR Anamnesis."
+  },
+  {
+    "period": "mar. 2020 — mar. 2023",
+    "role": "Técnico de Soporte y Atención al Cliente",
+    "company": "Movicentro",
+    "location": "Paraguay · Presencial",
+    "desc": "Soporte técnico básico, configuración de dispositivos móviles, ventas y atención al cliente en una tienda de celulares y accesorios.",
+    "tags": ["Soporte Técnico", "Atención al Cliente", "Hardware", "Software", "Ventas"],
+    "extraDesc": "Configuración de teléfonos para clientes, instalación de aplicaciones, creación de cuentas y asistencia a usuarios. Realicé cargas de saldo, ventas de accesorios y mantenimiento básico de equipos. Ocasionalmente realicé reparaciones menores como cambio de fichas de carga y flasheo de dispositivos.",
+    "metrics": [
+      { "value": "+100", "label": "Dispositivos configurados" },
+      { "value": "+1000", "label": "Clientes atendidos" }
+    ],
+    "achievement": "Mejoré la experiencia de los clientes mediante soporte claro y eficiente."
+  },
+  {
+    "period": "nov. 2019 — feb. 2020",
+    "role": "Pasante — Ciberseguridad y Auditoría Interna",
+    "company": "BNF — Banco Nacional de Fomento",
+    "location": "Asunción, Paraguay · Presencial",
+    "desc": "Pasantía formativa enfocada en monitoreo, control de accesos y apoyo a procesos de auditoría interna en un entorno bancario.",
+    "tags": ["AS/400", "Seguridad", "Auditoría", "Excel", "Control Interno"],
+    "extraDesc": "Colaboré con el equipo de ciberseguridad en tareas de monitoreo básico, revisión documental, control de accesos y soporte a procesos de auditoría interna. La pasantía me permitió familiarizarme con entornos bancarios, sistemas AS/400 y prácticas de control interno.",
+    "metrics": [
+      { "value": "+100", "label": "Logs revisados" },
+      { "value": "+250", "label": "Accesos renovados tras acuerdos de confidencialidad" }
+    ],
+    "achievement": "Fortalecí controles internos mediante documentación precisa y apoyo a procesos de seguridad en un entorno regulado."
+  }
+]

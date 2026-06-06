@@ -1,0 +1,132 @@
+---
+import AboutLayout from '../layouts/AboutLayout.astro';
+import PressStartOverlay from '../components/about/PressStartOverlay.astro';
+import AvatarCompanion from '../components/about/AvatarCompanion.astro';
+import AboutHero from '../components/about/AboutHero.astro';
+import AboutAccordionSection from '../components/about/AboutAccordionSection.astro';
+import MemoryGallery from '../components/about/MemoryGallery.astro';
+import QuestBoard from '../components/about/QuestBoard.astro';
+import DevLoreArchive from '../components/about/DevLoreArchive.astro';
+import BossLog from '../components/about/BossLog.astro';
+import RescueLog from '../components/about/RescueLog.astro';
+import PixelRoom from '../components/about/PixelRoom.astro';
+import AboutQuickNav from '../components/about/AboutQuickNav.astro';
+import FinalSavePoint from '../components/about/FinalSavePoint.astro';
+import AboutToast from '../components/about/AboutToast.astro';
+import '../styles/about/index.css';
+import bosses from '../data/about-bosses.json';
+import quests from '../data/about-quests.json';
+import roomHotspots from '../data/about-room-hotspots.json';
+import { memoryLogs } from '../data/about-memory';
+import { stats, equipment, statusEffects } from '../data/about-hero';
+import { internalQuotes } from '../data/about-text';
+import { spriteSequences, spriteFrames } from '../data/about-sprites';
+import { devLoreCategoryMeta, devLoreEnrichedEntries as devLoreEntries, devLoreGroups, featuredDevLoreEntries } from '../data/about-dev-lore';
+import { createQuestMeta } from '../data/about-quest-meta';
+import { rescueIntro, rescueGuildStats, rescueDexEntries, rescueFieldNotes, rescueCareRoute, rescueShinyMoment, rescueHardPart, rescueSupportCopy } from '../data/about-rescue';
+
+const questMeta = createQuestMeta(quests);
+const questArcs = ['All', ...new Set(questMeta.map(quest => quest.arc))];
+const rescueLogCount = rescueDexEntries.length + rescueFieldNotes.length + 1;
+const finalLogCount = memoryLogs.length + quests.length + bosses.length + rescueLogCount;
+
+---
+
+<AboutLayout title="Sobre mí" description="PLAYER PROFILE">
+  <div class="crt-scanline" aria-hidden="true"></div>
+  <div class="hero-static" aria-hidden="true"></div>
+  <div class="warm-glow" aria-hidden="true"></div>
+
+  <PressStartOverlay />
+
+  <div class="about-shell">
+  <AvatarCompanion spriteFrames={spriteFrames} />
+
+  <main class="about-main" id="about-content" tabindex="-1">
+
+  <!-- ═══════════════ INTRO (HERO) ═══════════════ -->
+  <AboutHero stats={stats} equipment={equipment} statusEffects={statusEffects} />
+
+   <!-- 01 — MEMORY LOG -->
+  <AboutAccordionSection id="memory" accent="memory" icon="ra-save" number="01" title="MEMORY LOG" badge="4 CHECKPOINTS" className="story-section story-section-alt">
+      <div class="accordion-inner">
+        <MemoryGallery memoryLogs={memoryLogs} />
+      </div>
+  </AboutAccordionSection>
+
+  <!-- 02 — QUEST LOG -->
+  <AboutAccordionSection id="quests" accent="quests" icon="ra-scroll-unfurled" number="02" title="SIDE QUEST LOG" badge={`${questMeta.length} SIDE QUESTS`}>
+      <div class="accordion-inner">
+        <div class="container-section py-8">
+          <QuestBoard questMeta={questMeta} questArcs={questArcs} />
+        </div>
+      </div>
+  </AboutAccordionSection>
+
+
+  <!-- 03 — RESCUE LOG -->
+  <AboutAccordionSection id="rescue" accent="rescue" icon="ra-pawprint" number="03" title="RESCUE LOG" badge="100+ SAVED" className="story-section rescue-section">
+      <div class="accordion-inner">
+        <RescueLog
+          intro={rescueIntro}
+          guildStats={rescueGuildStats}
+          rescueDexEntries={rescueDexEntries}
+          fieldNotes={rescueFieldNotes}
+          careRoute={rescueCareRoute}
+          shinyMoment={rescueShinyMoment}
+          hardPart={rescueHardPart}
+          supportCopy={rescueSupportCopy}
+        />
+      </div>
+  </AboutAccordionSection>
+
+  <!-- 04 — BOSS LOG -->
+  <AboutAccordionSection id="bosses" accent="bosses" icon="ra-monster-skull" number="04" title="BOSS LOG" badge={`${bosses.length} BOSSES`}>
+      <BossLog bosses={bosses} />
+  </AboutAccordionSection>
+
+  <!-- 05 — DEV LORE -->
+  <AboutAccordionSection id="dev-lore" accent="dev-lore" icon="ra-gears" number="05" title="DEV LORE" badge={`${devLoreEntries.length} ENTRIES`}>
+      <div class="accordion-inner">
+        <div class="container-section py-8">
+          <DevLoreArchive
+            devLoreEntries={devLoreEntries}
+            devLoreGroups={devLoreGroups}
+            featuredDevLoreEntries={featuredDevLoreEntries}
+            devLoreCategoryMeta={devLoreCategoryMeta}
+            totalEntries={devLoreEntries.length}
+            totalCategories={devLoreGroups.length}
+          />
+        </div>
+      </div>
+  </AboutAccordionSection>
+
+  </main>
+  </div>
+
+  <!-- 06 — PIXEL ROOM -->
+  <AboutAccordionSection id="room" accent="room" icon="ra-tower" number="06" title="PIXEL ROOM" badge="DARK CORNER" className="story-section room-detached-section">
+      <div class="accordion-inner">
+        <PixelRoom roomHotspots={roomHotspots} />
+      </div>
+  </AboutAccordionSection>
+
+  <AboutQuickNav
+    roomCount={roomHotspots.length}
+    questCount={quests.length}
+    bossCount={bosses.length}
+    rescueCount={rescueLogCount}
+    codexCount={devLoreEntries.length}
+  />
+
+  <AboutToast />
+
+  <FinalSavePoint roomCount={roomHotspots.length} logCount={finalLogCount} codexCount={devLoreEntries.length} />
+</AboutLayout>
+
+<script id="about-sprite-sequences" type="application/json" set:html={JSON.stringify(spriteSequences)}></script>
+<script id="about-internal-quotes" type="application/json" set:html={JSON.stringify(internalQuotes)}></script>
+
+<script>
+  import '../scripts/about.ts';
+</script>

@@ -1,0 +1,32 @@
+---
+interface Props {
+  spriteFrames: readonly string[];
+}
+
+const { spriteFrames } = Astro.props;
+---
+
+<aside class="avatar-companion" aria-label="Avatar reactivo de Osmar">
+  <div class="pixel-panel avatar-card hero-fade" data-avatar-pet role="button" tabindex="0" aria-label="Interactuar con el avatar" style="animation-delay:0.1s">
+    <div class="sprite-stage pixel-border-gold-thick bg-black/60 p-1 mb-3 inline-block" aria-live="polite">
+      {spriteFrames.map((src, index) => (
+        <img
+          class={`profile-sprite ${index === 0 ? 'is-base is-active' : ''}`}
+          src={src}
+          width="336"
+          height="336"
+          alt={index === 0 ? 'Sprite pixel art animado de Osmar' : ''}
+          aria-hidden={index === 0 ? 'false' : 'true'}
+          decoding="async"
+          draggable="false"
+          data-sprite-frame={src}
+        />
+      ))}
+    </div>
+    <p class="font-pixel-alt text-[9px] md:text-[10px] text-amber-300">OSMAR BOGARÍN</p>
+    <p class="font-pixel text-[5px] md:text-[6px] text-white/40" id="avatar-status">LV.23 · STILL LOADING… · MEMORY REALM</p>
+  </div>
+  <div class="avatar-bubble hero-fade" id="avatar-bubble" aria-live="polite" style="animation-delay:0.25s">
+    Bienvenido al save file. Cada sección revela algo.
+  </div>
+</aside>

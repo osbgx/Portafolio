@@ -1,0 +1,153 @@
+---
+import Header from '../components/global/Header.astro';
+import Footer from '../components/global/Footer.astro';
+import SocialDock from '../components/global/SocialDock.astro';
+import { ViewTransitions } from 'astro:transitions';
+import { dockColors } from '../data/themes';
+import { fullSiteUrl } from '../data/site';
+import { contactInfo } from '../data/social';
+import { withBase } from '../utils/paths';
+import experience from '../data/experience.json';
+import '../styles/global.css';
+
+const { title, description, theme = 'default' } = Astro.props;
+
+const dockColor = dockColors[theme];
+
+const siteUrl = fullSiteUrl.replace(/\/$/, '');
+const basePath = import.meta.env.BASE_URL || '/';
+const normalizedBasePath = basePath === '/' ? '' : `/${basePath.replace(/^\/+|\/+$/g, '')}`;
+const pagePath = normalizedBasePath && Astro.url.pathname.startsWith(normalizedBasePath)
+  ? Astro.url.pathname.slice(normalizedBasePath.length) || '/'
+  : Astro.url.pathname;
+const canonicalUrl = pagePath === '/' ? `${siteUrl}/` : `${siteUrl}${pagePath}`;
+const fullName = 'Osmar Bogarín';
+const jobTitle = 'Data Engineer & Consultant';
+const sameAs = [contactInfo.linkedin, contactInfo.github, contactInfo.instagram, contactInfo.x];
+const knowsAbout = [
+  'Data Engineering', 'Data Analysis', 'Machine Learning',
+  'Python', 'SQL', 'Spark', 'Airflow',
+  'Web Development', 'Astro', 'React', 'Tailwind CSS',
+  'Mobile Development', 'React Native', 'Kotlin',
+  'Cloud Computing', 'Docker', 'CI/CD',
+  'ETL Pipelines', 'Data Warehousing', 'Dashboards',
+  'Consultoría Técnica', 'Arquitectura de Sistemas',
+];
+
+const ldPerson = {
+  '@type': 'Person',
+  name: fullName,
+  givenName: 'Osmar',
+  familyName: 'Bogarín',
+  jobTitle,
+  url: siteUrl,
+  email: contactInfo.email,
+  telephone: `+${contactInfo.whatsapp}`,
+  sameAs,
+  knowsAbout,
+  worksFor: experience.map((exp) => {
+    const dates = exp.period.match(/(\d{4}).*?(\d{4}|Presente)/);
+    return {
+      '@type': 'Organization',
+      name: exp.company,
+      description: exp.role,
+      ...(dates ? { startDate: dates[1], endDate: dates[2] === 'Presente' ? undefined : dates[2] } : {}),
+    };
+  }),
+};
+const ldWebSite = {
+  '@type': 'WebSite',
+  name: `${fullName} | Portfolio`,
+  url: siteUrl,
+  description: 'Portfolio profesional de Data Engineering, Consultoría y Desarrollo.',
+};
+const ldGraph = JSON.stringify({ '@context': 'https://schema.org', '@graph': [ldPerson, ldWebSite] });
+---
+
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="color-scheme" content="dark" />
+    <meta name="theme-color" content="#0B0B0C" />
+    <link rel="icon" type="image/svg+xml" href={withBase('/favicon.svg')} />
+    <link rel="alternate icon" href={withBase('/favicon.svg')} sizes="any" />
+    <link rel="alternate" type="application/rss+xml" title="Osmar Bogarín | Blog" href={`${siteUrl}/rss.xml`} />
+    {theme === 'home' && pagePath === '/' && <link rel="preload" as="image" href={withBase('/me.webp')} type="image/webp" media="(min-width: 1024px)" fetchpriority="high" />}
+    <ViewTransitions />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;700&display=optional" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;700&display=optional" rel="stylesheet"></noscript>
+    {(theme === 'mobile' || theme === 'web') && (
+      <>
+        <link rel="preload" href="https://fonts.googleapis.com/css2?family=Sora:wght@500;600;700&display=optional" as="style" onload="this.onload=null;this.rel='stylesheet'">
+        <noscript><link href="https://fonts.googleapis.com/css2?family=Sora:wght@500;600;700&display=optional" rel="stylesheet"></noscript>
+      </>
+    )}
+    <title>{title} | Osmar Bogarín</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonicalUrl} />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={`${title} | Osmar Bogarín`} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonicalUrl} />
+    <meta property="og:image" content={`${siteUrl}/og-image.webp`} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={`${title} | Osmar Bogarín`} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={`${siteUrl}/og-image.webp`} />
+    <meta name="twitter:site" content={contactInfo.xHandle} />
+    <meta name="twitter:creator" content={contactInfo.xHandle} />
+    <script type="application/ld+json" set:html={ldGraph}></script>
+    {import.meta.env.PUBLIC_UMAMI_WEBSITE_ID && import.meta.env.PUBLIC_UMAMI_SRC && (
+      <script defer src={import.meta.env.PUBLIC_UMAMI_SRC} data-website-id={import.meta.env.PUBLIC_UMAMI_WEBSITE_ID}></script>
+    )}
+  </head>
+  <body class="pt-16">
+    <a href="#main-content" class="skip-link">Saltar al contenido principal</a>
+    <Header theme={theme} />
+    <main id="main-content">
+      <slot />
+    </main>
+    <Footer theme={theme} />
+
+    {theme !== 'about' && <SocialDock dockColor={dockColor} variant="mobile" />}
+    {theme !== 'about' && <SocialDock dockColor={dockColor} variant="desktop" />}
+    <div id="tx-overlay" class="fixed inset-0 z-[100] bg-carbon/40 backdrop-blur-sm flex items-center justify-center pointer-events-none transition-opacity duration-200 opacity-0">
+      <div class="flex items-center gap-2 text-white/50 text-sm">
+        <span class="w-1.5 h-1.5 rounded-full bg-white/50 animate-bounce" style="animation-delay:0ms"></span>
+        <span class="w-1.5 h-1.5 rounded-full bg-white/50 animate-bounce" style="animation-delay:100ms"></span>
+        <span class="w-1.5 h-1.5 rounded-full bg-white/50 animate-bounce" style="animation-delay:200ms"></span>
+      </div>
+    </div>
+
+    <script>
+      import { initScrollReveal, revealAll } from '../utils/reveal';
+      document.addEventListener('astro:before-preparation', () => {
+        document.getElementById('tx-overlay')?.classList.remove('opacity-0');
+      });
+      document.addEventListener('astro:after-swap', () => {
+        document.getElementById('tx-overlay')?.classList.add('opacity-0');
+      });
+      document.addEventListener('astro:page-load', () => {
+        if (!window.__osb_revealInit) {
+          window.__osb_revealInit = true;
+          if ('IntersectionObserver' in window) initScrollReveal();
+          else revealAll();
+        } else {
+          revealAll();
+        }
+      });
+    </script>
+  </body>
+</html>
+
+<style>
+  .social-dock a:hover {
+    color: var(--dock-color);
+  }
+</style>

@@ -1,0 +1,353 @@
+---
+import { withBase } from '../../utils/paths';
+
+const { images, id } = Astro.props;
+const uid = `carousel-${id || Math.random().toString(36).slice(2, 8)}`;
+---
+
+<div class="image-carousel relative" data-carousel={uid} role="region" aria-roledescription="carousel" aria-label="Galería de imágenes">
+  <div class="relative">
+    <div class="flex justify-center" data-carousel-track={uid}>
+      {images.map((img, i) => (
+        <div data-carousel-slide={uid} role="group" aria-roledescription="slide" aria-label={`Imagen ${i + 1} de ${images.length}`} class={'flex items-center justify-center rounded-xl border border-white/5 overflow-hidden w-full h-[420px]'} style={`background: ${img.color}15; display: ${i === 0 ? 'flex' : 'none'}`}>
+          {img.src ? (
+            <img src={withBase(img.src)} alt={img.label} class="w-full h-full object-cover cursor-pointer rounded-xl" style={`background: ${img.color}10`} data-lightbox-trigger={uid} data-index={i} data-umami-event="project_image_lightbox_open" data-umami-event-carousel={uid} />
+          ) : (
+            <div class="flex flex-col items-center justify-center w-full h-full">
+              <div class="w-16 h-16 mx-auto rounded-2xl flex items-center justify-center" style={`background: ${img.color}20; border: 1px solid ${img.color}30`}>
+                <svg class="w-8 h-8" style={`color: ${img.color}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  {i === 0 && <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M2.25 15.75l5.159-5.159a2.25 2.25 0 013.182 0l5.159 5.159m-1.5-1.5l1.409-1.41a2.25 2.25 0 013.182 0l2.909 2.91m-18 3.75h16.5a1.5 1.5 0 001.5-1.5V6a1.5 1.5 0 00-1.5-1.5H3.75A1.5 1.5 0 002.25 6v12a1.5 1.5 0 001.5 1.5zm10.5-11.25h.008v.008h-.008V8.25zm.375 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z" />}
+                  {i === 1 && <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 13.125C3 12.504 3.504 12 4.125 12h2.25c.621 0 1.125.504 1.125 1.125v6.75C7.5 20.496 6.996 21 6.375 21h-2.25A1.125 1.125 0 013 19.875v-6.75zM9.75 8.625c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125v11.25c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V8.625zM16.5 4.125c0-.621.504-1.125 1.125-1.125h2.25C20.496 3 21 3.504 21 4.125v15.75c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V4.125z" />}
+                  {i === 2 && <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 17.25v1.007a3 3 0 01-.879 2.122L7.5 21h9l-.621-.621A3 3 0 0115 18.257V17.25m6-12V15a2.25 2.25 0 01-2.25 2.25H5.25A2.25 2.25 0 013 15V5.25m18 0A2.25 2.25 0 0018.75 3H5.25A2.25 2.25 0 003 5.25m18 0V12a2.25 2.25 0 01-2.25 2.25H5.25A2.25 2.25 0 013 12V5.25" />}
+                  {i >= 3 && <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M10.5 6h9.75M10.5 6a1.5 1.5 0 11-3 0m3 0a1.5 1.5 0 10-3 0M3.75 6H7.5m3 12h9.75m-9.75 0a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m-3.75 0H7.5m9-6h3.75m-3.75 0a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m-9.75 0h9.75" />}
+                </svg>
+              </div>
+              <p class="text-sm text-white/50 mt-3 font-medium">{img.label}</p>
+              <p class="text-xs text-white/20 mt-1">Placeholder — {img.label.toLowerCase()}</p>
+            </div>
+          )}
+        </div>
+      ))}
+    </div>
+
+    {images.length > 1 && (
+      <>
+        <button data-carousel-prev={uid} class="absolute top-1/2 -translate-y-1/2 left-2 w-7 h-7 flex items-center justify-center text-white/30 hover:text-white/70 transition-colors carousel-arrow carousel-arrow-left" aria-label="Anterior" data-umami-event="project_carousel_prev" data-umami-event-carousel={uid}>
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
+        </button>
+        <button data-carousel-next={uid} class="absolute top-1/2 -translate-y-1/2 right-2 w-7 h-7 flex items-center justify-center text-white/30 hover:text-white/70 transition-colors carousel-arrow carousel-arrow-right" aria-label="Siguiente" data-umami-event="project_carousel_next" data-umami-event-carousel={uid}>
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+        </button>
+
+        <div class="absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-1.5">
+          {images.map((_, i) => (
+            <button data-carousel-dot={uid} data-index={i} class="carousel-dot w-1.5 h-1.5 rounded-full bg-white/20 hover:bg-white/50 transition" aria-label={`Imagen ${i + 1}`} data-umami-event="project_carousel_dot" data-umami-event-carousel={uid}></button>
+          ))}
+        </div>
+      </>
+    )}
+  </div>
+</div>
+
+<style></style>
+
+<script>
+  function openLightbox(index, slides) {
+    const existing = document.querySelector('[data-lightbox]');
+    if (existing) existing.remove();
+
+    const slidesWithSrc = Array.from(slides).filter(s => s.querySelector('img'));
+    const imgs = slidesWithSrc.map(s => s.querySelector('img'));
+    if (!imgs[index]) return;
+
+    const overlay = document.createElement('div');
+    overlay.setAttribute('data-lightbox', '');
+    overlay.className = 'fixed inset-0 z-50 flex items-center justify-center bg-black/85 backdrop-blur-sm';
+    overlay.style.animation = 'fadeIn 0.2s ease';
+
+    const viewport = document.createElement('div');
+    viewport.className = 'relative w-[92vw] h-[84vh] overflow-hidden rounded-xl touch-none cursor-zoom-in';
+    viewport.setAttribute('tabindex', '0');
+    viewport.setAttribute('aria-label', 'Imagen ampliable. Usá más, menos, cero, doble click, Ctrl + rueda o arrastrá cuando tenga zoom.');
+
+    const img = document.createElement('img');
+    img.src = imgs[index].src;
+    img.alt = imgs[index].alt;
+    img.className = 'w-full h-full rounded-xl shadow-2xl object-contain select-none';
+    img.style.animation = 'scaleIn 0.2s ease';
+    img.style.transformOrigin = '0 0';
+    img.draggable = false;
+
+    const controls = document.createElement('div');
+    controls.className = 'absolute left-4 top-1/2 z-10 flex -translate-y-1/2 flex-col items-center gap-2 rounded-2xl border border-white/10 bg-black/45 p-2 backdrop-blur-md shadow-xl shadow-black/30';
+    controls.innerHTML = `
+      <button type="button" data-zoom="in" class="w-9 h-9 rounded-xl bg-white/10 text-lg leading-none text-white/65 hover:text-white hover:bg-white/20 transition" aria-label="Acercar">+</button>
+      <span data-zoom-level class="w-12 rounded-lg border border-white/5 bg-white/5 px-1.5 py-1.5 text-center text-[10px] text-white/55 font-mono">100%</span>
+      <button type="button" data-zoom="out" class="w-9 h-9 rounded-xl bg-white/10 text-lg leading-none text-white/65 hover:text-white hover:bg-white/20 transition" aria-label="Alejar">−</button>
+      <button type="button" data-zoom="reset" class="w-12 rounded-lg bg-white/10 px-1.5 py-2 text-[9px] font-semibold tracking-wider text-white/45 hover:text-white hover:bg-white/20 transition" aria-label="Restablecer zoom">RESET</button>
+    `;
+
+    const hint = document.createElement('div');
+    hint.className = 'absolute bottom-4 left-1/2 -translate-x-1/2 rounded-full border border-white/10 bg-black/40 px-3 py-1.5 text-[11px] text-white/35 backdrop-blur-md pointer-events-none';
+    hint.textContent = 'CTRL+WHEEL · DBL CLICK · DRAG';
+
+    const closeBtn = document.createElement('button');
+    closeBtn.className = 'absolute top-4 right-4 w-10 h-10 flex items-center justify-center text-white/60 hover:text-white transition-colors rounded-full bg-white/10 hover:bg-white/20';
+    closeBtn.innerHTML = '<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>';
+    closeBtn.setAttribute('aria-label', 'Cerrar');
+
+    viewport.appendChild(img);
+    viewport.appendChild(controls);
+    viewport.appendChild(hint);
+    overlay.appendChild(viewport);
+    overlay.appendChild(closeBtn);
+
+    const zoomLevels = [1, 1.25, 1.5, 2, 3];
+    let zoomIndex = 0;
+    let panX = 0;
+    let panY = 0;
+    let dragStartX = 0;
+    let dragStartY = 0;
+    let dragPanX = 0;
+    let dragPanY = 0;
+    let isPanning = false;
+    let didDrag = false;
+    const cleanup = [];
+    const zoomButtons = Array.from(controls.querySelectorAll('[data-zoom]'));
+    const zoomLevel = controls.querySelector('[data-zoom-level]');
+
+    function clampPan() {
+      const zoom = zoomLevels[zoomIndex];
+      if (zoom <= 1) {
+        panX = 0;
+        panY = 0;
+        return;
+      }
+      const maxPanX = viewport.clientWidth * (zoom - 1);
+      const maxPanY = viewport.clientHeight * (zoom - 1);
+      panX = Math.min(0, Math.max(-maxPanX, panX));
+      panY = Math.min(0, Math.max(-maxPanY, panY));
+    }
+
+    function applyZoom() {
+      const zoom = zoomLevels[zoomIndex];
+      clampPan();
+      img.style.transform = `translate3d(${panX}px, ${panY}px, 0) scale(${zoom})`;
+      viewport.classList.toggle('cursor-grab', zoom > 1);
+      viewport.classList.toggle('cursor-zoom-in', zoom <= 1);
+      if (zoomLevel) zoomLevel.textContent = `${Math.round(zoom * 100)}%`;
+      zoomButtons.forEach((button) => {
+        const action = button.dataset.zoom;
+        button.disabled = (action === 'out' && zoomIndex === 0)
+          || (action === 'in' && zoomIndex === zoomLevels.length - 1)
+          || (action === 'reset' && zoomIndex === 0);
+        button.classList.toggle('opacity-35', button.disabled);
+      });
+    }
+
+    function getZoomOrigin(e) {
+      const rect = viewport.getBoundingClientRect();
+      if (e && 'clientX' in e && e.clientX > 0) return { x: e.clientX - rect.left, y: e.clientY - rect.top };
+      return { x: rect.width * 0.5, y: rect.height * 0.5 };
+    }
+
+    function setZoom(nextIndex, e) {
+      const oldZoom = zoomLevels[zoomIndex];
+      const origin = getZoomOrigin(e);
+      const contentX = (origin.x - panX) / oldZoom;
+      const contentY = (origin.y - panY) / oldZoom;
+      zoomIndex = Math.max(0, Math.min(nextIndex, zoomLevels.length - 1));
+      const nextZoom = zoomLevels[zoomIndex];
+      panX = origin.x - contentX * nextZoom;
+      panY = origin.y - contentY * nextZoom;
+      applyZoom();
+    }
+
+    function resetZoom() {
+      zoomIndex = 0;
+      panX = 0;
+      panY = 0;
+      applyZoom();
+    }
+
+    function movePan(dx, dy) {
+      if (zoomLevels[zoomIndex] <= 1) return false;
+      panX += dx;
+      panY += dy;
+      applyZoom();
+      return true;
+    }
+
+    zoomButtons.forEach((button) => {
+      button.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const action = button.dataset.zoom;
+        if (action === 'in') setZoom(zoomIndex + 1, e);
+        else if (action === 'out') setZoom(zoomIndex - 1, e);
+        else resetZoom();
+      });
+    });
+
+    viewport.addEventListener('dblclick', (e) => {
+      if (e.target.closest('[data-zoom]')) return;
+      e.preventDefault();
+      setZoom(zoomIndex >= 2 ? 0 : zoomIndex + 1, e);
+    });
+
+    viewport.addEventListener('wheel', (e) => {
+      if (!e.ctrlKey && !e.metaKey) return;
+      e.preventDefault();
+      setZoom(zoomIndex + (e.deltaY < 0 ? 1 : -1), e);
+    }, { passive: false });
+
+    viewport.addEventListener('pointerdown', (e) => {
+      if (zoomLevels[zoomIndex] <= 1 || e.target.closest('[data-zoom]')) return;
+      isPanning = true;
+      didDrag = false;
+      dragStartX = e.clientX;
+      dragStartY = e.clientY;
+      dragPanX = panX;
+      dragPanY = panY;
+      viewport.classList.add('cursor-grabbing');
+      viewport.setPointerCapture(e.pointerId);
+    });
+
+    viewport.addEventListener('pointermove', (e) => {
+      if (!isPanning) return;
+      const dx = e.clientX - dragStartX;
+      const dy = e.clientY - dragStartY;
+      didDrag = didDrag || Math.abs(dx) > 3 || Math.abs(dy) > 3;
+      panX = dragPanX + dx;
+      panY = dragPanY + dy;
+      applyZoom();
+    });
+
+    function stopPanning(e) {
+      if (!isPanning) return;
+      isPanning = false;
+      viewport.classList.remove('cursor-grabbing');
+      if (viewport.hasPointerCapture(e.pointerId)) viewport.releasePointerCapture(e.pointerId);
+    }
+
+    viewport.addEventListener('pointerup', stopPanning);
+    viewport.addEventListener('pointercancel', stopPanning);
+    viewport.addEventListener('click', (e) => {
+      if (!didDrag) return;
+      e.preventDefault();
+      e.stopImmediatePropagation();
+      didDrag = false;
+    }, true);
+
+    if (imgs.length > 1) {
+      const prevBtn = document.createElement('button');
+      prevBtn.className = 'absolute left-4 top-1/2 -translate-y-1/2 w-10 h-10 flex items-center justify-center text-white/60 hover:text-white transition-colors rounded-full bg-white/10 hover:bg-white/20';
+      prevBtn.innerHTML = '<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>';
+      prevBtn.setAttribute('aria-label', 'Anterior');
+
+      const nextBtn = document.createElement('button');
+      nextBtn.className = 'absolute right-4 top-1/2 -translate-y-1/2 w-10 h-10 flex items-center justify-center text-white/60 hover:text-white transition-colors rounded-full bg-white/10 hover:bg-white/20';
+      nextBtn.innerHTML = '<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>';
+      nextBtn.setAttribute('aria-label', 'Siguiente');
+
+      overlay.insertBefore(prevBtn, viewport);
+      overlay.appendChild(nextBtn);
+
+      let lightboxIndex = index;
+      function updateLightbox(i) {
+        if (i < 0) i = imgs.length - 1;
+        if (i >= imgs.length) i = 0;
+        lightboxIndex = i;
+        img.src = imgs[i].src;
+        img.alt = imgs[i].alt;
+        resetZoom();
+      }
+
+      prevBtn.addEventListener('click', (e) => { e.stopPropagation(); updateLightbox(lightboxIndex - 1); });
+      nextBtn.addEventListener('click', (e) => { e.stopPropagation(); updateLightbox(lightboxIndex + 1); });
+      function lbKey(e) {
+        if (e.key === 'ArrowLeft') { if (!movePan(48, 0)) updateLightbox(lightboxIndex - 1); }
+        if (e.key === 'ArrowRight') { if (!movePan(-48, 0)) updateLightbox(lightboxIndex + 1); }
+      }
+      document.addEventListener('keydown', lbKey);
+      cleanup.push(() => document.removeEventListener('keydown', lbKey));
+    }
+
+    function lbZoomKey(e) {
+      if (e.key === '+' || e.key === '=') { e.preventDefault(); setZoom(zoomIndex + 1, e); }
+      if (e.key === '-' || e.key === '_') { e.preventDefault(); setZoom(zoomIndex - 1, e); }
+      if (e.key === '0') { e.preventDefault(); resetZoom(); }
+      if (e.key === 'ArrowUp') { if (movePan(0, 48)) e.preventDefault(); }
+      if (e.key === 'ArrowDown') { if (movePan(0, -48)) e.preventDefault(); }
+    }
+
+    function lbClose(e) {
+      if (e.key === 'Escape') closeLightbox();
+    }
+
+    document.addEventListener('keydown', lbZoomKey);
+    document.addEventListener('keydown', lbClose);
+    window.addEventListener('resize', applyZoom);
+    cleanup.push(() => document.removeEventListener('keydown', lbZoomKey));
+    cleanup.push(() => document.removeEventListener('keydown', lbClose));
+    cleanup.push(() => window.removeEventListener('resize', applyZoom));
+
+    function closeLightbox() {
+      cleanup.forEach((dispose) => dispose());
+      overlay.remove();
+    }
+
+    overlay.addEventListener('click', (e) => { if (e.target === overlay) closeLightbox(); });
+    closeBtn.addEventListener('click', closeLightbox);
+
+    document.body.appendChild(overlay);
+    applyZoom();
+    viewport.focus();
+  }
+
+  document.addEventListener('astro:page-load', () => {
+    document.querySelectorAll('[data-carousel]').forEach((el) => {
+      const uid = el.dataset.carousel;
+      const slides = el.querySelectorAll(`[data-carousel-slide="${uid}"]`);
+      const prev = el.querySelector(`[data-carousel-prev="${uid}"]`);
+      const next = el.querySelector(`[data-carousel-next="${uid}"]`);
+      const dots = el.querySelectorAll(`[data-carousel-dot="${uid}"]`);
+      const triggers = el.querySelectorAll(`[data-lightbox-trigger="${uid}"]`);
+      const total = slides.length;
+      let current = 0;
+
+      triggers.forEach((t, triggerIndex) => t.addEventListener('click', () => openLightbox(triggerIndex, slides)));
+
+      if (!slides || total <= 1) return;
+
+      function goTo(index) {
+        if (index < 0) index = total - 1;
+        if (index >= total) index = 0;
+        slides[current].style.display = 'none';
+        current = index;
+        slides[current].style.display = 'flex';
+        dots.forEach((dot, i) => {
+          if (i === current) {
+            dot.classList.add('bg-white', '!w-5');
+            dot.classList.remove('bg-white/20', 'w-1.5');
+          } else {
+            dot.classList.remove('bg-white', '!w-5');
+            dot.classList.add('bg-white/20', 'w-1.5');
+          }
+        });
+      }
+
+      if (prev) prev.addEventListener('click', () => goTo(current - 1));
+      if (next) next.addEventListener('click', () => goTo(current + 1));
+      dots.forEach((dot) => dot.addEventListener('click', () => goTo(parseInt(dot.dataset.index))));
+
+      goTo(0);
+    });
+
+    const style = document.createElement('style');
+    style.textContent = `
+      @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+      @keyframes scaleIn { from { opacity: 0; transform: scale(0.9); } to { opacity: 1; transform: scale(1); } }
+    `;
+    document.head.appendChild(style);
+  });
+</script>

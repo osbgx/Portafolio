@@ -1,0 +1,82 @@
+---
+import { Icon } from 'astro-icon/components';
+import { withBase } from '../../utils/paths';
+
+interface Props {
+  project: {
+    id: string;
+    title: string;
+    description: string;
+    category: string;
+    date: Date;
+    tags?: string[];
+    featured?: boolean;
+    hidden?: boolean;
+    type?: string;
+    client?: string;
+    images?: { label: string; color: string; src?: string }[];
+  };
+  accent?: 'hylian' | 'amber' | 'purple';
+  square?: boolean;
+}
+
+const { project, accent = 'hylian', square } = Astro.props;
+const isSub = project.hidden;
+const typeLabel: Record<string, string> = { empleado: "Laboral", freelance: "Freelance", hobby: "Hobby" };
+const typeColor: Record<string, string> = { empleado: "text-amber-400 bg-amber-400/10 border-amber-400/20", freelance: "text-emerald-400 bg-emerald-400/10 border-emerald-400/20", hobby: "text-blue-400 bg-blue-400/10 border-blue-400/20" };
+const typeIcon: Record<string, string> = { empleado: "heroicons:briefcase", freelance: "heroicons:star", hobby: "heroicons:sparkles" };
+const categoryClass = accent === 'purple' ? 'text-purple-light' : accent === 'amber' ? 'text-amber-400' : 'text-hylian';
+const glowClass = `card-glow-${accent}`;
+const titleHoverClass = accent === 'purple' ? 'group-hover:text-purple-light' : accent === 'amber' ? 'group-hover:text-amber-400' : 'group-hover:text-hylian';
+const thumb = project.images?.[0];
+const tags = project.tags ?? [];
+const roundClass = square ? '' : 'rounded-2xl';
+const thumbRoundClass = square ? '' : 'rounded-xl';
+---
+
+<a href={withBase(`/projects/${project.id}`)} class={`group h-full flex flex-col p-6 bg-white/[0.02] border border-white/5 ${roundClass} transition ${glowClass}`} data-umami-event="project_card_click" data-umami-event-project={project.id} data-umami-event-category={project.category}>
+  {!isSub && (
+  <div class={`aspect-video bg-white/[0.03] border border-white/5 mb-5 flex items-center justify-center overflow-hidden shrink-0 ${thumbRoundClass}`} style={thumb ? `background: ${thumb.color}10` : ''}>
+    {thumb ? (
+      thumb.src ? (
+        <img src={withBase(thumb.src)} alt={thumb.label} class={`w-full h-full object-cover ${thumbRoundClass}`} />
+      ) : (
+      <div class="text-center">
+        <div class="w-10 h-10 mx-auto rounded-xl flex items-center justify-center" style={`background: ${thumb.color}15; border: 1px solid ${thumb.color}20`}>
+          <svg class="w-5 h-5" style={`color: ${thumb.color}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M2.25 15.75l5.159-5.159a2.25 2.25 0 013.182 0l5.159 5.159m-1.5-1.5l1.409-1.41a2.25 2.25 0 013.182 0l2.909 2.91m-18 3.75h16.5a1.5 1.5 0 001.5-1.5V6a1.5 1.5 0 00-1.5-1.5H3.75A1.5 1.5 0 002.25 6v12a1.5 1.5 0 001.5 1.5zm10.5-11.25h.008v.008h-.008V8.25zm.375 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z" />
+          </svg>
+        </div>
+        <p class="text-xs text-white/50 mt-2 font-medium">{thumb.label}</p>
+      </div>
+      )
+    ) : (
+      <svg class="w-10 h-10 text-white/10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M2.25 15.75l5.159-5.159a2.25 2.25 0 013.182 0l5.159 5.159m-1.5-1.5l1.409-1.41a2.25 2.25 0 013.182 0l2.909 2.91m-18 3.75h16.5a1.5 1.5 0 001.5-1.5V6a1.5 1.5 0 00-1.5-1.5H3.75A1.5 1.5 0 002.25 6v12a1.5 1.5 0 001.5 1.5zm10.5-11.25h.008v.008h-.008V8.25zm.375 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z" />
+      </svg>
+    )}
+  </div>
+  )}
+  <span class={`text-xs font-semibold tracking-widest ${categoryClass} uppercase shrink-0`}>{project.category}</span>
+  {project.client && (
+    <p class="text-[11px] text-white/40 mt-1 shrink-0">{project.client}</p>
+  )}
+  <h3 class={`text-lg font-semibold text-white ${titleHoverClass} transition-colors mt-3 mb-2 shrink-0`}>{project.title}</h3>
+  <p class="text-white/50 text-sm leading-relaxed line-clamp-3">{project.description}</p>
+  <div class="mt-auto pt-4">
+    {project.type && (
+      <span class={`inline-flex items-center gap-1 text-[10px] font-semibold tracking-wider uppercase px-2 py-0.5 rounded-full border mb-2 w-fit ${typeColor[project.type] || 'text-white/40 bg-white/5 border-white/10'}`}>
+        <Icon name={typeIcon[project.type]} size={12} />
+        {typeLabel[project.type] || project.type}
+      </span>
+    )}
+    <div class="flex flex-nowrap gap-2 overflow-hidden min-w-0">
+    {tags.slice(0, 3).map((tag) => (
+      <span class="text-[11px] text-white/50 bg-white/5 border border-white/5 px-2.5 py-1 rounded-full truncate min-w-0">{tag}</span>
+    ))}
+    {tags.length > 3 && (
+      <span class="text-[11px] text-white/50 px-2.5 py-1 shrink-0">+{tags.length - 3}</span>
+    )}
+    </div>
+  </div>
+</a>

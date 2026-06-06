@@ -1,0 +1,29 @@
+---
+import { withBase } from '../../utils/paths';
+interface Props {
+  roomCount: number;
+  logCount: number;
+  codexCount: number;
+}
+
+const { roomCount, logCount, codexCount } = Astro.props;
+---
+
+<section class="final-save-point" data-final-save-point>
+  <div class="final-save-card">
+    <p class="final-save-label font-pixel">SAVE POINT REACHED · Save File #001</p>
+    <h2>Gracias por explorar este archivo.</h2>
+    <p class="final-save-copy">
+      Progreso guardado.<br />
+      La próxima quest puede empezar con un mensaje.
+    </p>
+    <div class="final-progress-summary" id="final-progress-summary" aria-live="polite">
+      <span class="final-progress-chip"><strong>Room</strong><em>0 / {roomCount}</em></span>
+      <span class="final-progress-chip"><strong>Logs</strong><em>0 / {logCount}</em></span>
+      <span class="final-progress-chip"><strong>Codex</strong><em>0 / {codexCount}</em></span>
+      <span class="final-progress-chip"><strong>Secrets</strong><em>0 / ?</em></span>
+    </div>
+    <a class="final-save-cta" href={withBase('/contact')} aria-label="Start a new quest — contact Osmar">Start a New Quest</a>
+    <p class="final-save-state font-pixel" aria-live="polite">Progress saved.</p>
+  </div>
+</section>

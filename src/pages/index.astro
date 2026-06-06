@@ -1,0 +1,561 @@
+---
+import HomeLayout from '../layouts/HomeLayout.astro';
+import SectionTitle from '../components/global/SectionTitle.astro';
+import ProjectCard from '../components/global/ProjectCard.astro';
+import StackSection from '../components/global/StackSection.astro';
+import { Icon } from 'astro-icon/components';
+import { getCollection, type CollectionEntry } from 'astro:content';
+import experience from '../data/experience.json';
+import { expertiseCards, expertiseStyles, processSteps } from '../data/home';
+
+interface ExperienceItem {
+  period: string;
+  role: string;
+  company: string;
+  location: string;
+  desc: string;
+  tags: string[];
+  extraDesc?: string;
+  metrics?: Array<{ value: string; label: string }>;
+  achievement?: string;
+}
+import { withBase } from '../utils/paths';
+import '../styles/index.css';
+
+const allProjects = (await getCollection('projects')).map((p: CollectionEntry<'projects'>) => ({ ...p.data, id: p.slug }));
+const sorted = [...allProjects].filter((p) => !p.hidden).sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+const latestProject = sorted[0];
+const featuredProjects = allProjects
+  .filter((p: typeof allProjects[0]) => !p.hidden)
+  .filter((p: typeof allProjects[0]) => (p.featuredIn ?? []).includes('index'))
+  .filter((p: typeof allProjects[0]) => p.id !== latestProject?.id)
+  .sort((a: typeof allProjects[0], b: typeof allProjects[0]) => new Date(b.date).getTime() - new Date(a.date).getTime())
+  .slice(0, 3);
+
+const educationItems = [
+  {
+    institution: 'Universidad Autónoma de Asunción',
+    program: 'Ingeniería Informática',
+    period: '2021 – 2027',
+    description: 'Formación en análisis, diseño, arquitectura de sistemas, programación, bases de datos y gestión de proyectos informáticos.',
+    highlights: [
+      {
+        label: 'Alumno Destacado 2024',
+        href: 'https://www.linkedin.com/in/osbgx/overlay/Education/742011546/treasury/?profileId=ACoAADdNVXcBBRs0Y0jajWmhp3MfJvxRe9Tj6QU',
+      },
+    ],
+  },
+  {
+    institution: 'Colegio José del Rosario Pavón',
+    program: 'Bachiller Técnico en Informática',
+    period: '2018 – 2020',
+    description: 'Formación técnica en informática, programación, bases de datos y herramientas digitales.',
+    highlights: [
+      {
+        label: 'Mejor Alumno x3',
+        href: 'https://www.linkedin.com/in/osbgx/overlay/Education/906982137/treasury/?profileId=ACoAADdNVXcBBRs0Y0jajWmhp3MfJvxRe9Tj6QU',
+      },  
+      {
+        label: 'Mejor Egresado',
+        href: 'https://www.linkedin.com/in/osbgx/overlay/Education/906982137/treasury/?profileId=ACoAADdNVXcBBRs0Y0jajWmhp3MfJvxRe9Tj6QU',
+      },
+    ],
+  },
+];
+
+const languageItems = [
+  {
+    institution: 'Centro Cultural Paraguayo Americano',
+    program: 'Advanced English Studies & Legal and Commercial Translation',
+    period: '2014 – 2020',
+    description: 'Formación avanzada en inglés con certificación C2 y especialización en traducción legal y comercial.',
+    highlightText: 'Comunicación profesional en inglés para contextos académicos, técnicos y laborales.',
+    highlights: [
+      {
+        label: 'Legal & Commercial Translation',
+        href: 'https://www.linkedin.com/in/osbgx/overlay/Education/907232237/treasury/?profileId=ACoAADdNVXcBBRs0Y0jajWmhp3MfJvxRe9Tj6QU',
+      },
+    ],
+  },
+];
+---
+
+<HomeLayout title="Inicio" description="Portfolio profesional de Osmar Bogarín - Data Engineer, Consultant & Multidisciplinary Developer">
+  <section class="min-h-[90vh] relative overflow-hidden grid-pattern">
+    <div class="absolute inset-0 bg-gradient-to-b from-amber-500/5 via-transparent to-carbon pointer-events-none"></div>
+    <div class="absolute top-1/4 right-1/4 w-96 h-96 bg-amber-500/10 rounded-full blur-[100px] pointer-events-none"></div>
+    <div class="absolute bottom-1/4 left-1/4 w-64 h-64 bg-amber-500/5 rounded-full blur-[80px] pointer-events-none"></div>
+    <div id="hero-glow" class="absolute inset-0 pointer-events-none" style="will-change: background;"></div>
+    
+    <div id="hero-particles" class="absolute inset-0 pointer-events-none overflow-hidden">
+      <div class="hero-p" style="top:18%;left:12%;width:2px;height:2px;--d:0s;--dur:5s"></div>
+      <div class="hero-p" style="top:30%;left:70%;width:3px;height:3px;--d:1.2s;--dur:7s"></div>
+      <div class="hero-p" style="top:55%;left:25%;width:2px;height:2px;--d:0.5s;--dur:6s"></div>
+      <div class="hero-p" style="top:70%;left:80%;width:1.5px;height:1.5px;--d:2s;--dur:8s"></div>
+      <div class="hero-p" style="top:40%;left:50%;width:2.5px;height:2.5px;--d:3s;--dur:5.5s"></div>
+      <div class="hero-p" style="top:85%;left:35%;width:2px;height:2px;--d:0.8s;--dur:6.5s"></div>
+      <div class="hero-p" style="top:15%;left:85%;width:1.5px;height:1.5px;--d:4s;--dur:7.5s"></div>
+      <div class="hero-p" style="top:60%;left:10%;width:3px;height:3px;--d:1.5s;--dur:5.8s"></div>
+      <div class="hero-p" style="top:45%;left:40%;width:2px;height:2px;--d:2.5s;--dur:6.2s"></div>
+      <div class="hero-p" style="top:75%;left:65%;width:2.5px;height:2.5px;--d:3.5s;--dur:7.8s"></div>
+    </div>
+    
+    <div class="container-section flex flex-col lg:flex-row items-start justify-between pt-12 md:pt-16 min-h-[90vh] gap-8 lg:gap-12">
+      <div class="w-full max-w-2xl">
+        <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/10 text-sm text-white/50 mb-3 animate-slide-up">
+          <span class="w-2 h-2 rounded-full bg-hylian available-dot"></span>
+          Disponible
+        </div>
+        
+        <p class="text-xl md:text-xl text-white/50 mt-6 max-w-xl leading-relaxed animate-slide-up animate-slide-up-delay-2">
+          Hola, soy
+        </p>
+
+        <h1 class="text-5xl md:text-7xl lg:text-7xl font-bold text-white leading-[1.05] tracking-tight animate-slide-up animate-slide-up-delay-1">
+          Osmar<br />
+          Bogarín
+        </h1>
+        
+        <p class="text-2xl md:text-3xl lg:text-4xl font-bold mt-6 animate-slide-up animate-slide-up-delay-2">
+          <span class="bg-gradient-to-r from-amber-300 via-hero to-amber-500 bg-clip-text text-transparent">Data Fullstack</span>
+        </p>
+        <p class="text-base md:text-lg text-white/50 mt-2 animate-slide-up animate-slide-up-delay-2">
+          Consultor &amp; Desarrollador
+        </p>
+        <p class="text-base md:text-lg text-white/50 mt-6 max-w-xl leading-relaxed animate-slide-up animate-slide-up-delay-2">
+          Construyo e implemento soluciones eficientes, escalables y con personalidad ;)
+        </p>
+        
+        <div class="flex flex-wrap gap-3 md:gap-4 mt-8 md:mt-10 animate-slide-up animate-slide-up-delay-3">
+          <a href={withBase('/contact')} class="group relative inline-flex items-center gap-2 bg-amber-500 text-carbon font-semibold px-5 md:px-8 py-2.5 md:py-3.5 text-sm md:text-base rounded-xl hover:bg-amber-500/90 transition hover:shadow-xl hover:shadow-amber-500/20" data-umami-event="home_hero_contact_cta">
+            Contáctame
+            <Icon name="heroicons:arrow-right" class="w-3.5 h-3.5 md:w-4 md:h-4 text-carbon group-hover:translate-x-1 transition-transform" />
+          </a>
+          <a href="#proyectos" class="inline-flex items-center gap-2 border border-white/20 text-white px-5 md:px-8 py-2.5 md:py-3.5 text-sm md:text-base rounded-xl hover:bg-white/5 transition" data-umami-event="home_hero_projects_cta">
+            Ver proyectos
+          </a>
+          <a href={withBase('/about')} class="inline-flex items-center gap-2 text-white/50 hover:text-white px-4 md:px-8 py-2.5 md:py-3.5 text-sm md:text-base transition" data-umami-event="home_hero_about_cta">
+            Más sobre mí
+            <Icon name="heroicons:arrow-right" class="w-4 h-4" />
+          </a>
+        </div>
+      </div>
+      <div class="hidden lg:flex items-end h-[75vh] self-end relative">
+        <div class="absolute inset-0 bg-gradient-to-t from-amber-500/30 via-amber-500/5 to-transparent rounded-full blur-[80px]"></div>
+        <img src={withBase('/me.webp')} alt="Osmar Bogarín" width="842" height="1264" loading="eager" decoding="async" fetchpriority="high" class="h-full w-auto object-contain relative z-10 max-w-[380px]" />
+        <div class="absolute top-[12%] -left-3 z-20 px-3 py-1.5 rounded-xl bg-white/[0.03] border border-white/5 backdrop-blur-sm">
+          <span class="text-xs text-white/50"><span class="text-amber-400/70 font-semibold">+13</span> proyectos</span>
+        </div>
+        <div class="absolute top-1/2 -translate-y-1/2 -right-2 z-20 px-3 py-1.5 rounded-xl bg-white/[0.03] border border-white/5 backdrop-blur-sm">
+          <span class="text-xs text-white/50"><span class="text-amber-400/70 font-semibold">+6</span> años exp.</span>
+        </div>
+        <div class="absolute bottom-[18%] -left-3 z-20 px-3 py-1.5 rounded-xl bg-white/[0.03] border border-white/5 backdrop-blur-sm">
+          <span class="text-xs text-white/50"><span class="text-amber-400/70 font-semibold">+3</span> áreas</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section data-reveal id="proyectos" class="py-24 md:py-32" aria-labelledby="featured-heading">
+    <div class="container-section">
+      <SectionTitle title="Proyectos Destacados" description="Una muestra de mi trabajo en acción." id="featured-heading" />
+      <div class="mt-12 space-y-6">
+        <a href={withBase(`/projects/${latestProject.id}`)} class="featured-card group block p-8 rounded-2xl bg-white/[0.02] border border-white/5 hover:border-amber-500/20 transition relative overflow-hidden" data-umami-event="home_latest_project_click" data-umami-event-project={latestProject.id}>
+          <div class="absolute inset-0 bg-gradient-to-br from-amber-500/[0.03] to-transparent opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none"></div>
+          <div class="relative z-10 flex flex-col md:flex-row gap-8 items-start">
+            <div class="w-full md:w-1/2 aspect-video rounded-xl bg-white/[0.03] border border-white/5 flex items-center justify-center overflow-hidden">
+              <div class="text-center">
+                {latestProject.images?.[0] ? (
+                  latestProject.images[0].src ? (
+                    <img src={withBase(latestProject.images[0].src)} alt={latestProject.images[0].label} class="h-full w-full object-cover" />
+                  ) : (
+                    <>
+                      <div class="w-14 h-14 mx-auto rounded-xl flex items-center justify-center" style={`background: ${latestProject.images[0].color}15; border: 1px solid ${latestProject.images[0].color}20`}>
+                        <Icon name="heroicons:photo" class="w-7 h-7" style={`color: ${latestProject.images[0].color}`} />
+                      </div>
+                      <p class="text-xs text-white/50 mt-2 font-medium">{latestProject.images[0].label}</p>
+                    </>
+                  )
+                ) : (
+                  <div class="w-14 h-14 mx-auto rounded-xl flex items-center justify-center bg-white/5 border border-white/10">
+                    <Icon name="heroicons:photo" class="w-7 h-7 text-white/20" />
+                  </div>
+                )}
+              </div>
+            </div>
+            <div class="w-full md:w-1/2">
+              <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-500/10 border border-amber-500/20 text-xs text-amber-300 mb-4">
+                <span class="w-1.5 h-1.5 rounded-full bg-amber-500"></span>
+                Último proyecto
+              </div>
+              <span class="text-xs font-semibold tracking-widest text-amber-300 uppercase">{latestProject.category}</span>
+              {latestProject.client && <p class="text-xs text-white/40 mt-1">{latestProject.client}</p>}
+              <h3 class="text-2xl font-bold text-white group-hover:text-amber-300 transition-colors mt-2 mb-3">{latestProject.title}</h3>
+              <p class="text-desc">{latestProject.description}</p>
+              <div class="flex flex-wrap gap-2 mt-5">
+                {latestProject.tags.slice(0, 4).map((tag: string) => (
+                  <span class="text-[11px] text-white/50 bg-white/5 border border-white/5 px-2.5 py-1 rounded-full whitespace-nowrap">{tag}</span>
+                ))}
+                {latestProject.tags.length > 4 && (
+                  <span class="text-[11px] text-white/50 px-2.5 py-1">+{latestProject.tags.length - 4}</span>
+                )}
+              </div>
+              <div class="flex items-center gap-2 mt-6 text-sm text-amber-300 group-hover:gap-3 transition-all">
+                <span>Ver proyecto</span>
+                <Icon name="heroicons:arrow-right" class="w-4 h-4" />
+              </div>
+            </div>
+          </div>
+        </a>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+          {featuredProjects.map((p: typeof allProjects[0]) => <ProjectCard project={p} accent="amber" />)}
+        </div>
+      </div>
+      <div class="text-center mt-10">
+        <a href={withBase('/projects')} class="inline-flex items-center gap-2 text-white/50 hover:text-white text-sm transition-colors" data-umami-event="home_view_all_projects">
+          Ver todos los proyectos
+          <Icon name="heroicons:arrow-right" class="w-3.5 h-3.5" />
+        </a>
+      </div>
+
+      <div class="flex items-center justify-between mt-16 pt-6 border-t border-white/5">
+        <p class="text-sm text-white/50">¿Viste algo que te interese?</p>
+        <a href={withBase('/contact')} class="text-sm text-amber-400/70 hover:text-amber-300 transition-colors inline-flex items-center gap-1.5 group" data-umami-event="home_projects_contact_cta">
+          contáctame
+          <Icon name="heroicons:arrow-right" class="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <section data-reveal class="section section-subtle" aria-labelledby="exp-heading">
+    <div class="max-w-5xl mx-auto px-6 md:px-8">
+      <SectionTitle title="Experiencia" description="Trayectoria profesional y proyectos relevantes." id="exp-heading" />
+
+      <div class="relative mt-16">
+        <div class="absolute left-[5px] md:left-1/2 top-0 bottom-0 w-px bg-gradient-to-b from-amber-500/30 via-amber-500/10 to-transparent md:-translate-x-1/2" id="exp-timeline"></div>
+
+        {(() => {
+          const renderItem = (item: ExperienceItem, i: number) => {
+            const side = i % 2 === 0 ? 'left' : 'right';
+            return (
+              <div class={`relative flex flex-row items-start gap-4 md:gap-0 pb-10 last:pb-0 ${side === 'right' ? 'md:flex-row-reverse' : ''}`}>
+                <div class={`hidden md:flex flex-1 ${side === 'left' ? 'items-end pr-10 text-right' : 'items-start pl-10'}`}>
+                  <span class="text-sm text-white/50 font-mono bg-white/5 border border-white/10 rounded-full px-4 py-1.5 whitespace-nowrap">{item.period}</span>
+                </div>
+                <div class="relative z-10 flex-shrink-0 flex items-start pt-1">
+                  <div class="exp-dot w-[11px] h-[11px] rounded-full bg-amber-500 shadow-[0_0_12px_rgba(251,191,36,0.5)] ring-4 ring-carbon cursor-pointer" role="button" tabindex="0" aria-expanded="false" data-index={i}></div>
+                </div>
+                <div class={`flex-1 min-w-0 ${side === 'left' ? 'md:pl-10' : 'md:pr-10'}`}>
+                  <span class="md:hidden text-xs text-white/50 font-mono bg-white/5 border border-white/10 rounded-full px-3 py-0.5 inline-block mb-2">{item.period}</span>
+                  <div class="exp-card p-5 md:p-6 rounded-2xl bg-white/[0.02] border border-white/5 hover:border-amber-500/20 transition cursor-pointer" role="button" tabindex="0" aria-expanded="false" data-index={i}>
+                    <div class="flex items-start justify-between gap-4">
+                      <div class="flex-1">
+                        <h3 class="text-base md:text-lg font-semibold text-white">{item.role}</h3>
+                        <p class="text-sm text-white/50 mt-0.5">{item.company}</p>
+                        <p class="text-sm text-white/50 mt-3 md:mt-4 leading-relaxed">{item.desc}</p>
+                        <div class="flex flex-wrap gap-2 mt-3 md:mt-4">
+                          {item.tags.map((tag) => (
+                            <span class="text-[11px] text-white/50 bg-white/5 border border-white/10 px-2.5 py-1 rounded-full">{tag}</span>
+                          ))}
+                        </div>
+                      </div>
+                      <div class="exp-chevron shrink-0 mt-1 transition-transform duration-300">
+                        <Icon name="heroicons:chevron-down" class="w-5 h-5 text-white/20" />
+                      </div>
+                    </div>
+                    <div class="exp-extra transition-all duration-300" style="max-height: 0; overflow: hidden;">
+                      <div class="pt-5 mt-5 border-t border-white/5 space-y-5">
+                        {item.metrics && (
+                          <div class="grid grid-cols-[repeat(auto-fill,minmax(130px,1fr))] gap-4">
+                            {item.metrics.map((m) => (
+                              <div class="text-center p-3 rounded-xl bg-white/[0.02] border border-white/5">
+                                <p class="text-lg font-bold text-amber-300 font-mono">{m.value}</p>
+                                <p class="text-[10px] text-white/50 uppercase tracking-wider mt-0.5">{m.label}</p>
+                              </div>
+                            ))}
+                          </div>
+                        )}
+                        {item.achievement && (
+                          <div class="flex items-start gap-3 p-4 rounded-xl bg-amber-500/[0.03] border border-amber-500/10">
+                            <Icon name="heroicons:star" class="w-5 h-5 text-amber-300 shrink-0 mt-0.5" />
+                            <p class="text-sm text-white/50 leading-relaxed">{item.achievement}</p>
+                          </div>
+                        )}
+                        {item.extraDesc && (
+                            <p class="text-sm text-white/50 leading-relaxed italic">— {item.extraDesc}</p>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            );
+          };
+
+          const visible = experience.slice(0, 2);
+          const hidden = experience.slice(2);
+
+          return (
+            <>
+              {visible.map((item, i) => renderItem(item, i))}
+              {hidden.length > 0 && (
+                <>
+                  <div id="exp-extra" style="display: none">
+                    {hidden.map((item, i) => renderItem(item, i + visible.length))}
+                  </div>
+                  <div class="flex justify-center mt-6">
+                    <button id="exp-toggle" class="text-sm text-white/50 hover:text-white transition-colors cursor-pointer bg-transparent border-none inline-flex items-center gap-1.5" data-umami-event="home_experience_toggle">
+                      ver más
+                      <Icon name="heroicons:chevron-down" class="w-3.5 h-3.5" />
+                    </button>
+                  </div>
+                </>
+              )}
+            </>
+          );
+        })()}
+      </div>
+
+      <script>
+        document.addEventListener('click', function (e) {
+          const btn = (e.target as Element).closest('#exp-toggle');
+          if (!btn) return;
+          const extra = document.getElementById('exp-extra');
+          if (!extra) return;
+          const isHidden = extra.style.display === 'none';
+          extra.style.display = isHidden ? '' : 'none';
+          btn.innerHTML = isHidden
+            ? 'ver menos <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M14.707 12.707a1 1 0 01-1.414 0L10 9.414l-3.293 3.293a1 1 0 01-1.414-1.414l4-4a1 1 0 011.414 0l4 4a1 1 0 010 1.414z" clip-rule="evenodd"/></svg>'
+            : 'ver más <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"/></svg>';
+        });
+      </script>
+    </div>
+  </section>
+
+  <section data-reveal class="section" aria-labelledby="education-heading">
+    <div class="max-w-5xl mx-auto px-6 md:px-8">
+      <div class="max-w-2xl mb-12">
+        <h2 id="education-heading" class="text-3xl md:text-4xl font-bold text-white">Educación</h2>
+        <p class="text-white/50 text-base md:text-lg mt-3 leading-relaxed">
+          Formación académica que respalda mi trabajo en sistemas, datos y software.
+        </p>
+      </div>
+
+      <div class="space-y-12">
+        <div class="education-group" aria-labelledby="education-group-heading">
+          <div class="education-group-label">
+            <h3 id="education-group-heading">Educación</h3>
+            <p>Base académica y técnica.</p>
+          </div>
+
+          <div class="space-y-4">
+            {educationItems.map((item) => (
+              <article class="education-card">
+                <div class="education-card-main">
+                  <p class="education-period">{item.period}</p>
+                  <div>
+                    <h4>{item.institution}</h4>
+                    <p class="education-program">{item.program}</p>
+                    <p class="education-description">{item.description}</p>
+                  </div>
+                </div>
+                <div class="education-badges" aria-label={`Reconocimientos de ${item.institution}`}>
+                  {item.highlights.map((highlight) => (
+                    typeof highlight === 'string' ? (
+                      <span>{highlight}</span>
+                    ) : (
+                      <a href={highlight.href} target="_blank" rel="noopener noreferrer" aria-label={`Ver ${highlight.label} en LinkedIn`}>{highlight.label}</a>
+                    )
+                  ))}
+                </div>
+              </article>
+            ))}
+          </div>
+        </div>
+
+        <div class="education-group" aria-labelledby="languages-group-heading">
+          <div class="education-group-label">
+            <h3 id="languages-group-heading">Idiomas &amp; Certificaciones</h3>
+            <p>Comunicación profesional.</p>
+          </div>
+
+          <div class="space-y-4">
+            {languageItems.map((item) => (
+              <article class="education-card">
+                <div class="education-card-main">
+                  <p class="education-period">{item.period}</p>
+                  <div>
+                    <h4>{item.institution}</h4>
+                    <p class="education-program">{item.program}</p>
+                    <p class="education-description">{item.description}</p>
+                    <p class="education-note">{item.highlightText}</p>
+                  </div>
+                </div>
+                <div class="education-badges" aria-label={`Certificaciones de ${item.institution}`}>
+                  {item.highlights.map((highlight) => (
+                    typeof highlight === 'string' ? (
+                      <span>{highlight}</span>
+                    ) : (
+                      <a href={highlight.href} target="_blank" rel="noopener noreferrer" aria-label={`Ver ${highlight.label} en LinkedIn`}>{highlight.label}</a>
+                    )
+                  ))}
+                </div>
+              </article>
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section data-reveal class="section container-section" aria-labelledby="expertise-heading">
+    <SectionTitle title="Áreas de Expertise" description="Cuatro disciplinas, un enfoque: resolver problemas reales con tecnología." id="expertise-heading" />
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-12">
+      {expertiseCards.map((card, i) => {
+        const s = expertiseStyles[card.accent] || expertiseStyles.amber;
+        return (
+          <a href={withBase(card.href)} class={`group relative p-8 rounded-2xl ${s.card} transition duration-500 overflow-hidden expertise-card`} style={`--dir: ${i % 2 === 0 ? 'left' : 'right'}; --i: ${i}`} data-umami-event="home_expertise_click" data-umami-event-section={card.title}>
+            <div class={`absolute inset-0 bg-gradient-to-br ${s.grad} to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500`}></div>
+            <div class="relative z-10">
+              <div class={`w-12 h-12 rounded-xl ${s.icon} flex items-center justify-center mb-6 ${s.anim}`}>
+                <Icon name={card.icon} class={`w-6 h-6 ${s.text}`} />
+              </div>
+              <h3 class={`text-xl font-semibold text-white ${s.hover} transition-colors mb-3`}>{card.title}</h3>
+              <p class="text-desc">{card.desc}</p>
+            </div>
+          </a>
+        );
+      })}
+    </div>
+  </section>
+
+  <StackSection accent="amber" />
+
+  <section data-reveal class="section container-section" aria-labelledby="process-heading">
+    <SectionTitle title="Mi Proceso" description="De la idea a la producción, paso a paso." id="process-heading" />
+    <div class="relative mt-16">
+      <div class="hidden md:block absolute top-24 left-[12.5%] right-[12.5%] h-px bg-gradient-to-r from-amber-500/40 via-amber-500/20 to-transparent">
+        <div class="process-flow-dot"></div>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-8 md:gap-6">
+        {processSteps.map((p, i) => (
+          <div class="relative group process-step" style={`--step-i: ${i}`}>
+            <div class="flex md:flex-col items-start md:items-center gap-5 md:gap-4 md:text-center">
+              <div class="relative shrink-0">
+                <div class={`w-14 h-14 md:w-16 md:h-16 rounded-2xl bg-amber-500/10 border border-amber-500/20 flex items-center justify-center group-hover:bg-amber-500/20 group-hover:border-amber-500/30 transition duration-300 group-hover:shadow-[0_0_20px_-4px_rgba(251,191,36,0.3)] ${p.anim}`}>
+                  <Icon name={p.icon} class="w-6 h-6 md:w-7 md:h-7 text-amber-300" />
+                </div>
+                <span class="absolute -top-1.5 -right-1.5 w-5 h-5 rounded-full bg-amber-500 text-[10px] font-bold text-white flex items-center justify-center process-num">{p.step}</span>
+              </div>
+              <div class="flex-1 md:flex-none">
+                <h3 class="text-lg font-semibold text-white group-hover:text-amber-300 transition-colors">{p.title}</h3>
+                <p class="text-sm text-white/50 mt-2 leading-relaxed md:max-w-[220px] md:mx-auto">{p.desc}</p>
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section data-reveal class="section section-subtle" aria-labelledby="cta-heading">
+    <div class="absolute inset-0 bg-gradient-to-b from-amber-500/[0.02] via-transparent to-amber-500/[0.02] pointer-events-none"></div>
+    <div class="absolute top-1/2 left-1/4 w-72 h-72 bg-amber-500/5 rounded-full blur-[120px] pointer-events-none animate-glow-drift"></div>
+    <div class="absolute bottom-1/4 right-1/4 w-48 h-48 bg-amber-500/[0.03] rounded-full blur-[100px] pointer-events-none animate-glow-drift" style="animation-delay: -3s;"></div>
+    <div class="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-amber-500/20 to-transparent"></div>
+    <div class="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-amber-500/10 to-transparent"></div>
+
+    <div class="relative max-w-4xl mx-auto px-6 md:px-8 text-center">
+      <h2 id="cta-heading" class="font-bold text-white mb-6" style="font-size: clamp(1.25rem, 4.5vw, 3rem);">
+        ¿Trabajamos <span class="whitespace-nowrap">juntos?<span class="inline-block animate-heading-pulse"></span></span>
+      </h2>
+      <p class="text-lg text-white/50 max-w-xl mx-auto leading-relaxed mb-10">
+        Estoy disponible para proyectos freelance, consultoría y colaboraciones interesantes.
+      </p>
+      <a href={withBase('/contact')} class="group relative inline-flex items-center gap-2 bg-amber-500 text-white font-semibold px-8 py-3.5 rounded-xl hover:bg-amber-500/90 transition hover:shadow-xl hover:shadow-amber-500/20 overflow-hidden" data-umami-event="home_final_contact_cta">
+        <span class="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -skew-x-12 translate-x-[-200%] group-hover:translate-x-[200%] transition-transform duration-700"></span>
+        <span class="relative">Empecemos</span>
+        <Icon name="heroicons:arrow-right" class="w-4 h-4 relative group-hover:translate-x-1 transition-transform" />
+      </a>
+    </div>
+  </section>
+</HomeLayout>
+
+<script>
+  document.addEventListener('astro:page-load', () => {
+    function toggleExp(idx: number) {
+      const card = document.querySelector(`.exp-card[data-index="${idx}"]`);
+      const wrapper = card?.parentElement;
+      const extra = wrapper?.querySelector('.exp-extra') as HTMLElement | null;
+      const chevron = wrapper?.querySelector('.exp-chevron');
+      const dot = document.querySelector(`.exp-dot[data-index="${idx}"]`);
+      if (!card || !extra || !chevron) return;
+      const isOpen = extra.style.maxHeight && extra.style.maxHeight !== '0px';
+      if (isOpen) {
+        extra.style.overflow = 'hidden';
+        extra.style.maxHeight = '0';
+      } else {
+        extra.style.maxHeight = extra.scrollHeight + 'px';
+        const onEnd = () => {
+          extra.style.overflow = '';
+          extra.removeEventListener('transitionend', onEnd);
+        };
+        extra.addEventListener('transitionend', onEnd);
+      }
+      chevron.classList.toggle('chevron-open');
+      if (dot) {
+        dot.classList.toggle('exp-active');
+        dot.setAttribute('aria-expanded', String(!isOpen));
+      }
+      card.setAttribute('aria-expanded', String(!isOpen));
+    }
+
+    document.querySelectorAll('.exp-card').forEach((card) => {
+      const cardEl = card as HTMLElement;
+      if (cardEl.dataset.expGuard) return;
+      cardEl.dataset.expGuard = '1';
+      cardEl.addEventListener('click', () => toggleExp(Number(cardEl.dataset.index)));
+      card.addEventListener('keydown', (e) => {
+        if ((e as KeyboardEvent).key === 'Enter' || (e as KeyboardEvent).key === ' ') {
+          e.preventDefault();
+          toggleExp(Number(cardEl.dataset.index));
+        }
+      });
+    });
+    document.querySelectorAll('.exp-dot').forEach((dot) => {
+      const dotEl = dot as HTMLElement;
+      if (dotEl.dataset.expGuard) return;
+      dotEl.dataset.expGuard = '1';
+      dotEl.addEventListener('click', () => toggleExp(Number(dotEl.dataset.index)));
+      dot.addEventListener('keydown', (e) => {
+        if ((e as KeyboardEvent).key === 'Enter' || (e as KeyboardEvent).key === ' ') {
+          e.preventDefault();
+          toggleExp(Number(dotEl.dataset.index));
+        }
+      });
+    });
+
+    const heroGlow = document.getElementById('hero-glow');
+    const hero = heroGlow?.parentElement;
+    if (heroGlow && hero && !hero.dataset.mousemoveActive) {
+      hero.dataset.mousemoveActive = 'true';
+      let ticking = false;
+      hero.addEventListener('mousemove', (e) => {
+        if (!ticking) {
+          requestAnimationFrame(() => {
+            const rect = hero.getBoundingClientRect();
+            const x = ((e.clientX - rect.left) / rect.width) * 100;
+            const y = ((e.clientY - rect.top) / rect.height) * 100;
+            heroGlow.style.background = `radial-gradient(350px at ${x}% ${y}%, rgba(251,191,36,0.06), transparent 60%)`;
+            ticking = false;
+          });
+          ticking = true;
+        }
+      });
+    }
+  });
+</script>
+
+

@@ -1,0 +1,278 @@
+.expertise-card {
+  opacity: 0;
+  animation: cardEntrance 0.5s ease-out calc(var(--i, 0) * 0.15s + 0.2s) forwards;
+}
+.expertise-card[style*="--dir: left"] { transform: translateX(-20px); }
+.expertise-card[style*="--dir: right"] { transform: translateX(20px); }
+
+@keyframes cardEntrance {
+  to {
+    opacity: 1;
+    transform: translateX(0) translateY(0);
+  }
+}
+
+@keyframes dataflowPulse {
+  0%, 100% { transform: scale(1) rotate(0deg); }
+  50% { transform: scale(1.1) rotate(5deg); }
+}
+@keyframes shineSweep {
+  from { transform: translateX(-100%); }
+  to { transform: translateX(100%); }
+}
+
+.icon-consulting {
+  position: relative;
+  overflow: hidden;
+}
+.icon-consulting::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.12), transparent);
+  transform: translateX(-100%);
+}
+.group:hover .icon-consulting::after {
+  animation: shineSweep 0.6s ease-in-out;
+}
+@keyframes bracketFlash {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
+}
+@keyframes mobilePulse {
+  0%, 100% { transform: translateY(0); }
+  25% { transform: translateY(-3px); }
+  50% { transform: translateY(0); }
+  75% { transform: translateY(-2px); }
+}
+
+.group:hover .icon-dataflow { animation: dataflowPulse 0.8s ease-in-out; }
+.group:hover .icon-bracket svg { animation: bracketFlash 0.6s ease-in-out 3; }
+.group:hover .icon-mobile svg { animation: mobilePulse 0.5s ease-in-out 2; }
+
+.process-step {
+  opacity: 0;
+  transform: translateY(20px);
+  animation: cardFadeIn 0.5s ease-out calc(var(--step-i, 0) * 0.15s + 0.2s) forwards;
+}
+
+.process-flow-dot {
+  position: absolute;
+  top: -3px;
+  left: 0;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: rgba(251,191,36,0.8);
+  box-shadow: 0 0 10px rgba(251,191,36,0.6);
+  animation: flowDot 4s ease-in-out infinite;
+}
+
+.process-num {
+  animation: numPulse 3s ease-in-out infinite;
+}
+.process-step:hover .process-num {
+  animation: none;
+  transform: scale(1.2);
+  transition: transform 0.2s;
+}
+
+@keyframes analyzePulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.08); }
+}
+@keyframes designDraw {
+  0% { transform: rotate(-3deg); }
+  50% { transform: rotate(3deg); }
+  100% { transform: rotate(0deg); }
+}
+@keyframes developBracket {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.6; transform: scale(0.95); }
+}
+@keyframes deployLaunch {
+  0% { transform: translateY(0); }
+  50% { transform: translateY(-3px); }
+  100% { transform: translateY(0); }
+}
+
+.group:hover .icon-analyze { animation: analyzePulse 0.8s ease-in-out; }
+.group:hover .icon-design svg { animation: designDraw 0.6s ease-in-out 2; }
+.group:hover .icon-develop svg { animation: developBracket 0.7s ease-in-out 3; }
+.group:hover .icon-deploy svg { animation: deployLaunch 0.5s ease-in-out 2; }
+
+.animate-glow-drift {
+  animation: glowDrift 8s ease-in-out infinite;
+}
+.animate-heading-pulse {
+  width: 2px;
+  height: 1em;
+  background: rgba(251,191,36,0.6);
+  border-radius: 1px;
+  animation: headingPulse 1s ease-in-out infinite;
+  vertical-align: middle;
+  margin-left: 2px;
+}
+
+.exp-card:hover {
+  border-color: rgba(251, 191, 36, 0.3);
+  box-shadow: 0 0 24px -4px rgba(251, 191, 36, 0.35);
+}
+
+.featured-card:hover {
+  border-color: rgba(251, 191, 36, 0.3);
+  box-shadow: 0 0 24px -4px rgba(251, 191, 36, 0.35);
+}
+
+.education-group {
+  display: grid;
+  gap: 1rem;
+}
+
+.education-group-label h3 {
+  color: rgba(251, 191, 36, 0.9);
+  font-family: 'Press Start 2P', monospace;
+  font-size: 0.58rem;
+  letter-spacing: 0.16em;
+  line-height: 1.6;
+  text-transform: uppercase;
+}
+
+.education-group-label p {
+  color: rgba(255, 255, 255, 0.38);
+  font-size: 0.875rem;
+  margin-top: 0.5rem;
+}
+
+.education-card {
+  background: rgba(255, 255, 255, 0.018);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-left: 3px solid rgba(251, 191, 36, 0.42);
+  border-radius: 1rem;
+  padding: 1.25rem;
+  transition: border-color 180ms ease, background 180ms ease;
+}
+
+.education-card:hover {
+  background: rgba(255, 255, 255, 0.03);
+  border-color: rgba(255, 255, 255, 0.12);
+  border-left-color: rgba(251, 191, 36, 0.72);
+}
+
+.education-card-main {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.education-card h4 {
+  color: #fff;
+  font-size: 1.0625rem;
+  font-weight: 650;
+  line-height: 1.35;
+}
+
+.education-period {
+  color: rgba(251, 191, 36, 0.82);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.78rem;
+  line-height: 1.4;
+}
+
+.education-program {
+  color: rgba(255, 255, 255, 0.64);
+  font-size: 0.94rem;
+  margin-top: 0.25rem;
+}
+
+.education-description,
+.education-note {
+  color: rgba(255, 255, 255, 0.52);
+  font-size: 0.875rem;
+  line-height: 1.65;
+  margin-top: 0.75rem;
+}
+
+.education-note {
+  color: rgba(255, 255, 255, 0.46);
+  margin-top: 0.5rem;
+}
+
+.education-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 1rem;
+}
+
+.education-badges > span,
+.education-badges > a {
+  color: rgba(255, 255, 255, 0.72);
+  background: rgba(255, 255, 255, 0.045);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 999px;
+  font-size: 0.72rem;
+  font-weight: 600;
+  line-height: 1.3;
+  padding: 0.35rem 0.65rem;
+}
+
+.education-badges > a {
+  text-decoration: none;
+  transition: color 180ms ease, border-color 180ms ease, background 180ms ease;
+}
+
+.education-badges > a:hover,
+.education-badges > a:focus-visible {
+  color: rgba(251, 191, 36, 0.95);
+  background: rgba(251, 191, 36, 0.08);
+  border-color: rgba(251, 191, 36, 0.24);
+}
+
+@media (min-width: 768px) {
+  .education-group {
+    grid-template-columns: 14rem 1fr;
+    gap: 2rem;
+    align-items: start;
+  }
+
+  .education-group-label {
+    position: sticky;
+    top: 6rem;
+  }
+
+  .education-card {
+    padding: 1.35rem 1.5rem;
+  }
+
+  .education-card-main {
+    grid-template-columns: 7.5rem 1fr;
+    gap: 1.5rem;
+  }
+
+  .education-badges {
+    margin-left: 9rem;
+  }
+}
+
+.exp-dot {
+  animation: dotPulse 3s ease-in-out infinite;
+}
+.exp-dot.exp-active {
+  box-shadow: 0 0 20px rgba(251,191,36,0.8), 0 0 40px rgba(251,191,36,0.3);
+}
+
+.exp-chevron.chevron-open {
+  transform: rotate(180deg);
+}
+
+.hero-p {
+  position: absolute;
+  border-radius: 50%;
+  background: rgba(251, 191, 36, 0.25);
+  pointer-events: none;
+  animation: particleDrift var(--dur, 6s) ease-in-out var(--d, 0s) infinite;
+  will-change: transform;
+}
+.available-dot {
+  animation: availablePulse 2.5s ease-in-out infinite;
+}

@@ -1,0 +1,414 @@
+---
+import ProjectsLayout from '../layouts/ProjectsLayout.astro';
+import SectionTitle from '../components/global/SectionTitle.astro';
+import ProjectCard from '../components/global/ProjectCard.astro';
+import EmptyState from '../components/global/EmptyState.astro';
+import { getCollection, type CollectionEntry } from 'astro:content';
+
+const allProjects = (await getCollection('projects')).map((p: CollectionEntry<'projects'>) => ({ ...p.data, id: p.slug }));
+const visible = allProjects.filter((p: { hidden?: boolean }) => !p.hidden);
+const sorted = [...visible].sort((a: { date: Date }, b: { date: Date }) => new Date(b.date).valueOf() - new Date(a.date).valueOf());
+const clients = [...new Set(sorted.map((p: { client?: string }) => p.client).filter(Boolean))].sort();
+const categories = [...new Set(sorted.map((p: { category?: string }) => p.category).filter(Boolean))].sort();
+const types = [...new Set(sorted.map((p: { type?: string }) => p.type).filter(Boolean))].sort();
+const tags = [...new Set(sorted.flatMap((p: { tags?: string[] }) => p.tags ?? []))].sort();
+const typeLabel: Record<string, string> = { empleado: 'Laboral', freelance: 'Freelance', hobby: 'Hobby' };
+---
+
+<ProjectsLayout title="Proyectos" description="Portfolio de proyectos">
+  <section class="pt-32 pb-24">
+    <div class="max-w-7xl mx-auto px-6 md:px-8">
+      <SectionTitle title="Proyectos" description="Todos los proyectos en los que he trabajado." centered={false} level="h1" />
+
+      {sorted.length > 0 ? (
+        <>
+          <div class="mt-12 rounded-2xl border border-white/5 bg-white/[0.02] p-4 md:p-5" data-project-filters>
+            <div class="grid grid-cols-1 md:grid-cols-[1.4fr_repeat(4,1fr)] gap-3">
+              <label class="block">
+                <span class="sr-only">Buscar proyectos</span>
+                <input data-filter-search type="search" placeholder="Buscar proyectos..." class="w-full h-11 rounded-xl bg-white/[0.03] border border-white/10 px-4 text-sm text-white placeholder:text-white/30 outline-none focus:border-amber-400/40 focus:bg-white/[0.04] transition" data-umami-event="projects_search_focus" />
+              </label>
+
+              <button type="button" data-choice-open="client" class="w-full h-11 rounded-xl bg-carbon border border-white/10 px-3 text-sm text-white/70 outline-none hover:border-amber-400/30 focus-visible:border-amber-400/50 transition text-left flex items-center justify-between gap-3" data-umami-event="projects_filter_open" data-umami-event-filter="client">
+                <span data-choice-label="client">Empresa</span>
+                <span class="text-amber-400/60 text-xs" aria-hidden="true">Elegir</span>
+              </button>
+
+              <button type="button" data-choice-open="type" class="w-full h-11 rounded-xl bg-carbon border border-white/10 px-3 text-sm text-white/70 outline-none hover:border-amber-400/30 focus-visible:border-amber-400/50 transition text-left flex items-center justify-between gap-3" data-umami-event="projects_filter_open" data-umami-event-filter="type">
+                <span data-choice-label="type">Tipo</span>
+                <span class="text-amber-400/60 text-xs" aria-hidden="true">Elegir</span>
+              </button>
+
+              <button type="button" data-choice-open="category" class="w-full h-11 rounded-xl bg-carbon border border-white/10 px-3 text-sm text-white/70 outline-none hover:border-amber-400/30 focus-visible:border-amber-400/50 transition text-left flex items-center justify-between gap-3" data-umami-event="projects_filter_open" data-umami-event-filter="category">
+                <span data-choice-label="category">Categoría</span>
+                <span class="text-amber-400/60 text-xs" aria-hidden="true">Elegir</span>
+              </button>
+
+              <button type="button" data-tag-open class="w-full h-11 rounded-xl bg-carbon border border-white/10 px-3 text-sm text-white/70 outline-none hover:border-amber-400/30 focus-visible:border-amber-400/50 transition text-left flex items-center justify-between gap-3" data-umami-event="projects_filter_open" data-umami-event-filter="tags">
+                <span data-tag-button-label>Tags / tecnologías</span>
+                <span class="text-amber-400/60 text-xs" aria-hidden="true">Elegir</span>
+              </button>
+            </div>
+
+            <div data-selected-filters class="hidden flex-wrap gap-2 mt-4" aria-live="polite"></div>
+
+            <div class="flex flex-wrap items-center justify-between gap-3 mt-4 pt-4 border-t border-white/5">
+              <p class="text-xs text-white/40"><span data-project-count>{sorted.length}</span> proyecto(s) encontrado(s)</p>
+              <button type="button" data-filter-clear class="text-xs text-amber-400/70 hover:text-amber-300 transition-colors" data-umami-event="projects_filter_clear">Limpiar filtros</button>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-8" data-project-grid>
+            {sorted.map((p) => {
+              const projectTags = p.tags ?? [];
+              const search = [p.title, p.description, p.category, p.client, p.type, ...projectTags].filter(Boolean).join(' ');
+              return (
+                <div
+                  data-project-card
+                  data-search={search}
+                  data-client={p.client ?? ''}
+                  data-type={p.type ?? ''}
+                  data-category={p.category ?? ''}
+                  data-tags={projectTags.join('|')}
+                >
+                  <ProjectCard project={p} accent="amber" />
+                </div>
+              );
+            })}
+          </div>
+
+          <div data-filter-empty class="hidden mt-10">
+            <EmptyState title="No hay proyectos con esos filtros." description="Probá cambiar la búsqueda, empresa, categoría o tecnología." icon="heroicons:magnifying-glass" />
+          </div>
+        </>
+      ) : (
+        <EmptyState title="No hay proyectos publicados aún." description="Pronto podrás ver una galería completa de mi trabajo." icon="heroicons:photo" />
+      )}
+    </div>
+  </section>
+
+  {sorted.length > 0 && (
+    <>
+    <div data-choice-modal="client" class="fixed inset-0 z-50 hidden items-center justify-center p-4" role="dialog" aria-modal="true" aria-labelledby="client-modal-title">
+      <button type="button" data-choice-close class="absolute inset-0 bg-carbon/80 backdrop-blur-xl" aria-label="Cerrar selector de empresa"></button>
+      <div class="relative w-full max-w-2xl max-h-[86vh] overflow-hidden rounded-3xl border border-amber-400/15 bg-carbon/95 shadow-2xl shadow-black/50">
+        <div class="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(251,191,36,0.12),transparent_35%),radial-gradient(circle_at_bottom_right,rgba(255,255,255,0.05),transparent_30%)] pointer-events-none"></div>
+        <div class="relative p-5 md:p-7 border-b border-white/5 flex items-start justify-between gap-5">
+          <div>
+            <p class="text-[11px] text-amber-300 uppercase tracking-[0.24em] font-semibold">Filtro</p>
+            <h2 id="client-modal-title" class="text-2xl md:text-3xl font-bold text-white mt-2">Empresa</h2>
+            <p class="text-sm text-white/45 mt-2">Elegí una o varias empresas. Las selecciones aparecen como chips debajo de los filtros.</p>
+          </div>
+          <button type="button" data-choice-close class="shrink-0 w-10 h-10 rounded-full border border-white/10 bg-white/[0.03] text-white/50 hover:text-white hover:border-amber-400/30 transition" aria-label="Cerrar selector">×</button>
+        </div>
+        <div class="relative p-5 md:p-7 overflow-y-auto max-h-[55vh]">
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+            <button type="button" data-choice-option="client" data-value="" class="group rounded-2xl border border-white/8 bg-white/[0.025] px-4 py-3 text-left text-sm text-white/60 hover:text-white hover:border-amber-400/25 hover:bg-amber-400/[0.04] transition">Todas las empresas</button>
+            {clients.map((client) => <button type="button" data-choice-option="client" data-value={client} class="group rounded-2xl border border-white/8 bg-white/[0.025] px-4 py-3 text-left text-sm text-white/60 hover:text-white hover:border-amber-400/25 hover:bg-amber-400/[0.04] transition">{client}</button>)}
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div data-choice-modal="type" class="fixed inset-0 z-50 hidden items-center justify-center p-4" role="dialog" aria-modal="true" aria-labelledby="type-modal-title">
+      <button type="button" data-choice-close class="absolute inset-0 bg-carbon/80 backdrop-blur-xl" aria-label="Cerrar selector de tipo"></button>
+      <div class="relative w-full max-w-2xl max-h-[86vh] overflow-hidden rounded-3xl border border-amber-400/15 bg-carbon/95 shadow-2xl shadow-black/50">
+        <div class="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(251,191,36,0.12),transparent_35%),radial-gradient(circle_at_bottom_right,rgba(255,255,255,0.05),transparent_30%)] pointer-events-none"></div>
+        <div class="relative p-5 md:p-7 border-b border-white/5 flex items-start justify-between gap-5">
+          <div>
+            <p class="text-[11px] text-amber-300 uppercase tracking-[0.24em] font-semibold">Filtro</p>
+            <h2 id="type-modal-title" class="text-2xl md:text-3xl font-bold text-white mt-2">Tipo de proyecto</h2>
+            <p class="text-sm text-white/45 mt-2">Elegí uno o varios tipos de proyecto.</p>
+          </div>
+          <button type="button" data-choice-close class="shrink-0 w-10 h-10 rounded-full border border-white/10 bg-white/[0.03] text-white/50 hover:text-white hover:border-amber-400/30 transition" aria-label="Cerrar selector">×</button>
+        </div>
+        <div class="relative p-5 md:p-7 overflow-y-auto max-h-[55vh]">
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+            <button type="button" data-choice-option="type" data-value="" class="group rounded-2xl border border-white/8 bg-white/[0.025] px-4 py-3 text-left text-sm text-white/60 hover:text-white hover:border-amber-400/25 hover:bg-amber-400/[0.04] transition">Todos los tipos</button>
+            {types.map((type) => <button type="button" data-choice-option="type" data-value={type} class="group rounded-2xl border border-white/8 bg-white/[0.025] px-4 py-3 text-left text-sm text-white/60 hover:text-white hover:border-amber-400/25 hover:bg-amber-400/[0.04] transition">{typeLabel[type as string] ?? type}</button>)}
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div data-choice-modal="category" class="fixed inset-0 z-50 hidden items-center justify-center p-4" role="dialog" aria-modal="true" aria-labelledby="category-modal-title">
+      <button type="button" data-choice-close class="absolute inset-0 bg-carbon/80 backdrop-blur-xl" aria-label="Cerrar selector de categoría"></button>
+      <div class="relative w-full max-w-3xl max-h-[86vh] overflow-hidden rounded-3xl border border-amber-400/15 bg-carbon/95 shadow-2xl shadow-black/50">
+        <div class="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(251,191,36,0.12),transparent_35%),radial-gradient(circle_at_bottom_right,rgba(255,255,255,0.05),transparent_30%)] pointer-events-none"></div>
+        <div class="relative p-5 md:p-7 border-b border-white/5 flex items-start justify-between gap-5">
+          <div>
+            <p class="text-[11px] text-amber-300 uppercase tracking-[0.24em] font-semibold">Filtro</p>
+            <h2 id="category-modal-title" class="text-2xl md:text-3xl font-bold text-white mt-2">Categoría</h2>
+            <p class="text-sm text-white/45 mt-2">Elegí una o varias áreas de trabajo o tipos de solución.</p>
+          </div>
+          <button type="button" data-choice-close class="shrink-0 w-10 h-10 rounded-full border border-white/10 bg-white/[0.03] text-white/50 hover:text-white hover:border-amber-400/30 transition" aria-label="Cerrar selector">×</button>
+        </div>
+        <div class="relative p-5 md:p-7 overflow-y-auto max-h-[55vh]">
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+            <button type="button" data-choice-option="category" data-value="" class="group rounded-2xl border border-white/8 bg-white/[0.025] px-4 py-3 text-left text-sm text-white/60 hover:text-white hover:border-amber-400/25 hover:bg-amber-400/[0.04] transition">Todas las categorías</button>
+            {categories.map((category) => <button type="button" data-choice-option="category" data-value={category} class="group rounded-2xl border border-white/8 bg-white/[0.025] px-4 py-3 text-left text-sm text-white/60 hover:text-white hover:border-amber-400/25 hover:bg-amber-400/[0.04] transition">{category}</button>)}
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div data-tag-modal class="fixed inset-0 z-50 hidden items-center justify-center p-4" role="dialog" aria-modal="true" aria-labelledby="tag-modal-title">
+      <button type="button" data-tag-close class="absolute inset-0 bg-carbon/80 backdrop-blur-xl" aria-label="Cerrar selector de tags"></button>
+      <div class="relative w-full max-w-4xl max-h-[86vh] overflow-hidden rounded-3xl border border-amber-400/15 bg-carbon/95 shadow-2xl shadow-black/50">
+        <div class="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(251,191,36,0.12),transparent_35%),radial-gradient(circle_at_bottom_right,rgba(255,255,255,0.05),transparent_30%)] pointer-events-none"></div>
+        <div class="relative p-5 md:p-7 border-b border-white/5">
+          <div class="flex items-start justify-between gap-5">
+            <div>
+              <p class="text-[11px] text-amber-300 uppercase tracking-[0.24em] font-semibold">Filtros</p>
+              <h2 id="tag-modal-title" class="text-2xl md:text-3xl font-bold text-white mt-2">Tags y tecnologías</h2>
+              <p class="text-sm text-white/45 mt-2 max-w-2xl">Seleccioná una o varias tecnologías. Las selecciones aparecen como chips debajo de los filtros.</p>
+            </div>
+            <button type="button" data-tag-close class="shrink-0 w-10 h-10 rounded-full border border-white/10 bg-white/[0.03] text-white/50 hover:text-white hover:border-amber-400/30 transition" aria-label="Cerrar selector">×</button>
+          </div>
+        </div>
+
+        <div class="relative p-5 md:p-7 overflow-y-auto max-h-[55vh]">
+          <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-2.5">
+            {tags.map((tag) => (
+              <button type="button" data-tag-option data-tag={tag} aria-pressed="false" class="group rounded-2xl border border-white/8 bg-white/[0.025] px-3 py-3 text-left text-sm text-white/60 hover:text-white hover:border-amber-400/25 hover:bg-amber-400/[0.04] transition">
+                <span class="flex items-center gap-2 min-w-0">
+                  <span class="w-2 h-2 rounded-full bg-white/15 group-data-[selected=true]:bg-amber-400 group-data-[selected=true]:shadow-[0_0_10px_rgba(251,191,36,0.55)] shrink-0"></span>
+                  <span class="truncate">{tag}</span>
+                </span>
+              </button>
+            ))}
+          </div>
+        </div>
+
+        <div class="relative flex flex-wrap items-center justify-between gap-3 p-5 md:p-7 border-t border-white/5 bg-white/[0.015]">
+          <p class="text-xs text-white/35"><span data-tag-modal-count>0</span> tag(s) seleccionado(s)</p>
+          <div class="flex items-center gap-3">
+            <button type="button" data-tag-clear class="text-xs text-white/40 hover:text-white transition-colors" data-umami-event="projects_tags_clear">Limpiar tags</button>
+            <button type="button" data-tag-done class="rounded-xl bg-amber-400 px-4 py-2 text-sm font-semibold text-carbon hover:bg-amber-300 transition" data-umami-event="projects_tags_apply">Aplicar</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    </>
+  )}
+</ProjectsLayout>
+
+<script>
+  document.addEventListener('astro:page-load', () => {
+    const root = document.querySelector('[data-project-filters]');
+    const cards = Array.from(document.querySelectorAll('[data-project-card]')) as HTMLElement[];
+    if (!root || cards.length === 0) return;
+
+    const search = root.querySelector('[data-filter-search]');
+    const clear = root.querySelector('[data-filter-clear]');
+    const count = root.querySelector('[data-project-count]');
+    const empty = document.querySelector('[data-filter-empty]');
+    const choiceOpenButtons = Array.from(root.querySelectorAll('[data-choice-open]')) as HTMLElement[];
+    const selectedChoices = { client: new Set<string>(), type: new Set<string>(), category: new Set<string>() };
+    const choiceNames = { client: 'Empresa', type: 'Tipo', category: 'Categoría', tag: 'Tag' };
+    const choiceModals = Array.from(document.querySelectorAll('[data-choice-modal]'));
+    const choiceOptions = Array.from(document.querySelectorAll('[data-choice-option]')) as HTMLElement[];
+    const choiceCloseButtons = Array.from(document.querySelectorAll('[data-choice-close]'));
+    const tagOpen = root.querySelector('[data-tag-open]');
+    const selectedFiltersBox = root.querySelector('[data-selected-filters]');
+    const tagModal = document.querySelector('[data-tag-modal]');
+    const tagOptions = Array.from(document.querySelectorAll('[data-tag-option]')) as HTMLElement[];
+    const tagCloseButtons = Array.from(document.querySelectorAll('[data-tag-close]'));
+    const tagClear = document.querySelector('[data-tag-clear]');
+    const tagDone = document.querySelector('[data-tag-done]');
+    const tagModalCount = document.querySelector('[data-tag-modal-count]');
+    const selectedTags = new Set<string>();
+
+    const normalize = (value: unknown) => (value || '')
+      .toString()
+      .normalize('NFD')
+      .replace(/[\u0300-\u036f]/g, '')
+      .toLowerCase();
+
+    function matches(card: HTMLElement) {
+      const query = normalize((search as HTMLInputElement)?.value);
+      const wantedClients = selectedChoices.client;
+      const wantedTypes = selectedChoices.type;
+      const wantedCategories = selectedChoices.category;
+      const cardTags = (card.dataset.tags || '').split('|').filter(Boolean);
+
+      return (!query || normalize(card.dataset.search).includes(query))
+        && (wantedClients.size === 0 || (card.dataset.client && wantedClients.has(card.dataset.client)))
+        && (wantedTypes.size === 0 || (card.dataset.type && wantedTypes.has(card.dataset.type)))
+        && (wantedCategories.size === 0 || (card.dataset.category && wantedCategories.has(card.dataset.category)))
+        && (selectedTags.size === 0 || Array.from(selectedTags).some((selectedTag) => cardTags.includes(selectedTag)));
+    }
+
+    function renderSelectedFilters() {
+      const selected = Array.from(selectedTags);
+      if (tagModalCount) tagModalCount.textContent = String(selected.length);
+      tagOptions.forEach((option) => {
+        const tag = option.dataset.tag;
+        const active = tag ? selectedTags.has(tag) : false;
+        option.dataset.selected = active ? 'true' : 'false';
+        option.setAttribute('aria-pressed', String(active));
+      });
+    }
+
+    function renderChoices() {
+      choiceOptions.forEach((option) => {
+        const name = option.dataset.choiceOption;
+        const value = option.dataset.value || '';
+        if (!name) return;
+        const choiceSet = selectedChoices[name as keyof typeof selectedChoices];
+        const active = value === '' ? choiceSet.size === 0 : choiceSet.has(value);
+        option.dataset.selected = active ? 'true' : 'false';
+        option.setAttribute('aria-pressed', String(active));
+        option.classList.toggle('border-amber-400/35', active);
+        option.classList.toggle('bg-amber-400/10', active);
+        option.classList.toggle('text-amber-100', active);
+      });
+    }
+
+    function renderChips() {
+      if (!selectedFiltersBox) return;
+      const chips: { group: string; value: string }[] = [];
+      Object.entries(selectedChoices).forEach(([group, values]) => {
+        values.forEach((value) => chips.push({ group, value }));
+      });
+      selectedTags.forEach((value) => chips.push({ group: 'tag', value }));
+
+      selectedFiltersBox.classList.toggle('hidden', chips.length === 0);
+      selectedFiltersBox.classList.toggle('flex', chips.length > 0);
+      selectedFiltersBox.innerHTML = '';
+      chips.forEach(({ group, value }) => {
+        const chip = document.createElement('button');
+        chip.type = 'button';
+        chip.className = 'inline-flex max-w-full items-center gap-1.5 rounded-full border border-amber-400/20 bg-amber-400/10 px-2.5 py-1 text-[11px] text-amber-200 hover:bg-amber-400/15 transition';
+        chip.dataset.filterChip = 'true';
+        chip.dataset.group = group;
+        chip.dataset.value = value;
+        chip.innerHTML = `<span class="text-amber-200/55">${choiceNames[group as keyof typeof choiceNames]}</span><span class="truncate">${value}</span><span class="text-amber-200/60" aria-hidden="true">×</span>`;
+        chip.setAttribute('aria-label', `Quitar ${choiceNames[group as keyof typeof choiceNames]} ${value}`);
+        selectedFiltersBox.appendChild(chip);
+      });
+    }
+
+    function applyFilters() {
+      let visible = 0;
+      cards.forEach((card) => {
+        const show = matches(card);
+        card.classList.toggle('hidden', !show);
+        if (show) visible += 1;
+      });
+      if (count) count.textContent = String(visible);
+      empty?.classList.toggle('hidden', visible !== 0);
+      renderChoices();
+      renderSelectedFilters();
+      renderChips();
+    }
+
+    function openChoiceModal(name: string) {
+      const modal = document.querySelector(`[data-choice-modal="${name}"]`);
+      if (!modal) return;
+      modal.classList.remove('hidden');
+      modal.classList.add('flex');
+      document.documentElement.style.overflow = 'hidden';
+      (modal.querySelector('[data-choice-option]') as HTMLElement)?.focus();
+    }
+
+    function closeChoiceModals() {
+      choiceModals.forEach((modal) => {
+        modal.classList.add('hidden');
+        modal.classList.remove('flex');
+      });
+      document.documentElement.style.overflow = '';
+    }
+
+    function openTagModal() {
+      if (!tagModal) return;
+      tagModal.classList.remove('hidden');
+      tagModal.classList.add('flex');
+      document.documentElement.style.overflow = 'hidden';
+      tagOptions[0]?.focus();
+    }
+
+    function closeTagModal() {
+      if (!tagModal) return;
+      tagModal.classList.add('hidden');
+      tagModal.classList.remove('flex');
+      document.documentElement.style.overflow = '';
+      (tagOpen as HTMLElement)?.focus();
+    }
+
+    function clearSelectedTags() {
+      selectedTags.clear();
+      applyFilters();
+    }
+
+    [search].forEach((control) => {
+      control?.addEventListener('input', applyFilters);
+      control?.addEventListener('change', applyFilters);
+    });
+
+    choiceOpenButtons.forEach((button) => {
+      button.addEventListener('click', () => {
+        const name = button.dataset.choiceOpen;
+        if (name) openChoiceModal(name);
+      });
+    });
+
+    choiceCloseButtons.forEach((button) => button.addEventListener('click', closeChoiceModals));
+
+    choiceOptions.forEach((option) => {
+      option.addEventListener('click', () => {
+        const name = option.dataset.choiceOption;
+        if (!name) return;
+        const value = option.dataset.value || '';
+        const choiceSet = selectedChoices[name as keyof typeof selectedChoices];
+        if (!value) choiceSet.clear();
+        else if (choiceSet.has(value)) choiceSet.delete(value);
+        else choiceSet.add(value);
+        applyFilters();
+      });
+    });
+
+    tagOpen?.addEventListener('click', openTagModal);
+    tagCloseButtons.forEach((button) => button.addEventListener('click', closeTagModal));
+    tagDone?.addEventListener('click', closeTagModal);
+    tagClear?.addEventListener('click', clearSelectedTags);
+
+    tagOptions.forEach((option) => {
+      option.addEventListener('click', () => {
+        const tagName = option.dataset.tag;
+        if (!tagName) return;
+        if (selectedTags.has(tagName)) selectedTags.delete(tagName);
+        else selectedTags.add(tagName);
+        applyFilters();
+      });
+    });
+
+    selectedFiltersBox?.addEventListener('click', (event) => {
+      const chip = (event.target as Element).closest('[data-filter-chip]');
+      if (!chip) return;
+      const group = (chip as HTMLElement).dataset.group;
+      const value = (chip as HTMLElement).dataset.value;
+      if (group === 'tag' && value) selectedTags.delete(value);
+      else if (group && group in selectedChoices && value) selectedChoices[group as keyof typeof selectedChoices].delete(value);
+      applyFilters();
+    });
+
+    document.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape' && tagModal && !tagModal.classList.contains('hidden')) closeTagModal();
+      if (event.key === 'Escape') closeChoiceModals();
+    });
+
+    clear?.addEventListener('click', () => {
+      [search].forEach((control) => {
+        if (control) (control as HTMLInputElement).value = '';
+      });
+      selectedChoices.client.clear();
+      selectedChoices.type.clear();
+      selectedChoices.category.clear();
+      selectedTags.clear();
+      applyFilters();
+    });
+
+    applyFilters();
+  });
+</script>
