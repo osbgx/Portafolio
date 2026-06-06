@@ -3,9 +3,25 @@ import tailwind from '@astrojs/tailwind';
 import icon from 'astro-icon';
 import sitemap from '@astrojs/sitemap';
 
+// Detecta si estamos en GitHub Actions
 const [owner, repo] = (process.env.GITHUB_REPOSITORY || '').split('/');
-const isGitHubProjectPage = Boolean(process.env.GITHUB_ACTIONS && repo && repo !== `${owner}.github.io`);
-const base = process.env.BASE_PATH || (isGitHubProjectPage ? `/${repo}` : '/');
+
+// Si estamos en GitHub Actions y NO es un User/Org Page (osbgx.github.io),
+// entonces es un Project Page → necesita /Portafolio/
+const isGitHubProjectPage =
+  process.env.GITHUB_ACTIONS === 'true' &&
+  repo &&
+  repo !== `${owner}.github.io`;
+
+// Si usamos dominio custom, forzamos base = "/"
+const usingCustomDomain = true;
+
+// Base final
+const base = usingCustomDomain
+  ? '/'
+  : isGitHubProjectPage
+    ? `/${repo}/`
+    : '/';
 
 export default defineConfig({
   site: 'https://osbgx.dev',
