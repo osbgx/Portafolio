@@ -18,7 +18,7 @@ Responsabilidades:
 - `Footer` con prop `theme`
 - `SocialDock` (variantes `mobile` y `desktop`) — componente en `src/components/global/SocialDock.astro`
 - Script de scroll reveal (`src/utils/reveal.ts`)
-- Umami se inyecta globalmente con `https://cloud.umami.is/script.js`, `data-website-id` y `data-domains="osbgx.dev"`
+- Umami se inyecta globalmente con `https://cloud.umami.is/script.js` y `data-website-id`
 
 ## Temas
 

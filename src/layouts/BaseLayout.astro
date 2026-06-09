@@ -108,7 +108,7 @@ const ldGraph = JSON.stringify({ '@context': 'https://schema.org', '@graph': [ld
     <meta name="twitter:site" content={contactInfo.xHandle} />
     <meta name="twitter:creator" content={contactInfo.xHandle} />
     <script type="application/ld+json" set:html={ldGraph}></script>
-    <script defer src={umamiScriptSrc} data-website-id={umamiWebsiteId} data-domains="osbgx.dev"></script>
+    <script defer src={umamiScriptSrc} data-website-id={umamiWebsiteId}></script>
     <script is:inline>
       (() => {
         if (window.__osbgxAnalyticsReady) return;
