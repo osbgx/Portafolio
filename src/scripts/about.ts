@@ -225,11 +225,16 @@ document.addEventListener('astro:page-load', () => {
   }
 
   document.querySelectorAll('.dev-lore-tab').forEach(tab => {
-    tab.addEventListener('click', () => activateDevLoreCategory(tab.dataset.category || 'all'));
+    tab.addEventListener('click', () => {
+      const category = tab.dataset.category || 'all';
+      (window as any).osbgxTrack?.('about_dev_lore_filter', { category });
+      activateDevLoreCategory(category);
+    });
   });
   document.querySelectorAll('.dev-lore-more').forEach(btn => {
     btn.addEventListener('click', () => {
       const group = btn.closest('.dev-lore-group');
+      (window as any).osbgxTrack?.('about_dev_lore_expand', { group: btn.dataset.group || 'lore' });
       group?.querySelectorAll('.dev-lore-card-extra').forEach(card => card.classList.add('is-visible'));
       btn.classList.add('is-hidden');
       discovery.codex.add(`expanded:${btn.dataset.group || 'lore'}`);
@@ -255,6 +260,7 @@ document.addEventListener('astro:page-load', () => {
     hotspot.addEventListener('click', () => {
       const item = (hotspot as HTMLElement).dataset.roomItem;
       const sectionId = (hotspot as HTMLElement).dataset.targetSection || hotspotReactionMap[item || ''] || 'room';
+      (window as any).osbgxTrack?.('about_room_hotspot_click', { item: item || 'unknown', section: sectionId });
       sfxSelect();
       hotspot.classList.remove('is-active');
       void (hotspot as HTMLElement).offsetWidth;
@@ -313,6 +319,7 @@ document.addEventListener('astro:page-load', () => {
       e.preventDefault();
       const targetId = link.getAttribute('href')?.slice(1);
       if (!targetId) return;
+      (window as any).osbgxTrack?.('about_hero_nav_click', { section: targetId });
       cancelGuidedTour();
       sfxSelect();
       nav.openSection(targetId, { scroll: true });
@@ -336,6 +343,7 @@ document.addEventListener('astro:page-load', () => {
         cancelGuidedTour();
         sfxSelect();
         const targetId = link.getAttribute('href').slice(1);
+        (window as any).osbgxTrack?.('about_quick_nav_click', { section: targetId });
         const section = document.getElementById(targetId);
         if (section) {
           const trigger = section.querySelector<HTMLElement>('.accordion-trigger');
@@ -361,6 +369,7 @@ document.addEventListener('astro:page-load', () => {
     const mobileMapToggle = document.querySelector<HTMLElement>('[data-mobile-map-toggle]');
     mobileMapToggle?.addEventListener('click', () => {
       const open = !quickNav.classList.contains('is-mobile-open');
+      (window as any).osbgxTrack?.('about_mobile_map_toggle', { open });
       quickNav.classList.toggle('is-mobile-open', open);
       mobileMapToggle.setAttribute('aria-expanded', open ? 'true' : 'false');
       mobileMapToggle.textContent = open ? 'CLOSE' : 'MAP';
@@ -381,6 +390,7 @@ document.addEventListener('astro:page-load', () => {
   const quietReadButton = document.querySelector<HTMLElement>('[data-quiet-read]');
   quietReadButton?.addEventListener('click', () => {
     const next = !document.body.classList.contains('quiet-read');
+    (window as any).osbgxTrack?.('about_quiet_read_toggle', { enabled: next });
     setQuietRead(next);
     updateBubble(next ? 'Quiet Read activo. Menos ruido, misma historia.' : 'Quiet Read desactivado. Los efectos vuelven al save file.');
     updateAvatarStatus(next ? 'LV.23 · QUIET READ · LOW FX' : 'LV.23 · FULL FX · SAVE FILE ACTIVE');
@@ -388,6 +398,7 @@ document.addEventListener('astro:page-load', () => {
 
   /* ── 21. Reset ── */
   document.getElementById('discovery-reset')?.addEventListener('click', () => {
+    (window as any).osbgxTrack?.('about_save_reset');
     store.reset();
     try { window.localStorage.removeItem('about-mvp-v3-intro-dismissed'); } catch (_) { /* ignore */ }
     try { window.localStorage.removeItem(CAT_CLICKS_KEY); } catch (_) { /* ignore */ }

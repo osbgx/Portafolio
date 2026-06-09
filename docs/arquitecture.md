@@ -147,7 +147,7 @@ Ver [runbook de la escena](runbooks/minigame.md).
 - Sitemap automático y RSS
 - OG image generada en build (`scripts/generate-og-image.mjs` → `public/og-image.webp`)
 - Accesibilidad: skip link, ARIA, `prefers-reduced-motion`, focus visible
-- Analytics opcional: Umami vía variables `PUBLIC_UMAMI_*`
+- Analytics: Umami global en `BaseLayout` con tracking code público hardcodeado
 
 ## Estándares de desarrollo
 

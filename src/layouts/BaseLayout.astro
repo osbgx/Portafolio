@@ -21,6 +21,8 @@ const pagePath = normalizedBasePath && Astro.url.pathname.startsWith(normalizedB
   ? Astro.url.pathname.slice(normalizedBasePath.length) || '/'
   : Astro.url.pathname;
 const canonicalUrl = pagePath === '/' ? `${siteUrl}/` : `${siteUrl}${pagePath}`;
+const umamiScriptSrc = 'https://cloud.umami.is/script.js';
+const umamiWebsiteId = '6e3a6b76-7d7b-4d38-94f4-dfd2e65fe86e';
 const fullName = 'Osmar Bogarín';
 const jobTitle = 'Data Engineer & Consultant';
 const sameAs = [contactInfo.linkedin, contactInfo.github, contactInfo.instagram, contactInfo.x];
@@ -106,9 +108,35 @@ const ldGraph = JSON.stringify({ '@context': 'https://schema.org', '@graph': [ld
     <meta name="twitter:site" content={contactInfo.xHandle} />
     <meta name="twitter:creator" content={contactInfo.xHandle} />
     <script type="application/ld+json" set:html={ldGraph}></script>
-    {import.meta.env.PUBLIC_UMAMI_WEBSITE_ID && import.meta.env.PUBLIC_UMAMI_SRC && (
-      <script defer src={import.meta.env.PUBLIC_UMAMI_SRC} data-website-id={import.meta.env.PUBLIC_UMAMI_WEBSITE_ID}></script>
-    )}
+    <script defer src={umamiScriptSrc} data-website-id={umamiWebsiteId} data-domains="osbgx.dev"></script>
+    <script is:inline>
+      (() => {
+        if (window.__osbgxAnalyticsReady) return;
+        window.__osbgxAnalyticsReady = true;
+
+        window.osbgxTrack = (eventName, eventData = {}) => {
+          const track = () => window.umami?.track?.(eventName, eventData);
+          if (window.umami?.track) {
+            track();
+            return;
+          }
+          window.setTimeout(track, 600);
+        };
+
+        let firstPageLoad = true;
+        document.addEventListener('astro:page-load', () => {
+          if (firstPageLoad) {
+            firstPageLoad = false;
+            return;
+          }
+          window.osbgxTrack('astro_page_view', {
+            path: window.location.pathname,
+            url: window.location.href,
+            title: document.title,
+          });
+        });
+      })();
+    </script>
   </head>
   <body class="pt-16">
     <a href="#main-content" class="skip-link">Saltar al contenido principal</a>

@@ -65,12 +65,14 @@ export function initIntroInteractions(options: IntroOptions) {
     btn.addEventListener('click', () => {
       const action = btn.dataset.startAction;
       if (action === 'fast') {
+        (window as any).osbgxTrack?.('about_intro_fast_read');
         const fastPanel = document.getElementById('press-start-fast');
         const introActions = btn.closest('.press-start-actions');
         if (fastPanel) fastPanel.hidden = false;
         if (introActions) introActions.hidden = true;
         updateBubble('fast');
       } else {
+        (window as any).osbgxTrack?.('about_intro_enter_profile', { action });
         closePressStartOverlay({ openRoom: action === 'fast-room' });
       }
     });

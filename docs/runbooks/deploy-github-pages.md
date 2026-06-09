@@ -46,8 +46,7 @@ En GitHub: **Actions** → **Deploy to GitHub Pages** → **Run workflow**.
 ## Variables de entorno en CI
 
 - `PUBLIC_WEB3FORMS_ACCESS_KEY`: configurar como secret si se usa Web3Forms.
-- `PUBLIC_UMAMI_WEBSITE_ID`: configurar como variable de Actions si se usa Umami.
-- `PUBLIC_UMAMI_SRC`: queda definido en el workflow como `https://cloud.umami.is/script.js`; no necesita secret.
+- Umami ya queda configurado por defecto con `https://cloud.umami.is/script.js` y el website id del sitio; no necesita secret.
 
 ## Debug
 

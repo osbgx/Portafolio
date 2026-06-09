@@ -86,6 +86,7 @@ export function initSectionNav(
     if (indicator) indicator.textContent = isOpen ? '▼' : '▶';
     if (isOpen) {
       const sid = trigger.parentElement?.id;
+      if (sid) (window as any).osbgxTrack?.('about_section_open', { section: sid });
       const wasNew = sid ? !discovery.sections.has(sid) : false;
       deps.sfxOpen(sid);
       const rect = trigger.getBoundingClientRect();
@@ -104,6 +105,7 @@ export function initSectionNav(
   function openSection(sectionId: string, options: { scroll?: boolean } = {}) {
     const section = document.getElementById(sectionId);
     if (!section) return;
+    (window as any).osbgxTrack?.('about_section_navigate', { section: sectionId, scroll: Boolean(options.scroll) });
     const trigger = section.querySelector<HTMLElement>('.accordion-trigger');
     const panel = section.querySelector('.accordion-panel');
     if (trigger && panel && !panel.classList.contains('open')) toggle(trigger, true);

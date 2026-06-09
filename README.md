@@ -110,10 +110,9 @@ Crear `.env` en la raíz (no se commitea):
 
 ```env
 PUBLIC_WEB3FORMS_ACCESS_KEY=tu-access-key-aqui
-# Opcional — analytics Umami
-PUBLIC_UMAMI_WEBSITE_ID=
-PUBLIC_UMAMI_SRC=https://cloud.umami.is/script.js
 ```
+
+Umami queda configurado directamente en `src/layouts/BaseLayout.astro` con el tracking code público del sitio.
 
 ---
 
