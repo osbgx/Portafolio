@@ -7,6 +7,7 @@ import { Icon } from 'astro-icon/components';
 import { contactInfo, socialLinks } from '../data/social';
 
 const WEB3FORMS_ACCESS_KEY = import.meta.env.PUBLIC_WEB3FORMS_ACCESS_KEY;
+const isContactFormConfigured = Boolean(WEB3FORMS_ACCESS_KEY);
 const directLinks = socialLinks.map((link) => ({
   ...link,
   value: link.label === 'Email'
@@ -22,7 +23,7 @@ const directLinks = socialLinks.map((link) => ({
     <div class="max-w-3xl mx-auto">
       <SectionTitle title="Contacto" description="¿Tienes un proyecto en mente? ¿Quieres colaborar? Hablemos." centered={false} level="h1" />
       
-      <form id="contact-form" action="https://api.web3forms.com/submit" method="POST" class="mt-12 space-y-6" data-umami-event="contact_form_submit_attempt">
+      <form id="contact-form" action="https://api.web3forms.com/submit" method="POST" class="mt-12 space-y-6" data-contact-form-configured={isContactFormConfigured ? 'true' : 'false'} data-umami-event="contact_form_submit_attempt">
         <input type="hidden" name="access_key" value={WEB3FORMS_ACCESS_KEY} />
         <input type="hidden" name="from_name" value="Portfolio OSBGX" />
         <input type="checkbox" name="botcheck" class="hidden" tabindex="-1" autocomplete="off" />
@@ -48,9 +49,10 @@ const directLinks = socialLinks.map((link) => ({
           id="contact-submit"
           type="submit"
           class="w-full bg-amber-500 text-carbon font-semibold px-8 py-3.5 rounded-xl hover:bg-amber-500/90 transition hover:shadow-xl hover:shadow-amber-500/20"
+          disabled={!isContactFormConfigured}
           data-umami-event="contact_submit_click"
         >
-          Enviar mensaje
+          {isContactFormConfigured ? 'Enviar mensaje' : 'Formulario no configurado'}
         </button>
         <p id="contact-result" class="hidden rounded-xl border px-4 py-3 text-sm" aria-live="polite"></p>
       </form>
@@ -107,6 +109,11 @@ const directLinks = socialLinks.map((link) => ({
 
     form.addEventListener('submit', async (event) => {
       event.preventDefault();
+      if (form.dataset.contactFormConfigured !== 'true') {
+        setResult('El formulario no está configurado. Escribime directo por email o WhatsApp.', 'error');
+        (window as any).umami?.track('contact_form_error', { reason: 'missing_access_key' });
+        return;
+      }
       result.classList.add('hidden');
       submitBtn.textContent = 'Enviando...';
       submitBtn.disabled = true;

@@ -96,11 +96,11 @@ El **Social Dock** (`SocialDock.astro`) aparece en todas las páginas y cambia d
 
 ```bash
 npm run dev        # Servidor de desarrollo
-npm run build      # Genera og-image.webp + build estático en dist/
+npm run build      # Build estático en dist/
 npm run preview    # Preview del build local
 ```
 
-El script `build` ejecuta `scripts/generate-og-image.mjs` antes de `astro build` (requiere `public/me.webp`).
+La imagen OG se sirve desde `public/og-image.jpg`; reemplazar ese archivo si se quiere actualizar el preview social.
 
 ---
 
@@ -112,7 +112,7 @@ Crear `.env` en la raíz (no se commitea):
 PUBLIC_WEB3FORMS_ACCESS_KEY=tu-access-key-aqui
 # Opcional — analytics Umami
 PUBLIC_UMAMI_WEBSITE_ID=
-PUBLIC_UMAMI_SRC=
+PUBLIC_UMAMI_SRC=https://cloud.umami.is/script.js
 ```
 
 ---
