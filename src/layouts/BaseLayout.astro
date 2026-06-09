@@ -93,13 +93,16 @@ const ldGraph = JSON.stringify({ '@context': 'https://schema.org', '@graph': [ld
     <meta property="og:title" content={`${title} | Osmar Bogarín`} />
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonicalUrl} />
-    <meta property="og:image" content={`${siteUrl}/og-image.webp`} />
+    <meta property="og:image" content={`${siteUrl}/og-image.jpg`} />
+    <meta property="og:image:secure_url" content={`${siteUrl}/og-image.jpg`} />
+    <meta property="og:image:type" content="image/jpeg" />
+    <meta property="og:image:alt" content="Osmar Bogarín - Data Engineer & Consultant" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content={`${title} | Osmar Bogarín`} />
     <meta name="twitter:description" content={description} />
-    <meta name="twitter:image" content={`${siteUrl}/og-image.webp`} />
+    <meta name="twitter:image" content={`${siteUrl}/og-image.jpg`} />
     <meta name="twitter:site" content={contactInfo.xHandle} />
     <meta name="twitter:creator" content={contactInfo.xHandle} />
     <script type="application/ld+json" set:html={ldGraph}></script>
