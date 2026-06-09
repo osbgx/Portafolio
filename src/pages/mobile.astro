@@ -369,7 +369,7 @@ const secondaryMobileProjects = allProjects
   </section>
 
   <!-- Platforms -->
-  <section class="py-24 md:py-32 bg-dark-surface relative overflow-hidden">
+  <section class="py-20 md:py-32 bg-dark-surface relative overflow-hidden">
     <div class="absolute inset-0 bg-gradient-to-b from-purple-500/[0.01] via-transparent to-teal-500/[0.01] pointer-events-none"></div>
     <div class="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-teal-400/20 to-transparent"></div>
     <div class="absolute top-0 left-0 right-0 h-32 bg-gradient-to-b from-white/[0.005] to-transparent pointer-events-none"></div>
@@ -429,14 +429,14 @@ const secondaryMobileProjects = allProjects
     <div class="absolute top-0 left-0 right-0 h-32 bg-gradient-to-b from-white/[0.005] to-transparent pointer-events-none"></div>
     <div class="container-section">
       <SectionTitle title="Toolkit Móvil" description="Tecnologías con las que construyo apps." />
-      <div class="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-5 gap-px bg-white/[0.03] rounded-2xl overflow-hidden border border-white/5 mt-16">
+      <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-2 sm:gap-px sm:bg-white/[0.03] rounded-2xl sm:overflow-hidden sm:border sm:border-white/5 mt-10 sm:mt-16">
         {toolkit.map((t, i) => (
-          <div class="ind-entry group relative bg-dark-surface p-5 hover:bg-white/[0.02] transition-colors duration-300 flex flex-col items-center text-center gap-3" style={`animation-delay:${i * 0.06}s`}>
+          <div class={`ind-entry group relative bg-white/[0.02] sm:bg-dark-surface border border-white/5 sm:border-0 rounded-2xl sm:rounded-none p-4 sm:p-5 hover:bg-white/[0.04] sm:hover:bg-white/[0.02] transition-colors duration-300 flex flex-col items-center justify-center text-center gap-2.5 sm:gap-3 min-h-28 sm:min-h-0 ${i === toolkit.length - 1 ? 'col-span-2 sm:col-span-1' : ''}`} style={`animation-delay:${i * 0.06}s`}>
             <div class={`absolute inset-0 bg-gradient-to-b ${t.color} opacity-0 group-hover:opacity-[0.04] transition-opacity duration-300`}></div>
-            <div class="w-10 h-10 rounded-xl bg-white/[0.04] border border-white/5 flex items-center justify-center group-hover:scale-110 group-hover:border-white/20 transition duration-300">
-              <Icon name={t.icon} size={18} class={`${iconColors[t.icon] || 'text-white/50'} transition-colors`} />
+            <div class="relative w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-white/[0.04] border border-white/5 flex items-center justify-center group-hover:scale-110 group-hover:border-white/20 transition duration-300">
+              <Icon name={t.icon} size={18} class={`${iconColors[t.icon] || 'text-white/50'} transition-colors w-4 h-4 sm:w-[18px] sm:h-[18px]`} />
             </div>
-            <span class="text-xs font-medium text-white/50 group-hover:text-white/80 transition-colors leading-tight">{t.name}</span>
+            <span class="relative text-[11px] sm:text-xs font-medium text-white/55 group-hover:text-white/80 transition-colors leading-tight max-w-full break-words">{t.name}</span>
           </div>
         ))}
       </div>
@@ -501,5 +501,3 @@ const secondaryMobileProjects = allProjects
     </div>
   </section>
 </MobileLayout>
-
-
