@@ -11,6 +11,7 @@ dist/
 # Local AI/editor tooling and proposal scratchpads
 .agents/
 .opencode/
+.claude/
 openspec/
 SKILL.md
 skills-lock.json
