@@ -1,6 +1,6 @@
 # Documentación del Portfolio
 
-Índice de la documentación técnica del proyecto. Sincronizado con el código en `main` (Astro 7, Tailwind v4, SSG, sin GSAP/AOS).
+Índice de la documentación técnica del proyecto. Sincronizado con el código en `main` (Astro 7, Tailwind v4, Node >=22.12, SSG, sin GSAP/AOS).
 
 ## Visión general
 

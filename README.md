@@ -11,8 +11,8 @@ Portfolio profesional de **Osmar Sebastián Bogarín Gonzalez** — Data Enginee
 
 | Categoría | Tecnologías |
 |---|---|
-| **Framework** | [Astro v5](https://astro.build) — Static Site Generation |
-| **Estilos** | [Tailwind CSS v3](https://tailwindcss.com) + CSS en `src/styles/global.css` |
+| **Framework** | [Astro v7](https://astro.build) — Static Site Generation |
+| **Estilos** | [Tailwind CSS v4](https://tailwindcss.com) + CSS en `src/styles/global.css` |
 | **Tipografía** | Inter, JetBrains Mono, IBM Plex Sans, Sora, Press Start 2P (Google Fonts) |
 | **Iconos** | [astro-icon](https://github.com/natemoo-re/astro-icon) + Iconify (Simple Icons, Devicon, Heroicons, Skill Icons) |
 | **Animaciones** | CSS (keyframes, transiciones) + `IntersectionObserver` (`src/utils/reveal.ts`) |
@@ -21,6 +21,7 @@ Portfolio profesional de **Osmar Sebastián Bogarín Gonzalez** — Data Enginee
 | **SEO** | `@astrojs/sitemap`, RSS (`/rss.xml`), JSON-LD en `BaseLayout` |
 | **Formulario** | [Web3Forms](https://web3forms.com) (POST directo) |
 | **Hosting** | GitHub Pages (GitHub Actions → `deploy-pages`) |
+| **Runtime** | Node.js >=22.12.0 |
 
 ---
 

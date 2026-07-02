@@ -9,6 +9,7 @@ Para detalles por área, ver el [índice de documentación](README.md).
 |---|---|
 | Framework | [Astro v7](https://astro.build) — SSG, cero JS en cliente por defecto |
 | Estilos | Tailwind CSS v4 + `src/styles/global.css` |
+| Runtime | Node.js >=22.12.0 |
 | Tipado | TypeScript en datos y utilidades |
 | Iconos | `astro-icon` + Iconify |
 | Contenido | Content Collections (blog + projects) con Zod |
