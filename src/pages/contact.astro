@@ -45,10 +45,21 @@ const directLinks = socialLinks.map((link) => ({
           <label for="message" class="block text-white/60 text-sm mb-2">Mensaje</label>
           <FormTextarea id="message" name="message" placeholder="Contame qué tenés en mente…" required />
         </div>
+        <label class="flex items-start gap-3 cursor-pointer group">
+          <input type="checkbox" id="privacy-consent" name="privacy_consent" required class="mt-0.5 h-4 w-4 shrink-0 rounded border-white/20 bg-white/5 text-amber-500 focus:ring-amber-500/30 focus:ring-2 accent-amber-500" data-umami-event="contact_privacy_consent" />
+          <span class="text-sm text-white/50 group-hover:text-white/70 transition-colors leading-relaxed">
+            Acepto la
+            <a href="/privacy" target="_blank" rel="noopener noreferrer" class="text-amber-400 hover:text-amber-300 underline underline-offset-2 transition">
+              Política de Privacidad
+            </a>
+            y consiento el tratamiento de mis datos para recibir una respuesta.
+          </span>
+        </label>
+
         <button
           id="contact-submit"
           type="submit"
-          class="w-full bg-amber-500 text-carbon font-semibold px-8 py-3.5 rounded-xl hover:bg-amber-500/90 transition hover:shadow-xl hover:shadow-amber-500/20"
+          class="w-full bg-amber-500 text-carbon font-semibold px-8 py-3.5 rounded-xl hover:bg-amber-500/90 transition hover:shadow-xl hover:shadow-amber-500/20 disabled:opacity-40 disabled:cursor-not-allowed"
           disabled={!isContactFormConfigured}
           data-umami-event="contact_submit_click"
         >

@@ -21,7 +21,7 @@ const kindLabel: Record<string, string> = { article: 'Artículo', 'case-study': 
       <>
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-12">
           {posts.map((post) => (
-            <a href={withBase(`/blog/${post.slug}`)} class="group h-full flex flex-col p-8 rounded-2xl bg-white/[0.02] border border-white/5 hover:border-amber-400/30 transition">
+            <a href={withBase(`/blog/${post.id}`)} class="group h-full flex flex-col p-8 rounded-2xl bg-white/[0.02] border border-white/5 hover:border-amber-400/30 transition">
               <div class="flex flex-wrap items-center gap-2 text-white/30 text-sm">
                 <time>{post.data.date.toLocaleDateString('es-ES', { year: 'numeric', month: 'long', day: 'numeric' })}</time>
                 {post.data.kind && <span class="rounded-full border border-amber-400/15 bg-amber-400/10 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-amber-300">{kindLabel[post.data.kind] ?? post.data.kind}</span>}

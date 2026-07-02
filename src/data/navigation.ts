@@ -36,4 +36,6 @@ export const footerNav: readonly NavLink[] = [
   { href: '/about', label: 'Sobre mí' },
   { href: '/blog', label: 'Blog' },
   { href: '/projects', label: 'Proyectos' },
+  { href: '/privacy', label: 'Privacidad' },
+  { href: '/terms', label: 'Términos' },
 ];

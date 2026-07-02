@@ -9,7 +9,7 @@ import { iconColors, toolkit, capabilities, capabilityAccents, platforms, workfl
 import CardGlow from '../components/global/CardGlow.astro';
 import '../styles/mobile.css';
 
-const allProjects = (await getCollection('projects')).map((p) => ({ ...p.data, id: p.slug }));
+const allProjects = (await getCollection('projects')).map((p) => ({ ...p.data, id: p.id }));
 const mobileProjects = allProjects.filter((p) => (p.pages ?? []).includes('movil'));
 const sortedProjects = [...mobileProjects].sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
 const featuredProject = sortedProjects[0];

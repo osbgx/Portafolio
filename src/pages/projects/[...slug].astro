@@ -1,20 +1,20 @@
 ---
 import { Icon } from 'astro-icon/components';
 import PostLayout from '../../layouts/PostLayout.astro';
-import { getCollection } from 'astro:content';
+import { getCollection, render } from 'astro:content';
 import ImageCarousel from '../../components/global/ImageCarousel.astro';
 import { withBase } from '../../utils/paths';
 
 export async function getStaticPaths() {
   const projects = await getCollection('projects');
-  return projects.map((p) => ({ params: { slug: p.slug }, props: { slug: p.slug } }));
+  return projects.map((p) => ({ params: { slug: p.id }, props: { slug: p.id } }));
 }
 
 const { slug } = Astro.props;
 const allProjects = await getCollection('projects');
 const allBlogPosts = await getCollection('blog');
-const project = allProjects.find((p) => p.slug === slug);
-const { Content } = project ? await project.render() : { Content: undefined };
+const project = allProjects.find((p) => p.id === slug);
+const { Content } = project ? await render(project) : { Content: undefined };
 const { title, description, category, tags, images, type, hidden, client } = project?.data ?? {};
 const relatedCaseStudies = allBlogPosts
   .filter((post) => post.data.kind === 'case-study' && post.data.relatedProject === slug)
@@ -22,7 +22,7 @@ const relatedCaseStudies = allBlogPosts
 const sorted = allProjects
   .filter((p) => !p.data.hidden)
   .sort((a, b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime());
-const currentIdx = sorted.findIndex((p) => p.slug === slug);
+const currentIdx = sorted.findIndex((p) => p.id === slug);
 const prev = currentIdx > 0 ? sorted[currentIdx - 1] : null;
 const next = currentIdx >= 0 && currentIdx < sorted.length - 1 ? sorted[currentIdx + 1] : null;
 const typeLabel: Record<string, string> = { empleado: "Laboral", freelance: "Freelance", hobby: "Hobby" };
@@ -72,7 +72,7 @@ const ldCreativeWork = JSON.stringify({
   {relatedCaseStudies.length > 0 && (
     <div class="mb-10 space-y-3">
       {relatedCaseStudies.map((caseStudy) => (
-        <a href={withBase(`/blog/${caseStudy.slug}`)} class="group flex items-start justify-between gap-4 rounded-2xl border border-amber-400/15 bg-amber-400/[0.04] p-4 transition hover:border-amber-400/30 hover:bg-amber-400/[0.07]" data-umami-event="project_case_study_click" data-umami-event-project={slug} data-umami-event-case-study={caseStudy.slug}>
+        <a href={withBase(`/blog/${caseStudy.id}`)} class="group flex items-start justify-between gap-4 rounded-2xl border border-amber-400/15 bg-amber-400/[0.04] p-4 transition hover:border-amber-400/30 hover:bg-amber-400/[0.07]" data-umami-event="project_case_study_click" data-umami-event-project={slug} data-umami-event-case-study={caseStudy.id}>
           <div>
             <p class="text-[11px] font-semibold uppercase tracking-wider text-amber-300/80">Case study disponible</p>
             <h2 class="mt-1 text-base font-semibold text-white group-hover:text-amber-300 transition-colors">{caseStudy.data.title}</h2>
@@ -93,7 +93,7 @@ const ldCreativeWork = JSON.stringify({
     <nav class="flex items-center justify-between gap-4 mt-16 pt-8 border-t border-white/5">
       <div>
         {prev && (
-          <a href={withBase(`/projects/${prev.slug}`)} class="group flex items-center gap-3 text-white/50 hover:text-white transition-colors" data-umami-event="project_prev_click" data-umami-event-project={slug} data-umami-event-target={prev.slug}>
+          <a href={withBase(`/projects/${prev.id}`)} class="group flex items-center gap-3 text-white/50 hover:text-white transition-colors" data-umami-event="project_prev_click" data-umami-event-project={slug} data-umami-event-target={prev.id}>
             <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
             <div class="text-left">
               <p class="text-[11px] text-white/30 uppercase tracking-wider">Anterior</p>
@@ -104,7 +104,7 @@ const ldCreativeWork = JSON.stringify({
       </div>
       <div>
         {next && (
-          <a href={withBase(`/projects/${next.slug}`)} class="group flex items-center gap-3 text-white/50 hover:text-white transition-colors text-right" data-umami-event="project_next_click" data-umami-event-project={slug} data-umami-event-target={next.slug}>
+          <a href={withBase(`/projects/${next.id}`)} class="group flex items-center gap-3 text-white/50 hover:text-white transition-colors text-right" data-umami-event="project_next_click" data-umami-event-project={slug} data-umami-event-target={next.id}>
             <div class="text-right">
               <p class="text-[11px] text-white/30 uppercase tracking-wider">Siguiente</p>
               <p class="text-sm font-medium group-hover:text-amber-300 transition-colors line-clamp-1">{next.data.title}</p>

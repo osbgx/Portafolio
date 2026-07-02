@@ -5,7 +5,7 @@ import ProjectCard from '../components/global/ProjectCard.astro';
 import EmptyState from '../components/global/EmptyState.astro';
 import { getCollection, type CollectionEntry } from 'astro:content';
 
-const allProjects = (await getCollection('projects')).map((p: CollectionEntry<'projects'>) => ({ ...p.data, id: p.slug }));
+const allProjects = (await getCollection('projects')).map((p: CollectionEntry<'projects'>) => ({ ...p.data, id: p.id }));
 const visible = allProjects.filter((p: { hidden?: boolean }) => !p.hidden);
 const sorted = [...visible].sort((a: { date: Date }, b: { date: Date }) => new Date(b.date).valueOf() - new Date(a.date).valueOf());
 const clients = [...new Set(sorted.map((p: { client?: string }) => p.client).filter(Boolean))].sort();

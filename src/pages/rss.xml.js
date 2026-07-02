@@ -10,8 +10,8 @@ export async function GET() {
     <item>
       <title><![CDATA[${post.data.title}]]></title>
       <description><![CDATA[${post.data.description}]]></description>
-      <link>${fullSiteUrl}blog/${post.slug}/</link>
-      <guid>${fullSiteUrl}blog/${post.slug}/</guid>
+      <link>${fullSiteUrl}blog/${post.id}/</link>
+      <guid>${fullSiteUrl}blog/${post.id}/</guid>
       <pubDate>${post.data.date.toUTCString()}</pubDate>
       ${post.data.tags ? post.data.tags.map((t) => `<category>${t}</category>`).join('\n      ') : ''}
     </item>

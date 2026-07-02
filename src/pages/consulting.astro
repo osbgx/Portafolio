@@ -28,7 +28,7 @@ type ProjectData = {
   id: string;
 };
 
-const allProjects = (await getCollection('projects')).map((p: { data: ProjectData; slug: string }) => ({ ...p.data, id: p.slug }));
+const allProjects = (await getCollection('projects')).map((p: { data: ProjectData; id: string }) => ({ ...p.data, id: p.id }));
 const consultingProjects = allProjects
   .filter((p: ProjectData) => !p.hidden)
   .filter((p: ProjectData) => (p.pages ?? []).includes('consultoria'))

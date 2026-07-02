@@ -13,7 +13,7 @@ import '../styles/data.css';
 
 type ProjectWithId = CollectionEntry<'projects'>['data'] & { id: string };
 
-const allProjects = (await getCollection('projects')).map((p: CollectionEntry<'projects'>) => ({ ...p.data, id: p.slug })) as ProjectWithId[];
+const allProjects = (await getCollection('projects')).map((p: CollectionEntry<'projects'>) => ({ ...p.data, id: p.id })) as ProjectWithId[];
 const dataProjects = allProjects
   .filter((p: ProjectWithId) => !p.hidden)
   .filter((p: ProjectWithId) => (p.pages ?? []).includes('data'))

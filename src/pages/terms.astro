@@ -1,0 +1,92 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout title="Términos de Servicio" description="Términos y condiciones generales para servicios profesionales" theme="home">
+  <section class="pt-32 pb-24 max-w-3xl mx-auto px-6 md:px-8">
+    <h1 class="text-3xl md:text-4xl font-bold text-white mb-2">Términos de Servicio</h1>
+    <p class="text-white/40 text-sm mb-12">Última actualización: julio 2026</p>
+
+    <div class="prose prose-invert prose-sm max-w-none space-y-8 text-white/70 leading-relaxed">
+      <p class="text-white/50 italic border-l-2 border-amber-400/30 pl-4">
+        Estos términos aplican como condiciones generales para los servicios profesionales ofrecidos por Osmar Bogarín. 
+        En caso de existir un contrato formal firmado entre las partes, los términos de dicho contrato prevalecerán 
+        sobre estas condiciones generales.
+      </p>
+
+      <div>
+        <h2 class="text-xl font-semibold text-white mb-3">1. Alcance de los servicios</h2>
+        <p>Osmar Bogarín ofrece servicios de Data Engineering, consultoría técnica, desarrollo web y desarrollo móvil. Cada proyecto se define en alcance, entregables y plazos, ya sea mediante estos términos generales o un contrato específico.</p>
+      </div>
+
+      <div>
+        <h2 class="text-xl font-semibold text-white mb-3">2. Propiedad intelectual</h2>
+        <h3 class="text-lg font-medium text-white/80 mt-4 mb-2">2.1. Titularidad del código</h3>
+        <p>Todo el código fuente, scripts, configuraciones, diseños y activos digitales creados por Osmar Bogarín son de su <strong>plena propiedad intelectual</strong>. El cliente no adquiere la propiedad del código en ningún momento, incluso después del pago completo.</p>
+        <p class="mt-2">El cliente recibe una <strong>licencia de uso perpetua, comercial, no exclusiva e intransferible</strong> para operar el producto final. Dicha licencia es <strong>revocable</strong> si el cliente incumple cualquiera de los términos aquí establecidos.</p>
+        <p class="mt-2">Si el proyecto se publica bajo una licencia específica (por ejemplo, MIT en GitHub), esa licencia regirá los términos de uso de ese proyecto en particular, reemplazando esta cláusula para ese caso concreto. En ausencia de una licencia explícita, se aplican estos términos generales y el código se considera propietario.</p>
+
+        <h3 class="text-lg font-medium text-white/80 mt-6 mb-2">2.2. Créditos y atribución</h3>
+        <p>Todo proyecto desarrollado debe incluir, de forma visible y funcional:</p>
+        <ul class="list-disc pl-5 space-y-2 mt-2">
+          <li>Un enlace en el footer del sitio con el texto <em>"© osbgx.dev — Desarrollo web"</em> o similar, enlazando a <a href="https://osbgx.dev" target="_blank" rel="noopener noreferrer" class="text-amber-400 hover:text-amber-300 transition">osbgx.dev</a>.</li>
+          <li>Los metadatos del sitio deben incluir atribución en los tags <code>&lt;meta&gt;</code> y comentarios en el código fuente del build final.</li>
+          <li>Esta obligación se mantiene incluso después de finalizada la relación contractual.</li>
+        </ul>
+        <p class="mt-2">El incumplimiento de esta cláusula faculta a Osmar Bogarín a retirar la licencia de uso del software hasta que se regularice la atribución.</p>
+      </div>
+
+      <div>
+        <h2 class="text-xl font-semibold text-white mb-3">3. Uso de tecnologías y librerías</h2>
+        <p>Los proyectos pueden incorporar librerías, frameworks y herramientas de código abierto sujetas a sus propias licencias (MIT, Apache, GPL, AGPL, etc.). También pueden integrarse plataformas de código abierto como <strong>Odoo, n8n, GLPI, Wiki.js</strong> o similares, cada una regida por su licencia correspondiente. Es responsabilidad del cliente asegurarse de cumplir con los términos de dichas licencias. Osmar Bogarín no se responsabiliza por el uso indebido de componentes de terceros.</p>
+      </div>
+
+      <div>
+        <h2 class="text-xl font-semibold text-white mb-3">4. Pagos y facturación</h2>
+        <ul class="list-disc pl-5 space-y-2">
+          <li>Las tarifas, condiciones de pago y plazos se acuerdan previamente al inicio del proyecto.</li>
+          <li>Los pagos no son reembolsables una vez iniciado el trabajo, salvo acuerdo mutuo por escrito.</li>
+          <li>El pago completo es requisito para que la licencia de uso entre en vigencia. Sin pago, no existe derecho a usar el código.</li>
+        </ul>
+      </div>
+
+      <div>
+        <h2 class="text-xl font-semibold text-white mb-3">5. Limitación de responsabilidad</h2>
+        <p>Osmar Bogarín no será responsable por:</p>
+        <ul class="list-disc pl-5 space-y-2">
+          <li>Daños indirectos, incidentales, especiales o consecuentes.</li>
+          <li>Pérdida de datos, archivos o información del cliente durante procesos de mantenimiento, migración, actualización o cualquier otra intervención técnica.</li>
+          <li>Lucro cesante, pérdida de oportunidades de negocio o interrupción de operaciones.</li>
+          <li>Daños derivados del uso o la imposibilidad de uso de los servicios prestados.</li>
+          <li>Errores, demoras o fallos ocasionados por servicios de terceros (hosting, APIs, proveedores cloud, etc.).</li>
+        </ul>
+        <p class="mt-3">La responsabilidad máxima de Osmar Bogarín en cualquier circunstancia se limita al monto total pagado por el servicio específico que originó el reclamo. Esta limitación aplica incluso si se ha advertido sobre la posibilidad de dichos daños.</p>
+      </div>
+
+      <div>
+        <h2 class="text-xl font-semibold text-white mb-3">6. Garantía</h2>
+        <p>Se garantiza que el trabajo entregado funcionará conforme a las especificaciones acordadas por un período de <strong>30 días</strong> posteriores a la entrega. Pasado ese período, las correcciones o mejoras se cotizarán por separado. Quedan excluidos de esta garantía los servicios de terceros, cambios realizados por el cliente o modificaciones al entorno de producción.</p>
+      </div>
+
+      <div>
+        <h2 class="text-xl font-semibold text-white mb-3">7. Confidencialidad</h2>
+        <p>Osmar Bogarín se compromete a mantener la confidencialidad de toda la información del cliente a la que tenga acceso durante el proyecto, incluyendo datos comerciales, técnicos y estratégicos. Esta obligación se mantiene vigente incluso después de finalizada la relación contractual.</p>
+      </div>
+
+      <div>
+        <h2 class="text-xl font-semibold text-white mb-3">8. Rescisión</h2>
+        <p>Cualquiera de las partes puede rescindir el servicio con un aviso previo de 7 días. En caso de rescisión, se facturarán los trabajos realizados hasta la fecha de finalización. El código desarrollado permanece en <strong>plena propiedad de Osmar Bogarín</strong> en todo momento, independientemente del estado de pago. El cliente solo obtendrá la licencia de uso una vez que haya completado el pago total de los servicios efectivamente prestados hasta la fecha de rescisión.</p>
+      </div>
+
+      <div>
+        <h2 class="text-xl font-semibold text-white mb-3">9. Legislación aplicable</h2>
+        <p>Estos términos se rigen por las leyes de la <strong>República de Paraguay</strong>. Para cualquier controversia, las partes se someten a los tribunales de la ciudad de Asunción, Paraguay.</p>
+      </div>
+
+      <div>
+        <h2 class="text-xl font-semibold text-white mb-3">10. Aceptación de los términos</h2>
+        <p>Al contratar los servicios o utilizar el formulario de contacto, el cliente acepta estos términos en su totalidad. Si no está de acuerdo, debe abstenerse de utilizar los servicios y el formulario de contacto.</p>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

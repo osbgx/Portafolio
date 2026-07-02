@@ -57,9 +57,9 @@ export const headerThemes: Record<string, HeaderTheme> = {
     border: 'border-[#2a1a0a]',
   },
   default: {
-    logo: 'bg-hylian/10 border-hylian/20 text-hylian group-hover:bg-hylian/20 rounded-lg',
-    cta: 'bg-hylian hover:bg-hylian/90 text-carbon hover:shadow-lg hover:shadow-hylian/20 rounded-lg',
-    mobileCta: 'bg-hylian hover:bg-hylian/90 text-carbon rounded-lg',
+    logo: 'bg-hero/10 border-hero/20 text-hero group-hover:bg-hero/20 rounded-lg',
+    cta: 'bg-hero hover:bg-hero/90 text-carbon hover:shadow-lg hover:shadow-hero/20 rounded-lg',
+    mobileCta: 'bg-hero hover:bg-hero/90 text-carbon rounded-lg',
     font: '',
     border: 'border-white/5',
   },
@@ -103,8 +103,8 @@ export const footerThemes: Record<string, FooterTheme> = {
     font: 'font-pixel text-[9px]',
   },
   default: {
-    logo: 'text-hylian',
-    hover: 'hover:text-hylian',
+    logo: 'text-hero',
+    hover: 'hover:text-hero',
     border: 'border-white/5',
     font: '',
   },
@@ -117,5 +117,5 @@ export const dockColors: Record<string, string> = {
   web: '#3FAF6C',
   mobile: '#3FAF6C',
   about: '#d4a030',
-  default: '#3FAF6C',
+  default: '#D4AF37',
 };

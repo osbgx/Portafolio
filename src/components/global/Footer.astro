@@ -49,8 +49,13 @@ const t = footerThemes[theme] || footerThemes.default;
         </a>
       </div>
     </div>
-    <div class={`border-t ${t.border} mt-8 pt-8 text-center`}>
+    <div class={`border-t ${t.border} mt-8 pt-8 flex flex-col sm:flex-row items-center justify-between gap-4`}>
       <p class="text-white/50 text-xs">&copy; {currentYear} Osmar Bogarín. Todos los derechos reservados.</p>
+      <nav class="flex items-center gap-4 text-xs" aria-label="Enlaces legales">
+        <a href={withBase('/privacy')} class={`text-white/40 ${t.hover} transition-colors`} data-umami-event="footer_privacy">Política de Privacidad</a>
+        <span class="text-white/10" aria-hidden="true">|</span>
+        <a href={withBase('/terms')} class={`text-white/40 ${t.hover} transition-colors`} data-umami-event="footer_terms">Términos de Servicio</a>
+      </nav>
     </div>
   </div>
 </footer>
