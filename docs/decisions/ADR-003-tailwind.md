@@ -1,7 +1,7 @@
 # ADR-003 — Uso de Tailwind como sistema de estilos
 
 ## Estado
-Aprobado
+**Reemplazado** — ver [ADR-016](ADR-016-tailwind-v4.md)
 
 ## Contexto
 El proyecto requiere:
@@ -10,8 +10,10 @@ El proyecto requiere:
 - escalabilidad
 - personalización por sección
 
-## Decisión
-Usar **Tailwind CSS** como sistema de estilos principal.
+## Decisión (original)
+Usar **Tailwind CSS v3** como sistema de estilos principal, integrado vía `@astrojs/tailwind`.
+
+> ⚠️ **Decisión reemplazada.** Ver [ADR-016](ADR-016-tailwind-v4.md) para la estrategia actual con Tailwind v4 + Vite plugin.
 
 ## Justificación
 - Permite definir tokens globales (colores, spacing, tipografías).
@@ -19,8 +21,10 @@ Usar **Tailwind CSS** como sistema de estilos principal.
 - Reduce CSS repetitivo.
 - Excelente integración con Astro.
 
-## Consecuencias
+## Consecuencias (originales)
 - Config: `tailwind.config.js` (colores, fuentes, `maxWidth.reading`, keyframes)
 - Plugin: `@tailwindcss/typography` para prose del blog
 - Overrides puntuales en `src/styles/global.css` (pixel, reveal, view transitions)
 - Integración: `@astrojs/tailwind` en `astro.config.mjs`
+
+> ⚠️ Las consecuencias originales ya no aplican. Migrado a Tailwind v4 con `@tailwindcss/vite` (ver ADR-016).

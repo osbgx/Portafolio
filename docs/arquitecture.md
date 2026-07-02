@@ -7,8 +7,8 @@ Para detalles por área, ver el [índice de documentación](README.md).
 
 | Capa | Tecnología |
 |---|---|
-| Framework | [Astro v5](https://astro.build) — SSG, cero JS en cliente por defecto |
-| Estilos | Tailwind CSS v3 + `src/styles/global.css` |
+| Framework | [Astro v7](https://astro.build) — SSG, cero JS en cliente por defecto |
+| Estilos | Tailwind CSS v4 + `src/styles/global.css` |
 | Tipado | TypeScript en datos y utilidades |
 | Iconos | `astro-icon` + Iconify |
 | Contenido | Content Collections (blog + projects) con Zod |
@@ -23,7 +23,8 @@ No hay dependencias de GSAP, AOS ni Canvas en el código de producción.
 
 - `site: 'https://osbgx.dev'`
 - `compressHTML: true`, `inlineStylesheets: 'always'`
-- Integraciones: `@astrojs/tailwind`, `astro-icon`, `@astrojs/sitemap`
+- Integraciones: `astro-icon`, `@astrojs/sitemap`
+- Vite plugins: `@tailwindcss/vite` (procesa Tailwind v4)
 - Iconos locales incluidos: `sql` (carpeta `src/icons/`)
 
 ## Estructura de `src/`

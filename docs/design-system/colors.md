@@ -1,6 +1,6 @@
 # Design System — Colores
 
-Paleta global y variaciones temáticas por sección. Tokens definidos en `tailwind.config.js`.
+Paleta global y variaciones temáticas por sección. Tokens definidos en `src/styles/global.css` mediante `@theme` (Tailwind v4).
 
 ---
 
@@ -110,20 +110,23 @@ Configuración en `src/data/themes.ts`:
 
 ---
 
-## Tailwind
+## Tailwind (v4 — `@theme` en CSS)
 
-```js
-// tailwind.config.js — extracto
-colors: {
-  carbon: '#0B0B0C',
-  obsidian: '#1A1A1D',
-  steel: '#2E2E33',
-  hylian: '#3FAF6C',
-  hero: '#D4AF37',
-  purple: { DEFAULT: '#7D3CEE', vivid: '#a855f7' },
-  pastel: { cream: '#F2E9D8', blue: '#A3C4F3', green: '#B7E4C7' },
-  brown: { darkest: '#0d0907', darker: '#100a08', /* … */ },
-  'web-bg': '#080a0c',
-  'dark-surface': '#0f0f16',
+```css
+/* src/styles/global.css */
+@theme {
+  --color-carbon: #0B0B0C;
+  --color-obsidian: #1A1A1D;
+  --color-steel: #2E2E33;
+  --color-hylian: #3FAF6C;
+  --color-hero: #D4AF37;
+  --color-purple: #7D3CEE;
+  --color-purple-vivid: #a855f7;
+  --color-brown-darkest: #0d0907;
+  --color-brown-darker: #100a08;
+  --color-web-bg: #080a0c;
+  --color-dark-surface: #0f0f16;
 }
 ```
+
+> ℹ️ En Tailwind v4 los tokens se definen con `@theme` en CSS en lugar de `tailwind.config.js`. Ver [ADR-016](../decisions/ADR-016-tailwind-v4.md).

@@ -1,6 +1,6 @@
 # Documentación del Portfolio
 
-Índice de la documentación técnica del proyecto. Sincronizado con el código en `main` (Astro 5, SSG, sin GSAP/AOS).
+Índice de la documentación técnica del proyecto. Sincronizado con el código en `main` (Astro 7, Tailwind v4, SSG, sin GSAP/AOS).
 
 ## Visión general
 
@@ -30,7 +30,8 @@ Registros de decisiones de arquitectura en [`decisions/`](decisions/).
 |---|---|---|
 | [001](decisions/ADR-001-framework-astro.md) | Framework Astro | Aprobado |
 | [002](decisions/ADR-002-design-system-modular.md) | Design system modular | Aprobado |
-| [003](decisions/ADR-003-tailwind.md) | Tailwind CSS | Aprobado |
+| [003](decisions/ADR-003-tailwind.md) | Tailwind CSS v3 | **Reemplazado** |
+| [016](decisions/ADR-016-tailwind-v4.md) | Tailwind CSS v4 | Aprobado |
 | [004](decisions/ADR-004-content-collections.md) | Content Collections | Aprobado |
 | [005](decisions/ADR-005-minigame-canvas.md) | Escena About (antes minijuego Canvas) | **Reemplazado** |
 | [006](decisions/ADR-006-animations-gsap-aos.md) | Animaciones (antes GSAP/AOS) | **Reemplazado** |

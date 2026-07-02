@@ -1,6 +1,6 @@
 # Design System — Tipografía
 
-Fuentes cargadas en `BaseLayout.astro` (Google Fonts, `display=optional`). Clases en `tailwind.config.js` → `fontFamily`.
+Fuentes cargadas en `BaseLayout.astro` (Google Fonts, `display=optional`). Clases definidas en `src/styles/global.css` mediante `@theme` (Tailwind v4).
 
 ---
 
@@ -43,20 +43,20 @@ IBM Plex Sans y Sora se cargan en layouts temáticos cuando hace falta; Inter y 
 
 ---
 
-## Implementación
+## Implementación (Tailwind v4)
 
-```js
-// tailwind.config.js
-fontFamily: {
-  inter: ['Inter', 'system-ui', 'sans-serif'],
-  'jetbrains-mono': ['JetBrains Mono', 'monospace'],
-  'ibm-plex-sans': ['IBM Plex Sans', 'system-ui', 'sans-serif'],
-  sora: ['Sora', 'system-ui', 'sans-serif'],
-},
-fontSize: {
-  display: ['3rem', { lineHeight: '1.1', fontWeight: '700' }],
-  // h1, h2, h3, body-lg, body-base, body-sm
-},
+```css
+/* src/styles/global.css */
+@theme {
+  --font-inter: 'Inter', 'system-ui', 'sans-serif';
+  --font-jetbrains-mono: 'JetBrains Mono', 'monospace';
+  --font-ibm-plex-sans: 'IBM Plex Sans', 'system-ui', 'sans-serif';
+  --font-sora: 'Sora', 'system-ui', 'sans-serif';
+  --text-display: 3rem;
+  --text-display--line-height: 1.1;
+  --text-display--font-weight: 700;
+  /* h1, h2, h3, body-lg, body-base, body-sm */
+}
 ```
 
 Clase utilitaria About: `font-pixel` → `Press Start 2P` (definida en `global.css`).

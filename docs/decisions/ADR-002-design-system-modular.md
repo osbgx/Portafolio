@@ -26,7 +26,7 @@ Implementar un **Design System modular**, donde:
 - Compatible con Astro y Tailwind.
 
 ## Consecuencias
-- Tokens en `tailwind.config.js` y temas en `src/data/themes.ts`
+- Tokens en `src/styles/global.css` (`@theme`) y temas en `src/data/themes.ts`
 - Cada sección: layout + carpeta en `src/components/<sección>/`
 - Documentación: `docs/design-system/`, wireframes por ruta
 

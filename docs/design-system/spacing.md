@@ -122,24 +122,26 @@ El ritmo vertical debe sentirse **ordenado, profesional y respirable**.
 
 ---
 
-## Implementación en Tailwind
+## Implementación en Tailwind (v4)
 
-```js
-// tailwind.config.js
-theme: {
-  spacing: {
-    xs: '4px',
-    sm: '8px',
-    md: '12px',
-    lg: '16px',
-    xl: '24px',
-    '2xl': '32px',
-    '3xl': '48px',
-    '4xl': '64px',
-    '5xl': '96px',
-  }
+Tailwind v4 incluye una escala de espaciado por defecto. Los valores personalizados se definen en `@theme`:
+
+```css
+/* src/styles/global.css */
+@theme {
+  --spacing-xs: 4px;
+  --spacing-sm: 8px;
+  --spacing-md: 12px;
+  --spacing-lg: 16px;
+  --spacing-xl: 24px;
+  --spacing-2xl: 32px;
+  --spacing-3xl: 48px;
+  --spacing-4xl: 64px;
+  --spacing-5xl: 96px;
 }
 ```
+
+> ℹ️ En Tailwind v4 los tokens de espaciado se definen con `@theme` en CSS. Ver [ADR-016](../decisions/ADR-016-tailwind-v4.md).
 
 ---
 
